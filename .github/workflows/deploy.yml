@@ -21,9 +21,9 @@ jobs:
 
       - name: Clear cache
         run: |
-          echo "$CRED" > /secrets.json
-          gcloud auth activate-service-account --key-file=/secrets.json
-          rm /secrets.json
+          echo "$CRED" > /secrets2.json
+          gcloud auth activate-service-account --key-file=/secrets2.json
+          rm /secrets2.json
 
           gcloud compute url-maps invalidate-cdn-cache stats-web-balancer-2 --path "/*"
         shell: bash
