@@ -21,8 +21,10 @@ jobs:
 
       - name: Clear cache
         run: |
-          echo "${{ secrets.google_service_account_credentials }}" > /secrets.json
+          echo "$CRED" > /secrets.json
           gcloud auth activate-service-account --key-file=/secrets.json
           rm /secrets.json
 
           gcloud compute url-maps invalidate-cdn-cache stats-web-balancer-2 --path "/*"
+        env: 
+          CRED: ${{ secrets.google_service_account_credentials }}
