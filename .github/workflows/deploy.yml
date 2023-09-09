@@ -17,7 +17,7 @@ jobs:
         with:
           secrets: ${{ secrets.google_service_account_credentials }}
           bucket: 'stats-web-files'
-          exclude: '\.gitignore$|\.git/.*$|\.github/.*$'
+          exclude: '\.gitignore$|\.git/.*$|\.github/.*$|secrets\.json$'
 
       - name: Clear cache
         run: |
