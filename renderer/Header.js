@@ -1,11 +1,16 @@
-import { css, showPopup, useRef } from "../helpers.js";
-import { buttonCss } from "./css.js";
-import { SomeButtonPopup } from "./popup/SomeButtonPopup.js";
+import { css, useRef } from "../helpers.js";
+import { buttonCss, textboxCss } from "./css.js";
 
-export function Header() {
-    let rightButtonRef = useRef().onClick(() => {
-        showPopup(SomeButtonPopup())
-    })
+export function Header(search) {
+    let input = useRef();
+
+    let rightButton = useRef().onClick(() => {
+        if (!input.exists()) return;
+        let searchPlayer = input.getElm().value;
+        input.getElm().value = "";
+
+        search(searchPlayer);
+    });
 
     return `
         <header ${css`
@@ -17,7 +22,8 @@ export function Header() {
             background-color: lightgrey;
         `}>
 
-            <button ${rightButtonRef} ${buttonCss`float: right;`}>Some button</button>
+            <button ${rightButton} ${buttonCss`float: right;`}>Search</button>
+            <input ${input} type="text" placeholder="Search" ${textboxCss`float: right;margin-right: 0;`}> </input>
 
         </header>
 

@@ -1,9 +1,10 @@
 /**
  * @typedef {Object} Ref
  * @property {(listener: (this: HTMLElement, ev: MouseEvent) => any) => Ref} onClick
- * @property {(renderer: () => String, ...args: any[]) => Ref} reRender
+ * @property {(data: String) => Ref} reRender
+ * @property {(data: String) => Ref} renderInner
  * @property {() => boolean} exists
- * @property {() => HTMLElement | null} exists
+ * @property {() => HTMLElement | null} getElm
  */
 
 export function useRef() {
@@ -22,10 +23,16 @@ export function useRef() {
             })
             return ref;
         },
-        reRender: (renderer, ...args) => {
+        reRender: (data) => {
             let elm = ref.getElm()
             if (!elm) return ref;
-            elm.outerHTML = renderer(...args)
+            elm.outerHTML = data;
+            return ref;
+        },
+        renderInner: (data) => {
+            let elm = ref.getElm()
+            if (!elm) return ref;
+            elm.innerHTML = data;
             return ref;
         },
         exists: () => {
@@ -40,9 +47,6 @@ export function useRef() {
 
 /**
  * @typedef {()=>Css} Css
- * @property {(listener: (this: HTMLElement, ev: MouseEvent) => any) => Ref} onClick
- * @property {(renderer: () => String, ...args: any[]) => Ref} reRender
- * @property {() => boolean} exists
  */
 
 export function css(...args) {
