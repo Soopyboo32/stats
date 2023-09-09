@@ -20,4 +20,4 @@ jobs:
           exclude: '\.gitignore$|\.git/.*$|\.github/.*$'
 
       - name: Clear cache
-        run: gcloud compute url-maps invalidate-cdn-cache stats-web-balancer-2 --path "/*"
+        run: CRED="${{ secrets.google_service_account_credentials }}" .github/workflows/clearcache.sh
