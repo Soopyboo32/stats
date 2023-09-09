@@ -6,18 +6,24 @@ import { Content } from "./stats/Content.js";
 
 export function App() {
     let contentDiv = useRef();
+    let lastHash = "";
 
     async function search(player) {
         document.location.hash = player;
+        lastHash = document.location.hash;
 
         contentDiv.renderInner(Content(PlayerData.load(player)))
     }
 
-    if (document.location.hash) {
-        setTimeout(() => {
-            search(document.location.hash.substring(1));
-        })
-    }
+
+    setInterval(() => {
+        if (document.location.hash === lastHash) {
+            return;
+        }
+        lastHash = document.location.hash;
+
+        search(document.location.hash.substring(1));
+    }, 1000)
 
     return `
         <body>

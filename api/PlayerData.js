@@ -9,6 +9,7 @@ export class PlayerData {
     sbData = {
         sbLvl: undefined
     };
+    missingData = new Set([]);
     #updateCallbacks = [];
 
     constructor(name) {
@@ -36,11 +37,16 @@ export class PlayerData {
 
         getSoopyApi("player/" + this.uuid).then(playerData => {
             if (!playerData.success) {
+                console.error("Server error downloading player data: " + playerData.cause)
                 return;
             }
             playerData = playerData.data;
 
-            this.playerData.onetime_achievements = playerData.onetime_achievements;
+            if (playerData.onetime_achievements) {
+                this.playerData.onetime_achievements = playerData.onetime_achievements;
+            } else {
+                this.missingData.add("onetime_achievements");
+            }
 
             this.#callUpdates();
         });

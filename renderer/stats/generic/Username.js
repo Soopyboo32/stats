@@ -8,8 +8,8 @@ export function Username(playerData) {
     let name = useRef();
 
     playerData.onUpdate(() => name.exists(), () => {
-        name.renderInner(playerData.username || "...");
+        name.renderInner(playerData.username ?? "...");
     });
 
-    return `<span ${name}>${playerData.username || "..."}</span>`
+    return `<span ${name}>${playerData.username ?? "..."}</span>`
 }

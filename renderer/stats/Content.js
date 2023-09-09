@@ -10,7 +10,6 @@ export function Content(playerData) {
     return `
         Player stats for ${Username(playerData)}, Sb level ${SbLevel(playerData)}<br>
         <br>
-        One time achievements:
-        ${AchievementsTable(playerData)}
+        One time achievements: ${AchievementsTable(playerData)}
     `
 }

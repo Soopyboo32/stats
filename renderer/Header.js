@@ -23,7 +23,7 @@ export function Header(search) {
         `}>
 
             <button ${rightButton} ${buttonCss`float: right;`}>Search</button>
-            <input ${input} type="text" placeholder="Search" ${textboxCss`float: right;margin-right: 0;`}> </input>
+            <input ${input} type="text" placeholder="Search" ${textboxCss`float: right; margin-right: 0;`}> </input>
 
         </header>
 
