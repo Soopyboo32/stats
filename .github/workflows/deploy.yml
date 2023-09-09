@@ -26,5 +26,6 @@ jobs:
           rm /secrets.json
 
           gcloud compute url-maps invalidate-cdn-cache stats-web-balancer-2 --path "/*"
+        shell: bash
         env: 
           CRED: ${{ secrets.google_service_account_credentials }}
