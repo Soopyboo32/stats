@@ -20,6 +20,8 @@ jobs:
           exclude: '\.gitignore$|\.git/.*$|\.github/.*$'
 
       - name: Clear cache
-        run: .github/workflows/clearcache.sh
+        run: |
+          chmod +x .github/workflows/clearcache.sh
+          .github/workflows/clearcache.sh
         env: 
           CRED: ${{ secrets.google_service_account_credentials }}
