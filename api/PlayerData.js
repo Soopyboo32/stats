@@ -3,9 +3,12 @@ import { getSoopyApi } from "./soopy.js";
 export class PlayerData {
     username;
     uuid;
-    playerData;
-    sbData;
-    sbLvl;
+    playerData = {
+        onetime_achievements: undefined
+    };
+    sbData = {
+        sbLvl: undefined
+    };
     #updateCallbacks = [];
 
     constructor(name) {
@@ -31,13 +34,27 @@ export class PlayerData {
         this.uuid = uuidData.data.id;
         this.#callUpdates()
 
-        let sbData = await getSoopyApi("stat_next_to_name_stats/" + this.uuid);
+        getSoopyApi("player/" + this.uuid).then(playerData => {
+            if (!playerData.success) {
+                return;
+            }
+            playerData = playerData.data;
 
-        if (sbData.success) {
-            this.sbLvl = sbData.data.sbLvl;
-        }
+            this.playerData.onetime_achievements = playerData.onetime_achievements;
 
-        this.#callUpdates();
+            this.#callUpdates();
+        });
+
+        getSoopyApi("stat_next_to_name_stats/" + this.uuid).then(sbData => {
+            if (!sbData.success) {
+                return;
+            }
+            sbData = sbData.data;
+
+            this.sbData.sbLvl = sbData.sbLvl;
+
+            this.#callUpdates();
+        })
     }
 
     /**

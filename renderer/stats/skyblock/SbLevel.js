@@ -8,8 +8,8 @@ export function SbLevel(playerData) {
     let level = useRef();
 
     playerData.onUpdate(() => level.exists(), () => {
-        level.renderInner(playerData.sbLvl || "...");
+        level.renderInner(playerData.sbData.sbLvl || "...");
     });
 
-    return `<span ${level}>${playerData.sbLvl || "..."}</span>`
+    return `<span ${level}>${playerData.sbData.sbLvl || "..."}</span>`
 }
