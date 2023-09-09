@@ -9,7 +9,10 @@ async function updateUseLocal() {
         }
     } catch (e) { }
 }
-updateUseLocal();
+
+if (window.location.origin.includes("127.0.0.1")) {
+    updateUseLocal();
+}
 
 export async function getSoopyApi(endpoint) {
     let data = await fetch(url + endpoint);
