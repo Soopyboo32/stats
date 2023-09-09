@@ -21,7 +21,8 @@ jobs:
 
       - name: Clear cache
         run: |
-          chmod +x .github/workflows/clearcache.sh
-          .github/workflows/clearcache.sh
-        env: 
-          CRED: ${{ secrets.google_service_account_credentials }}
+          echo "${{ secrets.google_service_account_credentials }}" > /secrets.json
+          gcloud auth activate-service-account --key-file=/secrets.json
+          rm /secrets.json
+
+          gcloud compute url-maps invalidate-cdn-cache stats-web-balancer-2 --path "/*"
