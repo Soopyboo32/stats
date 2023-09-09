@@ -21,7 +21,7 @@ jobs:
           gsutil -m rsync -r -c -d -x "$EXCLUDE" /github/workspace/ gs://stats-web-files/
 
           gcloud compute url-maps invalidate-cdn-cache stats-web-balancer-2 --path "/*"
-        shell: bash
+        shell: sh
         env: 
           CRED: ${{ secrets.google_service_account_credentials }}
           EXCLUDE: '\.gitignore$|\.git/.*$|\.github/.*$|secrets\.json$'
