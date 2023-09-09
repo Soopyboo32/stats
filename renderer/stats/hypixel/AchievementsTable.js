@@ -29,6 +29,7 @@ function genTable(playerData) {
     let table = "Loading...";
 
     if (achievements) {
+        //TODO: extract out to like FilterableList component or smth
         table = `<table>
             ${achievements.map(a => `
                 <tr>
