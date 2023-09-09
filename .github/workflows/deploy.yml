@@ -26,4 +26,4 @@ jobs:
           EXCLUDE: '\.gitignore$|\.git/.*$|\.github/.*$'
 
       - name: Clear Cache
-        run: gcloud compute url-maps invalidate-cdn-cache stats-web-balancer-2 --path "/*"
+        run: gcloud compute url-maps invalidate-cdn-cache stats-web-balancer-2 --path "/*" --project avid-heading-379218
