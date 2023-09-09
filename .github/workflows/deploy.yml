@@ -21,7 +21,7 @@ jobs:
           CRED: ${{ secrets.google_service_account_credentials }}
 
       - name: Sync
-        run: gsutil -m rsync -r -c -d -x "$EXCLUDE" /github/workspace/ gs://stats-web-files/
+        run: gsutil -m rsync -r -c -d -x "$EXCLUDE" . gs://stats-web-files/
         env: 
           EXCLUDE: '\.gitignore$|\.git/.*$|\.github/.*$'
 
