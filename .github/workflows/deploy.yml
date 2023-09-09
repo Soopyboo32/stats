@@ -14,16 +14,16 @@ jobs:
 
       - name: Auth
         run: |
-          echo "$CRED" > /secrets.json
-          gcloud auth activate-service-account --key-file=/secrets.json
-          rm /secrets.json
+          echo "$CRED" > secrets.json
+          gcloud auth activate-service-account --key-file=secrets.json
+          rm secrets.json
         env: 
           CRED: ${{ secrets.google_service_account_credentials }}
 
       - name: Sync
         run: gsutil -m rsync -r -c -d -x "$EXCLUDE" /github/workspace/ gs://stats-web-files/
         env: 
-          EXCLUDE: '\.gitignore$|\.git/.*$|\.github/.*$|secrets\.json$'
+          EXCLUDE: '\.gitignore$|\.git/.*$|\.github/.*$'
 
       - name: Clear Cache
         run: gcloud compute url-maps invalidate-cdn-cache stats-web-balancer-2 --path "/*"
