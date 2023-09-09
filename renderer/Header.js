@@ -2,7 +2,12 @@ import { css, useRef } from "../helpers.js";
 import { buttonCss, textboxCss } from "./css.js";
 
 export function Header(search) {
-    let input = useRef();
+    let input = useRef().onEnter(() => {
+        let searchPlayer = input.getElm().value;
+        input.getElm().value = "";
+
+        search(searchPlayer);
+    });
 
     let rightButton = useRef().onClick(() => {
         if (!input.exists()) return;

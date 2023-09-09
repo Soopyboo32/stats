@@ -1,6 +1,7 @@
 /**
  * @typedef {Object} Ref
- * @property {(listener: (this: HTMLElement, ev: MouseEvent) => any) => Ref} onClick
+ * @property {(callback: (this: HTMLElement, ev: MouseEvent) => any) => Ref} onClick
+ * @property {(callback: () => any) => Ref} onEnter
  * @property {(data: String) => Ref} reRender
  * @property {(data: String) => Ref} renderInner
  * @property {() => boolean} exists
@@ -15,11 +16,23 @@ export function useRef() {
      */
     let ref = {
         toString: () => `id="${id}"`,
-        onClick: (listener) => {
+        onClick: (callback) => {
             setTimeout(() => {
                 let elm = ref.getElm()
                 if (!elm) return;
-                elm.addEventListener("click", listener)
+                elm.addEventListener("click", callback)
+            })
+            return ref;
+        },
+        onEnter: (callback) => {
+            setTimeout(() => {
+                let elm = ref.getElm()
+                if (!elm) return;
+                elm.addEventListener("keyup", (key) => {
+                    if (key.key === "Enter") {
+                        callback()
+                    }
+                })
             })
             return ref;
         },
