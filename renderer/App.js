@@ -1,8 +1,17 @@
 import { PlayerData } from "../api/PlayerData.js";
-import { useRef } from "../helpers.js";
+import { staticCss, thisClass, useRef } from "../helpers.js";
 import { Header } from "./Header.js";
 import { MainPage } from "./MainPage.js";
+import { colors } from "./css.js";
 import { Content } from "./stats/Content.js";
+
+let bodyCss = staticCss.named("body")`${thisClass} {
+    background-color: ${colors.background};
+    font-family: 'Montserrat';
+    color: ${colors.text};
+}`;
+
+let title = document.getElementById("title");
 
 export function App() {
     let contentDiv = useRef();
@@ -15,18 +24,22 @@ export function App() {
         contentDiv.renderInner(Content(PlayerData.load(player)))
     }
 
-
     setInterval(() => {
         if (document.location.hash === lastHash) {
             return;
         }
         lastHash = document.location.hash;
 
-        search(document.location.hash.substring(1));
-    }, 1000)
+        if (lastHash === "") {
+            contentDiv.renderInner(MainPage());
+            return;
+        }
+
+        search(lastHash.substring(1));
+    }, 100)
 
     return `
-        <body>
+        <body ${bodyCss}>
             ${Header(search)}
 
             <div ${contentDiv}>

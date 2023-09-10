@@ -1,5 +1,6 @@
 import { PlayerData } from "../../../api/PlayerData.js";
-import { css, useRef } from "../../../helpers.js";
+import { css, staticCss, thisClass, useRef } from "../../../helpers.js";
+import { colors } from "../../css.js";
 
 /**
  * @param {PlayerData} playerData 
@@ -15,6 +16,12 @@ export function AchievementsTable(playerData) {
         ${genTable(playerData)}
     </span>`
 }
+
+let tableCss = staticCss.named("table")`${thisClass} {
+    height: 200px;
+    overflow-y: auto;
+    border: 1px solid ${colors.text};
+}`
 
 /**
  * @param {PlayerData} playerData 
@@ -39,11 +46,7 @@ function genTable(playerData) {
         </table>`
     }
 
-    return `<div ${css`
-        height: 200px;
-        overflow-y: auto;
-        border: 1px solid black;
-    `}>
+    return `<div ${tableCss}>
         ${table}
     </div>`
 }
