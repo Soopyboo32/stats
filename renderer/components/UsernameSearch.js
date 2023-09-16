@@ -23,7 +23,7 @@ let headerUsernameInputCss = textboxCss.named("username-input")`
     }
 
     ${thisClass}:focus {
-        background: ${colors.background_light};
+        background: transparent;
 		border-right: none;
     }
 
@@ -56,7 +56,7 @@ let headerSearchButtonCss = buttonCss.named("search-button")`
     }
 
 	${headerUsernameInputCss}:focus ~ ${thisClass} {
-		background-color: ${colors.background_light};
+		background-color: transparent;
         border: 1px solid ${colors.primary_dark};
         color: ${colors.primary_dark};
 		border-left: none;
@@ -84,7 +84,7 @@ let headerSearchIconContainerCss = staticCss.named("search-icon-container")`
 
 	${headerUsernameInputCss}:focus ~ ${headerSearchButtonCss} > ${thisClass}:hover {
         outline: 1px solid transparent;
-		background-color: ${colors.background_light};
+		background-color: transparent;
         color: ${colors.primary_dark_hover};
 	}
 `

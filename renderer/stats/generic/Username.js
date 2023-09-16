@@ -11,5 +11,5 @@ export function Username(playerData) {
         name.renderInner(playerData.username ?? "...");
     });
 
-    return `<span ${name}>${playerData.username ?? "..."}</span>`
+    return `<span ${name}> ${playerData.username ?? "..."}</span>`
 }
