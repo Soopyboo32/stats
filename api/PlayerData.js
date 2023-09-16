@@ -1,8 +1,10 @@
 import { getSoopyApi } from "./soopy.js";
 
 export class PlayerData {
+    error;
     username;
     uuid;
+    profile;
     playerData = {
         onetime_achievements: undefined
     };
@@ -12,13 +14,14 @@ export class PlayerData {
     missingData = new Set([]);
     #updateCallbacks = [];
 
-    constructor(name) {
+    constructor(name, profile) {
         this.username = name;
+        this.profile = profile;
         this.#callUpdates()
     }
 
-    static load(name) {
-        let ret = new PlayerData(name);
+    static load(name, profile) {
+        let ret = new PlayerData(name, profile);
 
         ret.loadData();
 
@@ -29,6 +32,12 @@ export class PlayerData {
         //TODO: all these api endpoints are temporary
         let uuidData = await getSoopyApi("mojang/username/" + this.username);
         if (!uuidData.success || uuidData.data.errorMessage) {
+            if (!uuidData.success) {
+                this.error = "Server error downloading mojang data: " + uuidData.cause;
+            } else {
+                this.error = "Mojang error downloading mojang data: " + uuidData.data.errorMessage;
+            }
+            this.#callUpdates();
             return; //TODO: error handling ModCheck?
         }
         this.username = uuidData.data.name;
@@ -37,7 +46,8 @@ export class PlayerData {
 
         getSoopyApi("player/" + this.uuid).then(playerData => {
             if (!playerData.success) {
-                console.error("Server error downloading player data: " + playerData.cause)
+                this.error = "Server error downloading hypixel player data: " + playerData.cause;
+                this.#callUpdates();
                 return;
             }
             playerData = playerData.data;
@@ -53,11 +63,16 @@ export class PlayerData {
 
         getSoopyApi("stat_next_to_name_stats/" + this.uuid).then(sbData => {
             if (!sbData.success) {
+                this.error = "Server error downloading player skyblock stats: " + sbData.cause;
+                this.#callUpdates();
                 return;
             }
             sbData = sbData.data;
 
             this.sbData.sbLvl = sbData.sbLvl;
+            if (!this.profile) {
+                this.profile = "some-profile"
+            }
 
             this.#callUpdates();
         })

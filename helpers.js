@@ -6,10 +6,13 @@
  * @property {(data: String) => Ref} renderInner
  * @property {() => boolean} exists
  * @property {() => HTMLElement | null} getElm
+ * @property {() => {}} onRemove
  */
 
 export function useRef() {
     let id = generateId()
+
+    let removeCb = [];
 
     /**
      * @type {Ref}
@@ -49,11 +52,34 @@ export function useRef() {
             return ref;
         },
         exists: () => {
-            let elm = ref.getElm()
+            let elm = ref.getElm();
             return !!elm;
         },
-        getElm: () => document.getElementById(id)
+        getElm: () => document.getElementById(id),
+        onRemove: (cb) => {
+            removeCb.push(cb);
+        },
+        css: (...args) => {
+            let elm = ref.getElm()
+            if (!elm) return ref;
+            let str = toCssString(args);
+
+            elm.style = str;
+
+            return ref;
+        }
     }
+
+    let interval = setInterval(() => {
+        if (ref.exists()) {
+            return;
+        }
+
+        clearInterval(interval);
+        for (let cb of removeCb) {
+            cb()
+        }
+    }, 1000)
 
     return ref;
 }
@@ -86,6 +112,7 @@ function fromCssString(str) {
         return fromCssString(val + css)
     }
     ret.toString = () => `style="${val.replace("\"", "\\\"")}"`
+    ret.getRawCss = () => val
 
     return ret
 }

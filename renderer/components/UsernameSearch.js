@@ -2,7 +2,18 @@ import { staticCss, thisClass, useRef } from "../../helpers.js";
 import { Icon } from "../Icon.js";
 import { buttonCss, colors, textboxCss } from "../css.js";
 
-let headerUsernameInputCss = textboxCss.named("header-username-input")`
+let containerCss = staticCss.named("username-search-container")`
+    ${thisClass} {
+        display: flex;
+        align-items: center;
+    }
+
+    ${thisClass} div[data-lastpass-icon-root] {
+        display: none;
+    }
+`
+
+let headerUsernameInputCss = textboxCss.named("username-input")`
     ${thisClass} {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
@@ -29,7 +40,7 @@ let headerUsernameInputCss = textboxCss.named("header-username-input")`
     }
 `
 
-let headerSearchButtonCss = buttonCss.named("header-search-button")`
+let headerSearchButtonCss = buttonCss.named("search-button")`
 	${thisClass} {
 		border-top-left-radius: 0;
 		border-bottom-left-radius: 0;
@@ -52,7 +63,7 @@ let headerSearchButtonCss = buttonCss.named("header-search-button")`
 	}
 `
 
-let headerSearchIconContainerCss = staticCss.named("header-search-icon-container")`
+let headerSearchIconContainerCss = staticCss.named("search-icon-container")`
     ${thisClass} {
         outline: 1px solid transparent;
         border-radius: 5px;
@@ -102,11 +113,13 @@ export function UsernameSearch(callback) {
     });
 
     return `
-        <input ${input} type="text" placeholder="Username" autocomplete="off" ${headerUsernameInputCss}> </input>
-        <button ${searchButton} ${headerSearchButtonCss}>
-            <div ${headerSearchIconContainerCss}>
-                ${Icon("search")}
-            </div>
-        </button>
+        <div ${containerCss}>
+            <input ${input} type="text" placeholder="Username" autocomplete="off" ${headerUsernameInputCss}> </input>
+            <button ${searchButton} ${headerSearchButtonCss}>
+                <div ${headerSearchIconContainerCss}>
+                    ${Icon("search")}
+                </div>
+            </button>
+        </div>
     `
 }

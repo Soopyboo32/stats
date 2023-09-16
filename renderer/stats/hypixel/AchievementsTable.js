@@ -20,7 +20,7 @@ export function AchievementsTable(playerData) {
 let tableCss = staticCss.named("table")`${thisClass} {
     height: 200px;
     overflow-y: auto;
-    border: 1px solid ${colors.text};
+    overflow-x: hidden;
 }`
 
 /**

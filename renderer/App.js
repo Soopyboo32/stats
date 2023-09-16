@@ -1,3 +1,4 @@
+import { Observable } from "../Observable.js";
 import { PlayerData } from "../api/PlayerData.js";
 import { staticCss, thisClass, useRef } from "../helpers.js";
 import { Header } from "./Header.js";
@@ -11,36 +12,35 @@ let bodyCss = staticCss.named("body")`${thisClass} {
     color: ${colors.text};
 }`;
 
-let title = document.getElementById("title");
+let appState = new Observable({
+    player: new Observable(undefined),
+    profile: new Observable(undefined)
+});
 
 export function App() {
     let contentDiv = useRef();
-    let lastHash = "";
 
-    async function search(player) {
-        document.location.hash = player;
-        lastHash = document.location.hash;
+    async function search(player, profile) {
+        appState.data.player.data = player;
+        appState.data.profile.data = profile;
 
-        contentDiv.renderInner(Content(PlayerData.load(player)))
+        if (!player) {
+            contentDiv.renderInner(MainPage())
+            return;
+        }
+
+        contentDiv.renderInner(Content(PlayerData.load(player, profile)))
     }
 
-    setInterval(() => {
-        if (document.location.hash === lastHash) {
-            return;
+    setTimeout(() => {
+        if (document.location.hash !== "") {
+            search(...document.location.hash.substring(1).split("/"));
         }
-        lastHash = document.location.hash;
-
-        if (lastHash === "") {
-            contentDiv.renderInner(MainPage());
-            return;
-        }
-
-        search(lastHash.substring(1));
     }, 100)
 
     return `
         <body ${bodyCss}>
-            ${Header(search)}
+            ${Header(search, appState)}
 
             <div ${contentDiv}>
                 ${MainPage()}

@@ -4,12 +4,12 @@ import { useRef } from "../../../helpers.js";
 /**
  * @param {PlayerData} playerData 
  */
-export function SbLevel(playerData) {
+export function SbLevel(playerData, integer = false) {
     let level = useRef();
 
     playerData.onUpdate(() => level.exists(), () => {
-        level.renderInner(playerData.sbData.sbLvl?.toFixed(2) ?? "...");
+        level.renderInner(playerData.sbData.sbLvl?.toFixed(integer ? 0 : 2) ?? "???");
     });
 
-    return `<span ${level}>${playerData.sbData.sbLvl?.toFixed(2) ?? "..."}</span>`
+    return `<span ${level}>${playerData.sbData.sbLvl?.toFixed(integer ? 0 : 2) ?? "???"}</span>`
 }
