@@ -13,6 +13,7 @@ export class PlayerData {
     };
     missingData = new Set([]);
     #updateCallbacks = [];
+    _observableIgnore = true;
 
     constructor(name, profile) {
         this.username = name;
@@ -30,19 +31,21 @@ export class PlayerData {
 
     async loadData() {
         //TODO: all these api endpoints are temporary
-        let uuidData = await getSoopyApi("mojang/username/" + this.username);
-        if (!uuidData.success || uuidData.data.errorMessage) {
-            if (!uuidData.success) {
-                this.error = "Server error downloading mojang data: " + uuidData.cause;
-            } else {
-                this.error = "Mojang error downloading mojang data: " + uuidData.data.errorMessage;
+        if (!this.uuid) {
+            let uuidData = await getSoopyApi("mojang/username/" + this.username);
+            if (!uuidData.success || uuidData.data.errorMessage) {
+                if (!uuidData.success) {
+                    this.error = "Server error downloading mojang data: " + uuidData.cause;
+                } else {
+                    this.error = "Mojang error downloading mojang data: " + uuidData.data.errorMessage;
+                }
+                this.#callUpdates();
+                return; //TODO: error handling ModCheck?
             }
-            this.#callUpdates();
-            return; //TODO: error handling ModCheck?
+            this.username = uuidData.data.name;
+            this.uuid = uuidData.data.id;
+            this.#callUpdates()
         }
-        this.username = uuidData.data.name;
-        this.uuid = uuidData.data.id;
-        this.#callUpdates()
 
         getSoopyApi("player/" + this.uuid).then(playerData => {
             if (!playerData.success) {

@@ -2,7 +2,7 @@ import { staticCss, thisClass, useRef } from "../../helpers.js";
 import { Icon } from "../Icon.js";
 import { buttonCss, colors, textboxCss } from "../css.js";
 
-let containerCss = staticCss.named("username-search-container")`
+let containerCss = staticCss.named("username-search-container").css`
     ${thisClass} {
         display: flex;
         align-items: center;
@@ -13,7 +13,7 @@ let containerCss = staticCss.named("username-search-container")`
     }
 `
 
-let headerUsernameInputCss = textboxCss.named("username-input")`
+let headerUsernameInputCss = textboxCss.named("username-input").css`
     ${thisClass} {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
@@ -40,7 +40,7 @@ let headerUsernameInputCss = textboxCss.named("username-input")`
     }
 `
 
-let headerSearchButtonCss = buttonCss.named("search-button")`
+let headerSearchButtonCss = buttonCss.named("search-button").css`
 	${thisClass} {
 		border-top-left-radius: 0;
 		border-bottom-left-radius: 0;
@@ -63,7 +63,7 @@ let headerSearchButtonCss = buttonCss.named("search-button")`
 	}
 `
 
-let headerSearchIconContainerCss = staticCss.named("search-icon-container")`
+let headerSearchIconContainerCss = staticCss.named("search-icon-container").css`
     ${thisClass} {
         outline: 1px solid transparent;
         border-radius: 5px;

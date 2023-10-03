@@ -6,7 +6,7 @@ import { Username } from "./generic/Username.js";
 import { AchievementsTable } from "./hypixel/AchievementsTable.js";
 import { SbLevel } from "./skyblock/SbLevel.js";
 
-let contentCss = staticCss.named("content")`${thisClass} {
+let contentCss = staticCss.named("content").css`${thisClass} {
     display: flex;
     justify-content: space-evenly;
 }`

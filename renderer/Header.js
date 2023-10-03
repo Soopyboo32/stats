@@ -1,9 +1,10 @@
+import { Observable } from "../Observable.js";
 import { css, staticCss, thisClass, useRef } from "../helpers.js";
 import { Icon } from "./Icon.js";
 import { UsernameSearch } from "./components/UsernameSearch.js";
 import { buttonCss, colors, textboxCss } from "./css.js";
 
-let headerCss = staticCss.named("header")`
+let headerCss = staticCss.named("header").css`
     ${thisClass} {
         position: fixed;
         left: 0;
@@ -20,27 +21,24 @@ let headerCss = staticCss.named("header")`
     }
 `
 
-let headerSettingsButtonCss = buttonCss.named("header-settings-button")`${thisClass} {
+let headerRightButtonCss = buttonCss.named("header-right-button").css`${thisClass} {
 	padding: 0;
+	margin-left: 0;
 	width: 30px;
 	display: flex;
 	align-items: center;
 	justify-content: space-evenly;
 }`
 
-let rightContainerCss = staticCss.named("header-right-container")`${thisClass} {
+let headerContainerCss = staticCss.named("header-container").css`${thisClass} {
 	display: flex;
 }`
 
-let centerContainerCss = staticCss.named("header-right-container")`${thisClass} {
-	display: flex;
-}`
-
-let spacerCss = staticCss.named("spacer")`${thisClass} {
+let spacerCss = staticCss.named("spacer").css`${thisClass} {
     width: 100%;
 }`
 
-let iconContainerCss = staticCss.named("icon-container")`
+let iconContainerCss = staticCss.named("icon-container").css`
 	${thisClass} {
 		width: max-content;
 		display: flex;
@@ -52,18 +50,22 @@ let iconContainerCss = staticCss.named("icon-container")`
     }
 `
 
-let iconCss = staticCss.named("icon")`${thisClass} {
+let iconCss = staticCss.named("icon").css`${thisClass} {
 	width: 30px;
 	height: 30px;
 	margin: 10px;
 	border-radius: 5px;
 }`
 
-let headerTextCss = staticCss.named("header-text")`${thisClass} {
+let headerTextCss = staticCss.named("header-text").css`${thisClass} {
 	font-size: 20px;
 }`
 
-export function Header(search, appState) {
+let canRefresh = new Observable({
+	can: true,
+})
+
+export function Header(search, refreshData, appState) {
 	let header = useRef();
 	let spacer = useRef();
 
@@ -76,34 +78,57 @@ export function Header(search, appState) {
 		alert("This button does nothing yet!")
 	});
 
-	header.onRemove(appState.data.player.onChange(p => {
+	let refreshButton = useRef().onClick(() => {
+		if (!canRefresh.data.can) return;
+
+		//TODO: spin animation?
+		refreshData()
+		canRefresh.data.can = false;
+
+		setTimeout(() => {
+			canRefresh.data.can = true;
+		}, 10000)
+	});
+
+	canRefresh.onChange((p, d) => {
+		if (!p.startsWith("can")) return;
+
+		refreshButton.css`
+			background-color: ${d.can ? colors.primary_dark : colors.grey};
+		`
+	})
+
+	header.onRemove(appState.onChange((path, data) => {
+		if (!path.startsWith("player")) return;
+
 		header.css`
-			height: ${p ? 50 : 100}px;
+			height: ${data.player ? 50 : 100}px;
 		`
 		spacer.css`
-			height: ${p ? 50 : 100}px;
+			height: ${data.player ? 50 : 100}px;
 		`
 	}));
 
 	return `
         <header ${header} ${headerCss} ${css`
-			height: ${appState.data.player.data ? 50 : 100}px;
+			height: ${appState.data.player ? 50 : 100}px;
 		`}>
 			<div ${iconContainer} ${iconContainerCss}>
 				<img ${iconCss} src="https://avatars.githubusercontent.com/u/49228220?v=4" alt="Soopy Picture">
 				<h1 ${headerTextCss}>Soopy Stats Viewer</h1>
 			</div>
-			<div ${centerContainerCss}>
+			<div ${headerContainerCss}>
 				${UsernameSearch(search)}
 			</div>
-			<div ${rightContainerCss}>
-				<button ${settingsButton} ${headerSettingsButtonCss}>${Icon("settings")}</button>
+			<div ${headerContainerCss}>
+				<button ${refreshButton} ${headerRightButtonCss} ${css`background-color: ${canRefresh.data.can ? colors.primary_dark : colors.grey};`}>${Icon("refresh")}</button>
+				<button ${settingsButton} ${headerRightButtonCss}>${Icon("settings")}</button>
 			</div>
         </header>
 
         <!-- Spacer -->
         <div ${spacer} ${spacerCss} ${css`
-			height: ${appState.data.player.data ? 50 : 100}px;
+			height: ${appState.data.player ? 50 : 100}px;
 		`}></div>
     `
 }

@@ -122,10 +122,11 @@ function fromCssString(str) {
  * 
  * @typedef {Object} _CssProps
  * @property {() => String} getCss
+ * @property {() => StaticCss} css
  * @property {() => String} getClassName
  * @property {() => String[]} getAllClasses
  * @property {(StaticCss) => StaticCss} merge
- * @property {() => StaticCss} named
+ * @property {(String) => StaticCss} named
  * 
  * @typedef {_StaticCss & _CssProps} StaticCss
  */
@@ -136,10 +137,14 @@ export function staticCss(...args) {
     return fromStaticCssData(data, [generateClassName()])
 }
 
-staticCss.named = (id) => (...args) => {
+staticCss.named = (id) => {
+    return fromStaticCssData([], [], id)
+}
+
+staticCss.css = (...args) => {
     let data = toStaticCssData(args)
 
-    return fromStaticCssData(data, [generateClassName(id)])
+    return fromStaticCssData(data, [generateClassName()])
 }
 
 function toStaticCssData(asd) {
@@ -147,7 +152,7 @@ function toStaticCssData(asd) {
     asd[0].forEach((s, i) => {
         css.push(s)
         if ((typeof asd[i + 1] == "object" || typeof asd[i + 1] == "function")
-            && (asd[i + 1].internal_isCssClassGetter == true || asd[i + 1].classType === "StaticCss")) {
+            && (asd[i + 1].internal_isCssClassGetter == true || asd[i + 1]._classType === "StaticCss")) {
             css.push(asd[i + 1])
         } else if (asd[i + 1]) {
             css.push(asd[i + 1] + "")
@@ -156,28 +161,33 @@ function toStaticCssData(asd) {
     return css
 }
 
-function fromStaticCssData(data, classes = []) {
-    classes = [...new Set(classes)]
-    let val = data
+function fromStaticCssData(data, classes = [], nextName) {
+    classes = [...new Set(classes)];
+    let val = data;
 
     /**@type {StaticCss} */
     let ret = (...args2) => {
-        let css = toStaticCssData(args2)
+        let css = toStaticCssData(args2);
 
-        let className = generateClassName();
-        return fromStaticCssData(css, [...classes, className])
+        let className = generateClassName(nextName);
+        return fromStaticCssData(css, [...classes, className]);
+    }
+    ret.css = (...args2) => {
+        let css = toStaticCssData(args2);
+
+        let className = generateClassName(nextName);
+        return fromStaticCssData(css, [...classes, className]);
     }
     ret.merge = (otherCss) => {
-        return fromStaticCssData([], [...classes, ...otherCss.getAllClasses(), ""])
+        return fromStaticCssData([], [...classes, ...otherCss.getAllClasses(), ""]);
     }
-    ret.named = (id) => (...args) => {
-        let data = toStaticCssData(args)
-
-        return fromStaticCssData(data, [...classes, generateClassName(id)])
+    ret.named = (id) => {
+        nextName = id;
+        return ret;
     }
     ret.getCss = () => val.map(d => {
         if (d.internal_isCssClassGetter) return `.${classes[classes.length - 1]}`;
-        if (d.classType === "StaticCss") return `.${d.getClassName()}`;
+        if (d._classType === "StaticCss") return `.${d.getClassName()}`;
 
         return d;
     }).join("")
@@ -186,7 +196,7 @@ function fromStaticCssData(data, classes = []) {
     ret.toString = () => {
         return `class="${classes.join(" ")}"`
     }
-    ret.classType = "StaticCss"
+    ret._classType = "StaticCss"
 
     addCssToFile(ret)
 
