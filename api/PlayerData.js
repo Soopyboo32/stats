@@ -5,13 +5,10 @@ export class PlayerData {
     username;
     uuid;
     profile;
-    playerData = {
-        onetime_achievements: undefined
-    };
+    playerData = {};
     sbData = {
         sbLvl: undefined
     };
-    missingData = new Set([]);
     #updateCallbacks = [];
     _observableIgnore = true;
 
@@ -53,13 +50,8 @@ export class PlayerData {
                 this.#callUpdates();
                 return;
             }
-            playerData = playerData.data;
 
-            if (playerData.onetime_achievements) {
-                this.playerData.onetime_achievements = playerData.onetime_achievements;
-            } else {
-                this.missingData.add("onetime_achievements");
-            }
+            this.playerData = playerData.data;
 
             this.#callUpdates();
         });

@@ -26,7 +26,7 @@ let tableCss = staticCss.named("table").css`${thisClass} {
  * @param {PlayerData} playerData 
  */
 function genTable(playerData) {
-    if (playerData.missingData.has("onetime_achievements")) {
+    if (!playerData.onetime_achievements) {
         return "Api missing data!";
     }
 
