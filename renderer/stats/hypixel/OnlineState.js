@@ -12,20 +12,14 @@ export function OnlineState(playerData) {
     return html`Currently: <span ${ref}> ${state} </span>`
 }
 
+let stateNameOverrides = {
+    "ApiDisabled": "Api Disabled"
+}
+
 function getState(playerData) {
     if (!playerData.playerData.status) {
         return "...";
     }
 
-    if (playerData.playerData.status === "ApiDisabled") {
-        return "Api Disabled";
-    }
-    if ("Online" in playerData.playerData.status) {
-        return "Online";
-    }
-    if ("Offline" in playerData.playerData.status) {
-        return "Offline";
-    }
-
-    return "???"
+    return stateNameOverrides[playerData.playerData.status.state] || playerData.playerData.status.state;
 }

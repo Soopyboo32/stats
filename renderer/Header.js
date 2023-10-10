@@ -14,17 +14,17 @@ let headerCss = staticCss.named("header").css` ${thisClass} {
 	justify-content: space-between;
 	align-items: center;
 	webkit-box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
-	-moz-box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
-	box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
+	box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
 	transition: 0.5s;
 }`
 
 let headerRightButtonCss = buttonCss.named("header-right-button").css`${thisClass} {
 	padding: 0;
-	height: calc(100% - 20px);
 	aspect-ratio: 1;
 	margin-left: 0;
 	width: 30px;
+	height: 30px;
 	display: flex;
 	align-items: center;
 	justify-content: space-evenly;
@@ -33,22 +33,23 @@ let headerRightButtonCss = buttonCss.named("header-right-button").css`${thisClas
 let headerContainerCss = staticCss.named("header-container").css`${thisClass} {
 	display: flex;
 	height: 100%;
+	align-items: center;
 }`
 
 let spacerCss = staticCss.named("spacer").css`${thisClass} {
-    width: 100%;
+	width: 100%;
 }`
 
 let iconContainerCss = staticCss.named("icon-container").css`
-	${thisClass} {
-		display: flex;
-		align-items: center;
-		height: 100%;
-	}
+${thisClass} {
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
 
-    ${thisClass}:hover {
-        cursor: pointer;
-    }
+${thisClass}:hover {
+	cursor: pointer;
+}
 `
 
 let h1Css = staticCss.named("h1css")`${thisClass} {
@@ -71,41 +72,14 @@ export function Header(search, refreshData, appState) {
 	let header = useRef();
 	let spacer = useRef();
 
-	let settingsButton = useRef().onClick(() => {
-		alert("This button does nothing yet!")
-	});
-
-	let refreshButton = useRef().onClick(() => {
-		if (!canRefresh.data.can) return;
-
-		//TODO: spin animation?
-		refreshData()
-		canRefresh.data.can = false;
-
-		setTimeout(() => {
-			canRefresh.data.can = true;
-		}, 10000)
-	});
-
-	canRefresh.onChange((p, d) => {
-		if (!p.startsWith("can")) return;
-
-		refreshButton.css`
-			background-color: ${d.can ? colors.primary_dark : colors.grey};
-		`
-	})
-
 	header.onRemove(appState.onChange((path, data) => {
 		if (!path.startsWith("player")) return;
 
-		header.css`
-			height: ${data.player ? 50 : 100}px;
-		`
-		spacer.css`
-			height: ${data.player ? 50 : 100}px;
-		`
+		header.css`height: ${data.player ? 50 : 100}px;`
+		spacer.css`height: ${data.player ? 50 : 100}px;`
 	}));
 
+	//language=html
 	return html`
 		<header ${header} ${headerCss} ${css`
 			height: ${appState.data.player ? 50 : 100}px;
@@ -116,13 +90,7 @@ export function Header(search, refreshData, appState) {
 				${UsernameSearch(search)}
 			</div>
 
-			<div ${headerContainerCss}>
-				<button ${refreshButton} ${headerRightButtonCss}
-						${css`background-color: ${canRefresh.data.can ? colors.primary_dark : colors.grey};`}>
-					${Icon("refresh")}
-				</button>
-				<button ${settingsButton} ${headerRightButtonCss}>${Icon("settings")}</button>
-			</div>
+			${HeaderRightElement(refreshData)}
 		</header>
 
 		<!-- Spacer -->
@@ -149,4 +117,37 @@ function HeaderLeftElement(search, appState) {
 			`}>Soopy Stats Viewer</h1>
 		</div>
 	`
+}
+
+function HeaderRightElement(refreshData) {
+	let settingsButton = useRef().onClick(() => {
+		alert("This button does nothing yet!")
+	});
+
+	let refreshButton = useRef().onClick(() => {
+		if (!canRefresh.data.can) return;
+
+		//TODO: spin animation?
+		refreshData()
+		canRefresh.data.can = false;
+
+		setTimeout(() => {
+			canRefresh.data.can = true;
+		}, 10000)
+	});
+
+	canRefresh.onChange((p, d) => {
+		if (!p.startsWith("can")) return;
+
+		refreshButton.css`background-color: ${d.can ? colors.primary_dark : colors.grey};`
+	})
+
+
+	return html`<div ${headerContainerCss}>
+		<button ${refreshButton} ${headerRightButtonCss}
+				${css`background-color: ${canRefresh.data.can ? colors.primary_dark : colors.grey};`}>
+			${Icon("refresh")}
+		</button>
+		<button ${settingsButton} ${headerRightButtonCss}>${Icon("settings")}</button>
+	</div>`
 }
