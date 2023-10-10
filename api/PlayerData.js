@@ -5,13 +5,8 @@ export class PlayerData {
     username;
     uuid;
     profile;
-    playerData = {
-        onetime_achievements: undefined
-    };
-    sbData = {
-        sbLvl: undefined
-    };
-    missingData = new Set([]);
+    playerData = {};
+    sbData = {};
     #updateCallbacks = [];
 
     constructor(name, profile) {
@@ -50,13 +45,7 @@ export class PlayerData {
                 this.#callUpdates();
                 return;
             }
-            playerData = playerData.data;
-
-            if (playerData.onetime_achievements) {
-                this.playerData.onetime_achievements = playerData.onetime_achievements;
-            } else {
-                this.missingData.add("onetime_achievements");
-            }
+            this.playerData = playerData.data;
 
             this.#callUpdates();
         });

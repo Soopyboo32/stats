@@ -12,7 +12,7 @@ export function AchievementsTable(playerData) {
         table.renderInner(genTable(playerData));
     });
 
-    return `<span ${table}>
+    return `One time achievements: <span ${table}>
         ${genTable(playerData)}
     </span>`
 }
@@ -27,11 +27,11 @@ let tableCss = staticCss.named("table")`${thisClass} {
  * @param {PlayerData} playerData 
  */
 function genTable(playerData) {
-    if (playerData.missingData.has("onetime_achievements")) {
+    let achievements = playerData.playerData.onetime_achievements;
+
+    if (achievements == undefined) {
         return "Api missing data!";
     }
-
-    let achievements = playerData.playerData.onetime_achievements;
 
     let table = "Loading...";
 

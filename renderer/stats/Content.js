@@ -1,10 +1,9 @@
 import { PlayerData } from "../../api/PlayerData.js";
 import { staticCss, thisClass, useRef } from "../../helpers.js";
-import { cardCss } from "../css.js";
+import { Card } from "../components/Card.js";
 import { ErrorContent } from "./ErrorContent.js";
-import { Username } from "./generic/Username.js";
 import { AchievementsTable } from "./hypixel/AchievementsTable.js";
-import { SbLevel } from "./skyblock/SbLevel.js";
+import { PlayerInfo } from "./hypixel/PlayerInfo.js";
 
 let contentCss = staticCss.named("content")`${thisClass} {
     display: flex;
@@ -31,12 +30,8 @@ export function Content(playerData) {
 	})
 
 	return `<div ${ref} ${contentCss}>
-        <div ${cardCss}>
-            [${SbLevel(playerData, true)}] ${Username(playerData)}
-        </div>
+		${Card(PlayerInfo(playerData))}
         <br>
-        <div ${cardCss}>
-        One time achievements: ${AchievementsTable(playerData)}
-        </div>
+		${Card(AchievementsTable(playerData))}
     </div>`
 }

@@ -22,7 +22,8 @@ let headerCss = staticCss.named("header")`
 
 let headerSettingsButtonCss = buttonCss.named("header-settings-button")`${thisClass} {
 	padding: 0;
-	width: 30px;
+	height: calc(100% - 20px);
+	aspect-ratio: 1;
 	display: flex;
 	align-items: center;
 	justify-content: space-evenly;
@@ -30,10 +31,12 @@ let headerSettingsButtonCss = buttonCss.named("header-settings-button")`${thisCl
 
 let rightContainerCss = staticCss.named("header-right-container")`${thisClass} {
 	display: flex;
+	height: 100%;
 }`
 
 let centerContainerCss = staticCss.named("header-right-container")`${thisClass} {
 	display: flex;
+	height: 100%;
 }`
 
 let spacerCss = staticCss.named("spacer")`${thisClass} {
@@ -42,9 +45,9 @@ let spacerCss = staticCss.named("spacer")`${thisClass} {
 
 let iconContainerCss = staticCss.named("icon-container")`
 	${thisClass} {
-		width: max-content;
 		display: flex;
 		align-items: center;
+		height: 100%;
 	}
 
     ${thisClass}:hover {
@@ -53,19 +56,21 @@ let iconContainerCss = staticCss.named("icon-container")`
 `
 
 let iconCss = staticCss.named("icon")`${thisClass} {
-	width: 30px;
-	height: 30px;
-	margin: 10px;
-	border-radius: 5px;
+    margin: 10px;
+    border-radius: 5px;
+	aspect-ratio: 1;
+	height: calc(100% - 20px);
 }`
 
-let headerTextCss = staticCss.named("header-text")`${thisClass} {
-	font-size: 20px;
+let h1Css = staticCss.named("h1css")`${thisClass} {
+	transition: 0.5s;
 }`
+
 
 export function Header(search, appState) {
 	let header = useRef();
 	let spacer = useRef();
+	let h1Elm = useRef();
 
 	let iconContainer = useRef().onClick(() => {
 		document.location.hash = "";
@@ -78,20 +83,26 @@ export function Header(search, appState) {
 
 	header.onRemove(appState.data.player.onChange(p => {
 		header.css`
-			height: ${p ? 50 : 100}px;
+			height: ${p ? 50 : 75}px;
 		`
 		spacer.css`
-			height: ${p ? 50 : 100}px;
+			height: ${p ? 50 : 75}px;
+		`
+
+		h1Elm.css`
+			font-size: ${p ? 20 : 30}px;
 		`
 	}));
 
 	return `
         <header ${header} ${headerCss} ${css`
-			height: ${appState.data.player.data ? 50 : 100}px;
+			height: ${appState.data.player.data ? 50 : 75}px;
 		`}>
 			<div ${iconContainer} ${iconContainerCss}>
 				<img ${iconCss} src="https://avatars.githubusercontent.com/u/49228220?v=4" alt="Soopy Picture">
-				<h1 ${headerTextCss}>Soopy Stats Viewer</h1>
+				<h1 ${h1Elm} ${h1Css} ${css`
+					font-size: ${appState.data.player.data ? 20 : 30}px;
+				`}>Soopy Stats Viewer</h1>
 			</div>
 			<div ${centerContainerCss}>
 				${UsernameSearch(search)}
@@ -103,7 +114,7 @@ export function Header(search, appState) {
 
         <!-- Spacer -->
         <div ${spacer} ${spacerCss} ${css`
-			height: ${appState.data.player.data ? 50 : 100}px;
+			height: ${appState.data.player.data ? 50 : 75}px;
 		`}></div>
     `
 }

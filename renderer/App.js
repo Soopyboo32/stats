@@ -32,11 +32,16 @@ export function App() {
         contentDiv.renderInner(Content(PlayerData.load(player, profile)))
     }
 
-    setTimeout(() => {
-        if (document.location.hash !== "") {
-            search(...document.location.hash.substring(1).split("/"));
-        }
-    }, 100)
+    console.log(document.location.hash)
+    if (document.location.hash !== "") {
+        let [player, profile] = document.location.hash.substring(1).split("/");
+        appState.data.player.data = player;
+        appState.data.profile.data = profile;
+
+        setTimeout(() => {
+            search(player, profile);
+        })
+    }
 
     return `
         <body ${bodyCss}>
