@@ -15,7 +15,7 @@ export let colors = {
     error: "#CF6679"
 }
 
-export let buttonCss = staticCss.named("button")`
+export let buttonCss = staticCss.named("button").css`
     ${thisClass} {
         height: 30px;
         margin: 10px;
@@ -34,7 +34,7 @@ export let buttonCss = staticCss.named("button")`
     }
 `
 
-export let textboxCss = staticCss.named("textbox")`
+export let textboxCss = staticCss.named("textbox").css`
     ${thisClass} {
         height: 26px;
         margin: 10px;
@@ -66,3 +66,16 @@ export let textboxCss = staticCss.named("textbox")`
         border: 1px solid ${colors.primary_dark};
     }
 `
+
+export let cardCss = staticCss.named("card").css`${thisClass} {
+    background: ${colors.background_light_1};
+    margin: 10px;
+    padding: 10px;
+    /*border: 1px solid ${colors.primary_dark};*/
+    border-radius: 5px;
+    webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.05);
+    -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.05);
+    box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.05);
+	width: -webkit-fill-available;
+	width: -moz-available;
+}`

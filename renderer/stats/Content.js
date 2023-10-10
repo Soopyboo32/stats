@@ -2,10 +2,12 @@ import { PlayerData } from "../../api/PlayerData.js";
 import { staticCss, thisClass, useRef } from "../../helpers.js";
 import { Card } from "../components/Card.js";
 import { ErrorContent } from "./ErrorContent.js";
+import { OnlineStatus } from "./generic/OnlineStatus.js";
+import { Username } from "./generic/Username.js";
 import { AchievementsTable } from "./hypixel/AchievementsTable.js";
 import { PlayerInfo } from "./hypixel/PlayerInfo.js";
 
-let contentCss = staticCss.named("content")`${thisClass} {
+let contentCss = staticCss.named("content").css`${thisClass} {
     display: flex;
     justify-content: space-evenly;
 }`

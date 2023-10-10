@@ -1,6 +1,5 @@
 import { PlayerData } from "../../../api/PlayerData.js";
-import { css, staticCss, thisClass, useRef } from "../../../helpers.js";
-import { colors } from "../../css.js";
+import { staticCss, thisClass, useRef } from "../../../helpers.js";
 
 /**
  * @param {PlayerData} playerData 
@@ -17,7 +16,7 @@ export function AchievementsTable(playerData) {
     </span>`
 }
 
-let tableCss = staticCss.named("table")`${thisClass} {
+let tableCss = staticCss.named("table").css`${thisClass} {
     height: 200px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -29,7 +28,7 @@ let tableCss = staticCss.named("table")`${thisClass} {
 function genTable(playerData) {
     let achievements = playerData.playerData.onetime_achievements;
 
-    if (achievements == undefined) {
+    if (!playerData.onetime_achievements) {
         return "Api missing data!";
     }
 

@@ -6,30 +6,38 @@ import { MainPage } from "./MainPage.js";
 import { colors } from "./css.js";
 import { Content } from "./stats/Content.js";
 
-let bodyCss = staticCss.named("body")`${thisClass} {
+let bodyCss = staticCss.named("body").css`${thisClass} {
     background-color: ${colors.background};
     font-family: 'Montserrat';
     color: ${colors.text};
 }`;
 
 let appState = new Observable({
-    player: new Observable(undefined),
-    profile: new Observable(undefined)
+    player: undefined,
+    profile: undefined,
+    playerData: undefined,
 });
 
 export function App() {
     let contentDiv = useRef();
 
     async function search(player, profile) {
-        appState.data.player.data = player;
-        appState.data.profile.data = profile;
+        appState.data.player = player;
+        appState.data.profile = profile;
 
         if (!player) {
             contentDiv.renderInner(MainPage())
+            appState.data.playerData = undefined;
             return;
         }
 
-        contentDiv.renderInner(Content(PlayerData.load(player, profile)))
+        appState.data.playerData = PlayerData.load(player, profile);
+
+        contentDiv.renderInner(Content(appState.data.playerData))
+    }
+
+    async function refreshData() {
+        appState.data.playerData?.loadData();
     }
 
     console.log(document.location.hash)
@@ -45,7 +53,7 @@ export function App() {
 
     return `
         <body ${bodyCss}>
-            ${Header(search, appState)}
+            ${Header(search, refreshData, appState)}
 
             <div ${contentDiv}>
                 ${MainPage()}
