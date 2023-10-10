@@ -15,67 +15,67 @@ export let colors = {
     error: "#CF6679"
 }
 
-export let buttonCss = staticCss.named("button").css`
-    ${thisClass} {
-        height: 30px;
-        margin: 10px;
-        text-align: center;
-        background-color: ${colors.primary_dark};
-        color: ${colors.text};
-        border: 1px solid transparent;
-        border-radius: 5px;
-        transition: 0.15s;
-        transition-timing-function: ease-in;
-    }
+export let buttonCss = staticCss.named("button").css`{
+	${thisClass} {
+		height: 30px;
+		margin: 10px;
+		text-align: center;
+		background-color: ${colors.primary_dark};
+		color: ${colors.text};
+		border: 1px solid transparent;
+		border-radius: 5px;
+		transition: 0.15s;
+		transition-timing-function: ease-in;
+	}
 
-    ${thisClass}:hover {
-        background-color: ${colors.primary_dark_hover};
-        cursor: pointer;
-    }
-`
+	${thisClass}:hover {
+		background-color: ${colors.primary_dark_hover};
+		cursor: pointer;
+	}
+}`
 
-export let textboxCss = staticCss.named("textbox").css`
-    ${thisClass} {
-        height: 26px;
-        margin: 10px;
-        border: 1px solid transparent;
-        border-radius: 5px;
-        background-color: ${colors.primary_dark};
-        color: ${colors.text};
-        padding-left: 10px;
-        transition: 0.15s;
-        transition-timing-function: ease-in;
-        outline: none;
-    }
+export let textboxCss = staticCss.named("textbox").css`{
+	${thisClass} {
+		height: 26px;
+		margin: 10px;
+		border: 1px solid transparent;
+		border-radius: 5px;
+		background-color: ${colors.primary_dark};
+		color: ${colors.text};
+		padding-left: 10px;
+		transition: 0.15s;
+		transition-timing-function: ease-in;
+		outline: none;
+	}
 
-    ${thisClass}::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-        color: ${colors.primary};
-        opacity: 1; /* Firefox */
-    }
+	${thisClass}::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+		color: ${colors.primary};
+		opacity: 1; /* Firefox */
+	}
 
-    ${thisClass}:-ms-input-placeholder { /* Internet Explorer 10-11 */
-        color: ${colors.primary};
-    }
+	${thisClass}:-ms-input-placeholder { /* Internet Explorer 10-11 */
+		color: ${colors.primary};
+	}
 
-    ${thisClass}::-ms-input-placeholder { /* Microsoft Edge */
-        color: ${colors.primary};
-    }
+	${thisClass}::-ms-input-placeholder { /* Microsoft Edge */
+		color: ${colors.primary};
+	}
 
-    ${thisClass}:focus {
-        background: ${colors.background};
-        border: 1px solid ${colors.primary_dark};
-    }
-`
+	${thisClass}:focus {
+		background: ${colors.background};
+		border: 1px solid ${colors.primary_dark};
+	}
+}`
 
 export let cardCss = staticCss.named("card").css`${thisClass} {
-    background: ${colors.background_light_1};
-    margin: 10px;
-    padding: 10px;
-    /*border: 1px solid ${colors.primary_dark};*/
-    border-radius: 5px;
-    webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.05);
-    -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.05);
-    box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.05);
+	background: ${colors.background_light_1};
+	margin: 10px;
+	padding: 10px;
+		/*border: 1px solid ${colors.primary_dark};*/
+	border-radius: 5px;
+	webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.05);
+	box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.05);
 	width: -webkit-fill-available;
 	width: -moz-available;
 }`

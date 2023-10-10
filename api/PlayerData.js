@@ -5,10 +5,9 @@ export class PlayerData {
     username;
     uuid;
     profile;
+    /** @type {{}} */
     playerData = {};
-    sbData = {
-        sbLvl: undefined
-    };
+    sbData = {};
     #updateCallbacks = [];
     _observableIgnore = true;
 
@@ -21,7 +20,7 @@ export class PlayerData {
     static load(name, profile) {
         let ret = new PlayerData(name, profile);
 
-        ret.loadData();
+        ret.loadData().then();
 
         return ret;
     }
@@ -73,7 +72,7 @@ export class PlayerData {
     }
 
     /**
-     * @param {() => bool} keepUpdateFunction function that returns true while this callback should exist
+     * @param {() => boolean} keepUpdateFunction function that returns true while this callback should exist
      * @param {() => {}} callback 
      */
     onUpdate(keepUpdateFunction, callback) {

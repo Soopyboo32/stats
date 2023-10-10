@@ -1,4 +1,4 @@
-import { useRef } from "../../../helpers.js";
+import { html, useRef } from "../../../helpers.js";
 
 export function OnlineState(playerData) {
     let ref = useRef();
@@ -9,7 +9,7 @@ export function OnlineState(playerData) {
         ref.renderInner(getState(playerData));
     })
 
-    return `Currently: <span ${ref}> ${state} </span>`
+    return html`Currently: <span ${ref}> ${state} </span>`
 }
 
 function getState(playerData) {
@@ -17,7 +17,7 @@ function getState(playerData) {
         return "...";
     }
 
-    if (playerData.playerData.status == "ApiDisabled") {
+    if (playerData.playerData.status === "ApiDisabled") {
         return "Api Disabled";
     }
     if ("Online" in playerData.playerData.status) {

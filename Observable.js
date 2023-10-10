@@ -10,21 +10,21 @@ export class Observable {
 
         this.#proxyObj = {};
 
-        this.#proxyObj.get = (target, p, reciever) => {
+        this.#proxyObj.get = (target, p, receiver) => {
             let data = target[p];
-            if (p == "_path") return data
+            if (p === "_path") return data
 
             if (typeof data === "object" && !data._observableIgnore) {
                 let ret = new Proxy(target[p], this.#proxyObj);
-                ret.path = reciever.path ? reciever._path + "." + p : p
+                ret._path = receiver._path ? receiver._path + "." + p : p
             }
 
             return data;
         };
 
-        this.#proxyObj.set = (target, p, newVal, reciever) => {
+        this.#proxyObj.set = (target, p, newVal, receiver) => {
             data[p] = newVal;
-            let path = reciever.path ? reciever.path + "." + p : p
+            let path = receiver._path ? receiver._path + "." + p : p
             this.changed(path);
             return true;
         };
@@ -49,7 +49,7 @@ export class Observable {
 
     /**
      * 
-     * @param {(path: String, data: Any) => Any} cb 
+     * @param {(path: String, data: any) => any} cb
      * @returns 
      */
     onChange(cb) {

@@ -1,5 +1,5 @@
 import { PlayerData } from "../../../api/PlayerData.js";
-import { useRef } from "../../../helpers.js";
+import { html, useRef } from "../../../helpers.js";
 
 /**
  * @param {PlayerData} playerData 
@@ -11,5 +11,5 @@ export function Username(playerData) {
         name.renderInner(playerData.username ?? "...");
     });
 
-    return `<span ${name}> ${playerData.username ?? "..."}</span>`
+    return html`<span ${name}> ${playerData.username ?? "..."}</span>`
 }

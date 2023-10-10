@@ -1,5 +1,5 @@
 import { PlayerData } from "../../../api/PlayerData.js";
-import { useRef } from "../../../helpers.js";
+import { html, useRef } from "../../../helpers.js";
 
 /**
  * @param {PlayerData} playerData 
@@ -11,5 +11,7 @@ export function OnlineStatus(playerData) {
         //name.renderInner(playerData.username ?? "...");
     });
 
-    return `<span ${status}> ${playerData.onlineStatus ?? "..."}</span>`
+    console.log(playerData.playerData)
+
+    return html`<span ${status}> ${playerData.playerData.onlineStatus ?? "..."}</span>`
 }

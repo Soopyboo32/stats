@@ -1,8 +1,9 @@
 import { PlayerData } from "../../../api/PlayerData.js";
-import { useRef } from "../../../helpers.js";
+import { html, useRef } from "../../../helpers.js";
 
 /**
- * @param {PlayerData} playerData 
+ * @param {PlayerData} playerData
+ * @param integer
  */
 export function SbLevel(playerData, integer = false) {
     let level = useRef();
@@ -11,5 +12,5 @@ export function SbLevel(playerData, integer = false) {
         level.renderInner(playerData.sbData.sbLvl?.toFixed(integer ? 0 : 2) ?? "???");
     });
 
-    return `<span ${level}>${playerData.sbData.sbLvl?.toFixed(integer ? 0 : 2) ?? "???"}</span>`
+    return html`<span ${level}>${playerData.sbData.sbLvl?.toFixed(integer ? 0 : 2) ?? "???"}</span>`
 }

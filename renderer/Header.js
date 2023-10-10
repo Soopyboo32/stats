@@ -1,25 +1,23 @@
 import { Observable } from "../Observable.js";
-import { css, staticCss, thisClass, useRef } from "../helpers.js";
+import { css, html, staticCss, thisClass, useRef } from "../helpers.js";
 import { Icon } from "./Icon.js";
 import { UsernameSearch } from "./components/UsernameSearch.js";
-import { buttonCss, colors, textboxCss } from "./css.js";
+import { buttonCss, colors } from "./css.js";
 
-let headerCss = staticCss.named("header").css`
-    ${thisClass} {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        background-color: ${colors.background_light_2};
-		display: flex;
-		justify-content: space-between;
-        align-items: center;
-		webkit-box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.1);
-		-moz-box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.1);
-		box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.1);
-		transition: 0.5s;
-    }
-`
+let headerCss = staticCss.named("header").css` ${thisClass} {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	background-color: ${colors.background_light_2};
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	webkit-box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
+	box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
+	transition: 0.5s;
+}`
 
 let headerRightButtonCss = buttonCss.named("header-right-button").css`${thisClass} {
 	padding: 0;
@@ -33,11 +31,6 @@ let headerRightButtonCss = buttonCss.named("header-right-button").css`${thisClas
 }`
 
 let headerContainerCss = staticCss.named("header-container").css`${thisClass} {
-	display: flex;
-	height: 100%;
-}`
-
-let centerContainerCss = staticCss.named("header-right-container")`${thisClass} {
 	display: flex;
 	height: 100%;
 }`
@@ -70,10 +63,6 @@ let iconCss = staticCss.named("icon").css`${thisClass} {
 	border-radius: 5px;
 }`
 
-let headerTextCss = staticCss.named("header-text").css`${thisClass} {
-	font-size: 20px;
-}`
-
 let canRefresh = new Observable({
 	can: true,
 })
@@ -81,12 +70,6 @@ let canRefresh = new Observable({
 export function Header(search, refreshData, appState) {
 	let header = useRef();
 	let spacer = useRef();
-	let h1Elm = useRef();
-
-	let iconContainer = useRef().onClick(() => {
-		document.location.hash = "";
-		search();
-	});
 
 	let settingsButton = useRef().onClick(() => {
 		alert("This button does nothing yet!")
@@ -123,28 +106,47 @@ export function Header(search, refreshData, appState) {
 		`
 	}));
 
-	return `
-        <header ${header} ${headerCss} ${css`
+	return html`
+		<header ${header} ${headerCss} ${css`
 			height: ${appState.data.player ? 50 : 100}px;
 		`}>
-			<div ${iconContainer} ${iconContainerCss}>
-				<img ${iconCss} src="https://avatars.githubusercontent.com/u/49228220?v=4" alt="Soopy Picture">
-				<h1 ${h1Elm} ${h1Css} ${css`
-					font-size: ${appState.data.player.data ? 20 : 30}px;
-				`}>Soopy Stats Viewer</h1>
-			</div>
+			${HeaderLeftElement(search, appState)}
+
 			<div ${headerContainerCss}>
 				${UsernameSearch(search)}
 			</div>
+
 			<div ${headerContainerCss}>
-				<button ${refreshButton} ${headerRightButtonCss} ${css`background-color: ${canRefresh.data.can ? colors.primary_dark : colors.grey};`}>${Icon("refresh")}</button>
+				<button ${refreshButton} ${headerRightButtonCss}
+						${css`background-color: ${canRefresh.data.can ? colors.primary_dark : colors.grey};`}>
+					${Icon("refresh")}
+				</button>
 				<button ${settingsButton} ${headerRightButtonCss}>${Icon("settings")}</button>
 			</div>
-        </header>
+		</header>
 
-        <!-- Spacer -->
-        <div ${spacer} ${spacerCss} ${css`
+		<!-- Spacer -->
+		<div ${spacer} ${spacerCss} ${css`
 			height: ${appState.data.player ? 50 : 100}px;
 		`}></div>
-    `
+	`
+}
+
+
+function HeaderLeftElement(search, appState) {
+	let h1Elm = useRef();
+
+	let iconContainer = useRef().onClick(() => {
+		document.location.hash = "";
+		search();
+	});
+
+	return html`
+		<div ${iconContainer} ${iconContainerCss}>
+			<img ${iconCss} src="https://avatars.githubusercontent.com/u/49228220?v=4" alt="Soopy Picture">
+			<h1 ${h1Elm} ${h1Css} ${css`
+				font-size: ${appState.data.player ? 20 : 30}px;
+			`}>Soopy Stats Viewer</h1>
+		</div>
+	`
 }

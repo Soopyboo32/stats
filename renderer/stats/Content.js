@@ -1,24 +1,24 @@
 import { PlayerData } from "../../api/PlayerData.js";
-import { staticCss, thisClass, useRef } from "../../helpers.js";
+import { html, staticCss, thisClass, useRef } from "../../helpers.js";
 import { Card } from "../components/Card.js";
 import { ErrorContent } from "./ErrorContent.js";
-import { OnlineStatus } from "./generic/OnlineStatus.js";
-import { Username } from "./generic/Username.js";
 import { AchievementsTable } from "./hypixel/AchievementsTable.js";
 import { PlayerInfo } from "./hypixel/PlayerInfo.js";
 
+let title = document.getElementById("title");
+
 let contentCss = staticCss.named("content").css`${thisClass} {
-    display: flex;
-    justify-content: space-evenly;
+	display: flex;
+	justify-content: space-evenly;
 }`
 
 /**
- * @param {PlayerData} playerData 
+ * @param {PlayerData} playerData
  */
 export function Content(playerData) {
 	let ref = useRef();
 
-	//TODO: change icon aswell
+	//TODO: change icon as well
 	title.innerHTML = playerData.username + " | Soopy Stats Viewer"
 	document.location.hash = playerData.username + (playerData.profile ? "/" + playerData.profile : "");
 
@@ -31,7 +31,7 @@ export function Content(playerData) {
 		}
 	})
 
-	return `<div ${ref} ${contentCss}>
+	return html`<div ${ref} ${contentCss}>
 		${Card(PlayerInfo(playerData))}
         <br>
 		${Card(AchievementsTable(playerData))}
