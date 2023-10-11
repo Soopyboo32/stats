@@ -26,14 +26,14 @@ export function App() {
 		appState.data.profile = profile;
 
 		if (!player) {
-			contentDiv.renderInner(MainPage())
+			contentDiv.renderInner(MainPage());
 			appState.data.playerData = undefined;
 			return;
 		}
 
 		appState.data.playerData = PlayerData.load(player, profile);
 
-		contentDiv.renderInner(Content(appState.data.playerData))
+		contentDiv.renderInner(Content(appState.data.playerData));
 	}
 
 	async function refreshData() {
@@ -47,14 +47,15 @@ export function App() {
 
 		setTimeout(() => {
 			search(player, profile);
-		})
+		});
 	}
 
-	return html`<body ${bodyCss}>
-		${Header(search, refreshData, appState)}
+	return html`
+		<body ${bodyCss}>
+			${Header(search, refreshData, appState)}
 
-		<div ${contentDiv}>
-			${MainPage()}
-		</div>
-	</body>`
+			<div ${contentDiv}>
+				${MainPage()}
+			</div>
+		</body>`;
 }

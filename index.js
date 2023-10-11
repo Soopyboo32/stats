@@ -1,3 +1,3 @@
-import { App } from "./renderer/App.js"
+import { App } from "./renderer/App.js";
 
-document.getElementById("app").outerHTML = App()
+document.getElementById("app").outerHTML = App();

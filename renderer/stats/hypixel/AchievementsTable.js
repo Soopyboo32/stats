@@ -13,14 +13,14 @@ export function AchievementsTable(playerData) {
 
 	return html`One time achievements: <span ${table}>
         ${genTable(playerData)}
-    </span>`
+    </span>`;
 }
 
 let tableCss = staticCss.named("table").css`${thisClass} {
 	height: 200px;
 	overflow-y: auto;
 	overflow-x: hidden;
-}`
+}`;
 
 /**
  * @param {PlayerData} playerData
@@ -42,10 +42,11 @@ function genTable(playerData) {
                     <td>${a}</td>
                 </tr>
             `).join("")}
-        </table>`
+        </table>`;
 	}
 
-	return html`<div ${tableCss}>
-        ${table}
-    </div>`
+	return html`
+		<div ${tableCss}>
+			${table}
+		</div>`;
 }

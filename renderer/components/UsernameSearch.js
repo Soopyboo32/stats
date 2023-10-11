@@ -11,7 +11,7 @@ let containerCss = staticCss.named("username-search-container").css`{
 	${thisClass} div[data-lastpass-icon-root] {
 		display: none;
 	}
-}`
+}`;
 
 let headerUsernameInputCss = textboxCss.named("username-input").css`{
 	${thisClass} {
@@ -38,7 +38,7 @@ let headerUsernameInputCss = textboxCss.named("username-input").css`{
 	${thisClass}:focus::-ms-input-placeholder { /* Microsoft Edge */
 		color: ${colors.grey};
 	}
-}`
+}`;
 
 let headerSearchButtonCss = buttonCss.named("search-button").css`{
 	${thisClass} {
@@ -61,7 +61,7 @@ let headerSearchButtonCss = buttonCss.named("search-button").css`{
 		color: ${colors.primary_dark};
 		border-left: none;
 	}
-}`
+}`;
 
 let headerSearchIconContainerCss = staticCss.named("search-icon-container").css`{
 	${thisClass} {
@@ -87,7 +87,7 @@ let headerSearchIconContainerCss = staticCss.named("search-icon-container").css`
 		background-color: transparent;
 		color: ${colors.primary_dark_hover};
 	}
-}`
+}`;
 
 /**
  * @param {(String) => any} callback
@@ -97,7 +97,7 @@ export function UsernameSearch(callback) {
 
 	let input = useRef().onEnter(() => {
 		let searchPlayer = input.getElm().value;
-		if (searchPlayer.trim() === "") return
+		if (searchPlayer.trim() === "") return;
 		input.getElm().value = "";
 
 		callback(searchPlayer);
@@ -106,20 +106,20 @@ export function UsernameSearch(callback) {
 	let searchButton = useRef().onClick(() => {
 		if (!input.exists()) return;
 		let searchPlayer = input.getElm().value;
-		if (searchPlayer.trim() === "") return
+		if (searchPlayer.trim() === "") return;
 		input.getElm().value = "";
 
 		callback(searchPlayer);
 	});
 
 	return html`
-        <div ${containerCss}>
-            <input ${input} type="text" placeholder="Username" autocomplete="off" ${headerUsernameInputCss}>
-            <button ${searchButton} ${headerSearchButtonCss}>
-                <div ${headerSearchIconContainerCss}>
-                    ${Icon("search")}
-                </div>
-            </button>
-        </div>
-    `
+		<div ${containerCss}>
+			<input ${input} type="text" placeholder="Username" autocomplete="off" ${headerUsernameInputCss}>
+			<button ${searchButton} ${headerSearchButtonCss}>
+				<div ${headerSearchIconContainerCss}>
+					${Icon("search")}
+				</div>
+			</button>
+		</div>
+	`;
 }
