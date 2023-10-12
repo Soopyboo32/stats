@@ -26,7 +26,7 @@ self.addEventListener('fetch', event => {
 				await updateCommit();
 			}
 
-			if(commit === "DEV") {
+			if (commit === "DEV" || url.pathname === "/commit.txt") {
 				return await fetch(url);
 			}
 
