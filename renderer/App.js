@@ -6,10 +6,12 @@ import { MainPage } from "./MainPage.js";
 import { colors } from "./css.js";
 import { Content } from "./stats/Content.js";
 
-let bodyCss = staticCss.named("body").css`${thisClass} {
+let appCss = staticCss.named("app").css`${thisClass} {
 	background-color: ${colors.background};
 	font-family: 'Montserrat', serif;
 	color: ${colors.text};
+	width: 100vw;
+	height: 100vh;
 }`;
 
 let appState = new Observable({
@@ -51,11 +53,11 @@ export function App() {
 	}
 
 	return html`
-		<body ${bodyCss}>
+		<div ${appCss}>
 			${Header(search, refreshData, appState)}
 
 			<div ${contentDiv}>
 				${MainPage()}
 			</div>
-		</body>`;
+		</div>`;
 }

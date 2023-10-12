@@ -12,6 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Setup commit id
+        run: |
+          echo "$GITHUB_SHA" > commit.txt
+
       - name: Auth
         run: |
           echo "$CRED" > secrets.json
@@ -25,5 +29,5 @@ jobs:
         env: 
           EXCLUDE: '\.gitignore$|\.git/.*$|\.github/.*$'
 
-      - name: Clear Cache
-        run: gcloud compute url-maps invalidate-cdn-cache stats-web-balancer-2 --path "/*" --project avid-heading-379218
+      #- name: Clear Cache
+      #  run: gcloud compute url-maps invalidate-cdn-cache stats-web-balancer-2 --path "/*" --project avid-heading-379218
