@@ -4,6 +4,7 @@ self.addEventListener("install", event => {
 	console.log("Installing service worker...");
 
 	self.skipWaiting();
+
 	console.log("Service worker installed!");
 });
 
@@ -34,7 +35,7 @@ self.addEventListener('fetch', event => {
 			if (file) {
 				return file;
 			} else {
-				console.log("Saving into cache:", url.pathname);
+				//console.log("Saving into cache:", url.pathname);
 
 				let response = await fetch(url.pathname);
 
@@ -50,13 +51,13 @@ self.addEventListener('fetch', event => {
 async function updateCommit() {
 	let res = await fetch("/commit.txt");
 	commit = await res.text();
-	console.log("Commit updated:", commit);
+	//console.log("Commit updated:", commit);
 
 	let keys = await caches.keys();
 
 	await Promise.all(keys.map(key => {
 		if (key !== commit) {
-			console.log("Deleting cache:", key);
+			//console.log("Deleting cache:", key);
 			return caches.delete(key);
 		}
 	}));
