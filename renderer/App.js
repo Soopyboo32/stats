@@ -14,6 +14,10 @@ let appCss = staticCss.named("app").css`${thisClass} {
 	height: 100vh;
 }`;
 
+let contentDivCss = staticCss.named("content").css`${thisClass} {
+	margin: 5px;
+}`
+
 let appState = new Observable({
 	player: undefined,
 	profile: undefined,
@@ -56,7 +60,7 @@ export function App() {
 		<div ${appCss}>
 			${Header(search, refreshData, appState)}
 
-			<div ${contentDiv}>
+			<div ${contentDiv} ${contentDivCss}>
 				${MainPage()}
 			</div>
 		</div>`;
