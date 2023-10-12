@@ -6,6 +6,6 @@ export function MainPage() {
 	title.innerHTML = "Soopy Stats Viewer";
 
 	return html`
-		Wow, this is the main page!aasdasdasdasd
+		Wow, this is the main page!
 	`;
 }
