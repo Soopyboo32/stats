@@ -75,14 +75,14 @@ export function Header(search, refreshData, appState) {
 	header.onRemove(appState.onChange((path, data) => {
 		if (!path.startsWith("player")) return;
 
-		header.css`height: ${data.player ? 50 : 100}px;`;
-		spacer.css`height: ${data.player ? 50 : 100}px;`;
+		header.css`height: ${data.player ? 50 : 75}px;`;
+		spacer.css`height: ${data.player ? 50 : 75}px;`;
 	}));
 
 	//language=html
 	return html`
 		<header ${header} ${headerCss} ${css`
-			height: ${appState.data.player ? 50 : 100}px;
+			height: ${appState.data.player ? 50 : 75}px;
 		`}>
 			${HeaderLeftElement(search, appState)}
 
@@ -95,14 +95,18 @@ export function Header(search, refreshData, appState) {
 
 		<!-- Spacer -->
 		<div ${spacer} ${spacerCss} ${css`
-			height: ${appState.data.player ? 50 : 100}px;
+			height: ${appState.data.player ? 50 : 75}px;
 		`}></div>
 	`;
 }
 
 
 function HeaderLeftElement(search, appState) {
-	let h1Elm = useRef();
+	let h1Elm = useRef().onRemove(appState.onChange((path, data) => {
+		if (!path.startsWith("player")) return;
+
+		h1Elm.css`font-size: ${data.player ? 20 : 25}px;`;
+	}));
 
 	let iconContainer = useRef().onClick(() => {
 		document.location.hash = "";
@@ -113,7 +117,7 @@ function HeaderLeftElement(search, appState) {
 		<div ${iconContainer} ${iconContainerCss}>
 			<img ${iconCss} src="https://avatars.githubusercontent.com/u/49228220?v=4" alt="Soopy Picture">
 			<h1 ${h1Elm} ${h1Css} ${css`
-				font-size: ${appState.data.player ? 20 : 30}px;
+				font-size: ${appState.data.player ? 20 : 25}px;
 			`}>Soopy Stats Viewer</h1>
 		</div>
 	`;
@@ -128,6 +132,7 @@ function HeaderRightElement(refreshData) {
 		if (!canRefresh.data.can) return;
 
 		//TODO: spin animation?
+		//TODO: countdown animation
 		refreshData();
 		canRefresh.data.can = false;
 

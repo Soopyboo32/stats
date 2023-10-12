@@ -6,7 +6,7 @@
  * @property {(data: String) => Reference} renderInner
  * @property {() => boolean} exists
  * @property {() => HTMLElement | null} getElm
- * @property {(callback: () => any) => void} onRemove
+ * @property {(callback: () => any) => Reference} onRemove
  */
 
 /**
@@ -65,6 +65,7 @@ export function useRef() {
 		getElm: () => document.getElementById(id),
 		onRemove: (callback) => {
 			removeCb.push(callback);
+			return ref;
 		},
 		css: (...args) => {
 			let elm = ref.getElm();
