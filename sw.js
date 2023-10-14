@@ -1,3 +1,4 @@
+let version = 0;
 let commit = "";
 
 self.addEventListener("install", event => {
@@ -51,6 +52,7 @@ let updating = false;
 async function updateCommit() {
 	let res = await fetch("/commit.txt");
 	commit = await res.text();
+	commit += version;
 	//console.log("Commit updated:", commit);
 
 	let keys = await caches.keys();
