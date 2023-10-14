@@ -74,14 +74,18 @@ async function loadFiles() {
 	let lastLine = "";
 	let pathPrefix = "";
 	for (let file in files.split("\n")) {
-		console.log("line:", file)
+		console.log("line:", file);
 		if (file === "") {
 			lastLine = file;
 			continue;
 		}
 
 		if (lastLine === "") {
-			pathPrefix = file.substring(1, file.length - 2);
+			pathPrefix = file.substring(1, file.length - 1);
+			if (pathPrefix === ".") {
+				pathPrefix = "";
+			}
+			pathPrefix += "/"
 			lastLine = file;
 			continue;
 		}
