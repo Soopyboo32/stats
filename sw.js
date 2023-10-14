@@ -101,6 +101,7 @@ async function loadFiles() {
 		lastLine = file;
 		if (!file.includes(".")) {
 			//is a directory not a file!
+			console.log("skipping directory " + file)
 			continue;
 		}
 
