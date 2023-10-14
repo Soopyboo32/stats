@@ -1,5 +1,6 @@
 let version = 0;
 let commit = "";
+let cacheCommitToUse = "";
 
 self.addEventListener("install", event => {
 	console.log("Installing service worker...");
@@ -24,15 +25,17 @@ self.addEventListener('fetch', event => {
 			}
 
 			if (url.pathname === "/") {
-				await updateCommit();
+				updateCommit();
 			}
 
 			if (commit === "DEV" || url.pathname === "/commit.txt" || url.pathname === "/files.txt") {
 				return await fetch(url);
 			}
 
-			//if (file) {
-			return await caches.match(url.pathname);
+			caches.//if (file) {
+				let;
+			cache = await caches.open(commit);
+			return cache.match(url.pathname);
 			// } else {
 			// 	console.log("File not in cache!", url);
 			//
@@ -53,22 +56,30 @@ async function updateCommit() {
 	let res = await fetch("/commit.txt");
 	commit = await res.text();
 	commit += version;
+
+	if (!cacheCommitToUse) {
+		cacheCommitToUse = commit;
+	}
 	//console.log("Commit updated:", commit);
 
 	let keys = await caches.keys();
-
-	await Promise.all(keys.map(key => {
-		if (key !== commit) {
-			//console.log("Deleting cache:", key);
-			return caches.delete(key);
-		}
-	}));
 
 	if (!updating && !keys.includes(commit)) {
 		updating = true;
 		console.log("Updating website...");
 		await loadFiles();
+
+		await Promise.all(keys.map(key => {
+			if (key !== commit) {
+				//console.log("Deleting cache:", key);
+				return caches.delete(key);
+			}
+		}));
+
+		cacheCommitToUse = commit;
 		updating = false;
+
+		//TODO: send some sort of update avalible notification?
 	}
 
 	while (updating) {
