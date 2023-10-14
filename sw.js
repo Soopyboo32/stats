@@ -1,4 +1,4 @@
-let version = 1;
+let version = 2;
 let commit = "";
 let cacheCommitToUse = "";
 
@@ -78,6 +78,7 @@ async function updateCommit() {
 
 		cacheCommitToUse = commit;
 		updating = false;
+		console.log("Finished updating!")
 
 		//TODO: send some sort of update avalible notification?
 	}
@@ -95,7 +96,6 @@ async function loadFiles() {
 	let lastLine = "";
 	let pathPrefix = "";
 	for (let file of files.split("\n")) {
-		console.log("line:", file);
 		if (file === "") {
 			lastLine = file;
 			continue;
@@ -122,7 +122,6 @@ async function loadFiles() {
 
 	let cache = await caches.open(commit);
 	await Promise.allSettled(urlList.map(async u => {
-		console.log("Saving data for " + u);
 		let response = await fetch(u);
 
 		await cache.put(u, response);
