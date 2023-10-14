@@ -78,7 +78,7 @@ async function loadFiles() {
 	let res = await fetch("/files.txt");
 	let files = await res.text();
 
-	let urlList = [];
+	let urlList = ["/"];
 	let lastLine = "";
 	let pathPrefix = "";
 	for (let file of files.split("\n")) {
@@ -101,7 +101,6 @@ async function loadFiles() {
 		lastLine = file;
 		if (!file.includes(".")) {
 			//is a directory not a file!
-			console.log("skipping directory " + file)
 			continue;
 		}
 
