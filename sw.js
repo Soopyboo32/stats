@@ -67,7 +67,7 @@ async function updateCommit() {
 }
 
 async function loadFiles() {
-	let res = await fetch("/file.txt");
+	let res = await fetch("/files.txt");
 	let files = await res.text();
 
 	let urlList = [];
