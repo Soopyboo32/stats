@@ -73,7 +73,7 @@ async function loadFiles() {
 	let urlList = [];
 	let lastLine = "";
 	let pathPrefix = "";
-	for (let file in files.split("\n")) {
+	for (let file of files.split("\n")) {
 		console.log("line:", file);
 		if (file === "") {
 			lastLine = file;
