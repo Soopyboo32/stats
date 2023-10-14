@@ -3,7 +3,7 @@ let commit = "";
 self.addEventListener("install", event => {
 	console.log("Installing service worker...");
 
-	self.skipWaiting();
+	updateCommit().then(() => self.skipWaiting());
 
 	console.log("Service worker installed!");
 });
@@ -85,7 +85,7 @@ async function loadFiles() {
 			if (pathPrefix === ".") {
 				pathPrefix = "";
 			}
-			pathPrefix += "/"
+			pathPrefix += "/";
 			lastLine = file;
 			continue;
 		}
