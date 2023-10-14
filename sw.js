@@ -26,24 +26,22 @@ self.addEventListener('fetch', event => {
 				await updateCommit();
 			}
 
-			if (commit === "DEV" || url.pathname === "/commit.txt") {
+			if (commit === "DEV" || url.pathname === "/commit.txt" || url.pathname === "/files.txt") {
 				return await fetch(url);
 			}
 
-			let file = await caches.match(url.pathname);
-
-			if (file) {
-				return file;
-			} else {
-				//console.log("Saving into cache:", url.pathname);
-
-				let response = await fetch(url.pathname);
-
-				let cache = await caches.open(commit);
-				await cache.put(url.pathname, response);
-
-				return await caches.match(url.pathname);
-			}
+			//if (file) {
+			return await caches.match(url.pathname);
+			// } else {
+			// 	console.log("File not in cache!", url);
+			//
+			// 	let response = await fetch(url.pathname);
+			//
+			// 	let cache = await caches.open(commit);
+			// 	await cache.put(url.pathname, response);
+			//
+			// 	return await caches.match(url.pathname);
+			// }
 		})());
 	}
 });
@@ -60,5 +58,41 @@ async function updateCommit() {
 			//console.log("Deleting cache:", key);
 			return caches.delete(key);
 		}
+	}));
+
+	if (!keys.includes(commit)) {
+		console.log("Updating website...");
+		await loadFiles();
+	}
+}
+
+async function loadFiles() {
+	let res = await fetch("/file.txt");
+	let files = await res.text();
+
+	let urlList = [];
+	let lastLine = "";
+	let pathPrefix = "";
+	for (let file in files.split("\n")) {
+		if (file === "") {
+			lastLine = file;
+			continue;
+		}
+
+		if (lastLine === "") {
+			pathPrefix = file.substring(1, file.length - 2);
+			lastLine = file;
+			continue;
+		}
+
+		urlList.push(pathPrefix + file);
+	}
+
+	let cache = await caches.open(commit);
+	await Promise.allSettled(urlList.map(async u => {
+		console.log("Saving data for " + u);
+		let response = await fetch(u);
+
+		await cache.put(u, response);
 	}));
 }
