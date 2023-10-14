@@ -46,6 +46,8 @@ self.addEventListener('fetch', event => {
 	}
 });
 
+let updating = false;
+
 async function updateCommit() {
 	let res = await fetch("/commit.txt");
 	commit = await res.text();
@@ -60,9 +62,15 @@ async function updateCommit() {
 		}
 	}));
 
-	if (!keys.includes(commit)) {
+	if (!updating && !keys.includes(commit)) {
+		updating = true;
 		console.log("Updating website...");
 		await loadFiles();
+		updating = false;
+	}
+
+	while (updating) {
+		await new Promise(r => setTimeout(r, 100));
 	}
 }
 
@@ -87,6 +95,12 @@ async function loadFiles() {
 			}
 			pathPrefix += "/";
 			lastLine = file;
+			continue;
+		}
+
+		lastLine = file;
+		if (!file.includes(".")) {
+			//is a directory not a file!
 			continue;
 		}
 
