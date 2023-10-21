@@ -23,6 +23,7 @@ function getState(playerData) {
 	}
 
 	let time = html`<small> For ${TimeSince(playerData.playerData.status.since)}</small>`;
+	if (!playerData.playerData.status.since) time = "";
 
 	return (stateNameOverrides[playerData.playerData.status.state] || playerData.playerData.status.state) + time;
 }
