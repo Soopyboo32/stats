@@ -6,7 +6,7 @@ import { Networth } from "../skyblock/Networth.js";
 
 export function PlayerInfo(playerData) {
 	return html`
-		[${SbLevel(playerData, true)}] ${Username(playerData)}
+		${Username(playerData)} [${SbLevel(playerData, true)}]
 		<br>
 		Currently: ${OnlineState(playerData)}
 		<br>

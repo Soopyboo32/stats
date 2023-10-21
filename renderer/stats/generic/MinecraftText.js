@@ -1,0 +1,105 @@
+import { css, html, staticCss, thisClass } from "../../../helpers.js";
+
+let minecraftTextStyle = staticCss.named("minecraft-text").css`{
+	@font-face {
+		font-family: "Minecraft";
+		src: url(/fonts/Minecraft.ttf);
+	}
+
+	${thisClass} {
+		font-family: "Minecraft", serif;
+		text-shadow: 1px 1px #595959;
+	}
+}`;
+
+export function MinecraftText(str) {
+	return ` <span ${minecraftTextStyle}>${addColors(str)}</span> `;
+}
+
+let colors = {
+	'0': '000000',
+	'1': '0000AA',
+	'2': '00AA00',
+	'3': '00AAAA',
+	'4': 'AA0000',
+	'5': 'AA00AA',
+	'6': 'FFAA00',
+	'7': 'AAAAAA',
+	'8': '555555',
+	'9': '5555FF',
+	'a': '55FF55',
+	'b': '55FFFF',
+	'c': 'FF5555',
+	'd': 'FF55FF',
+	'e': 'FFFF55',
+	'f': 'FFFFFF',
+};
+
+let special = {
+	'l': 'font-weight:bold',
+	'm': 'text-decoration:line-through',
+	'n': 'text-decoration:underline',
+	'o': 'font-style:italic',
+	'r': undefined //reset
+};
+
+function addColors(str) {
+	let ret = [];
+	let chars = str.split("");
+
+	ret.push(enterSection("f"));
+
+	let sectionLen = 0;
+	let color = "f";
+	let specialT = [];
+	let nextIsColor = false;
+	for (let char of chars) {
+		if (char === "§") {
+			nextIsColor = true;
+			continue;
+		}
+		if (nextIsColor) {
+			char = char.toLowerCase();
+
+			if (char === "r") {
+				if (color === "f" && specialT.length === 0) continue; //skip unneeded color codes
+				color = "f";
+				specialT = [];
+			} else if (special[char]) {
+				let oldLen = specialT.length;
+				specialT.push(char);
+				specialT = [...new Set(specialT)];
+				if (oldLen === specialT.length) continue; //skip unneeded color codes
+			} else {
+				if (color === char && specialT.length === 0) continue; //skip unneeded color codes
+				color = char;
+				specialT = [];
+			}
+
+			ret[ret.length - 1] += exitSection();
+
+			if (sectionLen === 0) ret.pop(); //remove sections with 0 chars
+
+			ret.push(enterSection(color, specialT));
+			nextIsColor = false;
+			continue;
+		}
+		ret[ret.length - 1] += char;
+		sectionLen++;
+	}
+
+	ret[ret.length - 1] += exitSection();
+
+	return ret.join("");
+}
+
+function enterSection(color, special = []) {
+	return html`<span ${css`
+		color: #${colors[color] || colors["f"]};
+		${special.map(v => special[v]).join(";")}
+	`.toString().replace(/[ \n\t]/g, "")}>`;
+}
+
+function exitSection() {
+	return html`</span>`;
+}

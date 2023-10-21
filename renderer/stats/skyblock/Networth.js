@@ -9,7 +9,6 @@ export function Networth(playerData) {
 
 	playerData.onUpdate(() => networth.exists(), () => {
 		networth.renderInner(getNwStr(playerData.sbData.networth));
-		console.log(playerData.sbData);
 	});
 
 	return html`<span ${networth}>${getNwStr(playerData.sbData.networth)}</span>`;
