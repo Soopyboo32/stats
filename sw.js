@@ -1,4 +1,4 @@
-let version = 2;
+let version = 3;
 let commit = "";
 let cacheCommitToUse = "";
 
@@ -13,6 +13,10 @@ self.addEventListener("install", event => {
 self.addEventListener("activate", event => {
 	clients.claim();
 	console.log("Service worker activated");
+
+	setInterval(async () => {
+		await updateCommit();
+	}, 60000 * 60); //every hour
 });
 
 self.addEventListener('fetch', event => {
@@ -65,6 +69,7 @@ async function updateCommit() {
 	if (!updating && !keys.includes(commit)) {
 		updating = true;
 		console.log("Updating website...");
+		let start = Date.now();
 		await loadFiles();
 
 		await Promise.all(keys.map(key => {
@@ -76,7 +81,7 @@ async function updateCommit() {
 
 		cacheCommitToUse = commit;
 		updating = false;
-		console.log("Finished updating!")
+		console.log("Finished updating! (Took " + (Date.now() - start) + " ms)");
 
 		//TODO: send some sort of update avalible notification?
 	}
