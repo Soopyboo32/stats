@@ -16,7 +16,7 @@ let appCss = staticCss.named("app").css`${thisClass} {
 
 let contentDivCss = staticCss.named("content").css`${thisClass} {
 	margin: 5px;
-}`
+}`;
 
 let appState = new Observable({
 	player: undefined,
