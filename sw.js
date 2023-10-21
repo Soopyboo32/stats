@@ -13,11 +13,11 @@ self.addEventListener("install", event => {
 self.addEventListener("activate", event => {
 	clients.claim();
 	console.log("Service worker activated");
-
-	setInterval(async () => {
-		await updateCommit();
-	}, 60000 * 60); //every hour
 });
+
+setInterval(async () => {
+	await updateCommit();
+}, 60000 * 60); //every hour
 
 self.addEventListener('fetch', event => {
 	const url = new URL(event.request.url);
