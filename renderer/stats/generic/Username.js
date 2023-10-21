@@ -10,10 +10,9 @@ export function Username(playerData) {
 
 	playerData.onUpdate(() => name.exists(), () => {
 		name.renderInner(MinecraftText(getName(playerData)));
-		console.log(playerData);
 	});
 
-	return html`<span ${name}> ${MinecraftText(getName(playerData))}</span>`;
+	return html`<span ${name}> ${MinecraftText(getName(playerData))} </span>`;
 }
 
 function getName(playerData) {
