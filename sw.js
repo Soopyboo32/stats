@@ -28,13 +28,11 @@ self.addEventListener('fetch', event => {
 				updateCommit();
 			}
 
-			if (commit === "DEV" || url.pathname === "/commit.txt" || url.pathname === "/files.txt") {
+			if (commit.startsWith("DEV-") || url.pathname === "/commit.txt" || url.pathname === "/files.txt") {
 				return await fetch(url);
 			}
 
-			caches.//if (file) {
-				let;
-			cache = await caches.open(commit);
+			let cache = await caches.open(commit);
 			return cache.match(url.pathname);
 			// } else {
 			// 	console.log("File not in cache!", url);
@@ -55,7 +53,7 @@ let updating = false;
 async function updateCommit() {
 	let res = await fetch("/commit.txt");
 	commit = await res.text();
-	commit += version;
+	commit += "-" + version;
 
 	if (!cacheCommitToUse) {
 		cacheCommitToUse = commit;
