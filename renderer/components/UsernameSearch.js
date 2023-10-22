@@ -95,7 +95,7 @@ let headerSearchIconContainerCss = staticCss.named("search-icon-container").css`
 export function UsernameSearch(callback) {
 	//TODO: tab completion!
 
-	let input = useRef().onEnter(() => {
+	let input = useRef().onEnterKey(() => {
 		let searchPlayer = input.getElm().value;
 		if (searchPlayer.trim() === "") return;
 		input.getElm().value = "";

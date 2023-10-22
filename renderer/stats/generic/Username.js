@@ -1,6 +1,6 @@
 import { PlayerData } from "../../../api/PlayerData.js";
 import { html, useRef } from "../../../helpers.js";
-import { MinecraftText } from "./MinecraftText.js";
+import { MinecraftText } from "../../generic/MinecraftText.js";
 
 /**
  * @param {PlayerData} playerData

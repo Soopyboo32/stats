@@ -1,7 +1,10 @@
 /**
  * @typedef {Object} Reference
  * @property {(callback: (this: HTMLElement, ev: MouseEvent) => any) => Reference} onClick
- * @property {(callback: () => any) => Reference} onEnter
+ * @property {(callback: () => any) => Reference} onEnterKey
+ * @property {(callback: (MouseEvent) => any) => Reference} onHoverEnter
+ * @property {(callback: (MouseEvent) => any) => Reference} onHoverMove
+ * @property {(callback: (MouseEvent) => any) => Reference} onHoverExit
  * @property {(data: String) => Reference} reRender
  * @property {(data: String) => Reference} renderInner
  * @property {() => boolean} exists
@@ -27,23 +30,27 @@ export function useRef() {
 	let ref = {
 		toString: () => `id="${id}"`,
 		onClick: (callback) => {
-			setTimeout(() => {
-				let elm = ref.getElm();
-				if (!elm) return;
-				elm.addEventListener("click", callback);
+			onEventRaw(ref, "click", callback);
+			return ref;
+		},
+		onEnterKey: (callback) => {
+			onEventRaw(ref, "keyup", (key) => {
+				if (key.key === "Enter") {
+					callback();
+				}
 			});
 			return ref;
 		},
-		onEnter: (callback) => {
-			setTimeout(() => {
-				let elm = ref.getElm();
-				if (!elm) return;
-				elm.addEventListener("keyup", (key) => {
-					if (key.key === "Enter") {
-						callback();
-					}
-				});
-			});
+		onHoverEnter: (callback) => {
+			onEventRaw(ref, "mouseenter", callback);
+			return ref;
+		},
+		onHoverMove: (callback) => {
+			onEventRaw(ref, "mousemove", callback);
+			return ref;
+		},
+		onHoverExit: (callback) => {
+			onEventRaw(ref, "mouseleave", callback);
 			return ref;
 		},
 		reRender: (data) => {
@@ -88,6 +95,28 @@ export function useRef() {
 	}, 1000);
 
 	return ref;
+}
+
+/**
+ * @param ref {Reference}
+ * @param callback
+ */
+function onEventRaw(ref, event, callback) {
+	let elm = ref.getElm();
+	if (elm) {
+		elm.addEventListener(event, (...args) => {
+			callback(...args);
+		});
+		return;
+	}
+
+	setTimeout(() => {
+		let elm = ref.getElm();
+		if (!elm) return;
+		elm.addEventListener(event, (...args) => {
+			callback(...args);
+		});
+	});
 }
 
 function toHtmlString(asd) {

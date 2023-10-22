@@ -1,4 +1,4 @@
-import { css, html, staticCss, thisClass } from "../../../helpers.js";
+import { css, html, staticCss, thisClass } from "../../helpers.js";
 
 let minecraftTextStyle = staticCss.named("minecraft-text").css`{
 	@font-face {
