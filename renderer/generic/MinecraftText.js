@@ -1,4 +1,4 @@
-import { css, html, staticCss, thisClass } from "../../helpers.js";
+import { css, html, staticCss, thisClass, useRef } from "../../helpers.js";
 
 let minecraftTextStyle = staticCss.named("minecraft-text").css`{
 	@font-face {
@@ -129,12 +129,13 @@ function addColors(str) {
 let chromaCss = staticCss.named("text-chroma").css`{
 	${thisClass} {
 		background-image: repeating-linear-gradient(
-			90deg,
+			-45deg,
 			hsl(calc(0 * 360 / 5), 100%, 50%),
 			hsl(calc(1 * 360 / 5), 100%, 50%),
 			hsl(calc(2 * 360 / 5), 100%, 50%),
 			hsl(calc(3 * 360 / 5), 100%, 50%),
 			hsl(calc(4 * 360 / 5), 100%, 50%),
+			hsl(calc(5 * 360 / 5), 100%, 50%),
 			hsl(calc(5 * 360 / 5), 100%, 50%) 100px
 		);
 		-webkit-background-clip: text;
@@ -144,9 +145,11 @@ let chromaCss = staticCss.named("text-chroma").css`{
 		filter: drop-shadow(2px 2px #333);
 		animation-name: ${thisClass.uuid}-background;
 		animation-iteration-count: infinite;
-		animation-duration: 400000s;
+		animation-duration: 40000s;
 		animation-timing-function: linear;
 		animation-direction: normal;
+		background-size: 142px 142px;
+		background-origin: padding-box;
 	}
 
 	@keyframes ${thisClass.uuid}-background {
@@ -155,22 +158,49 @@ let chromaCss = staticCss.named("text-chroma").css`{
 		}
 
 		to {
-			background-position-x: 10000000px;
+			background-position-x: 1000000px;
 		}
 	}
 }`;
 
 function enterSection(color, specialC = []) {
 	if (color === "z") {
-		return html`<span ${chromaCss} ${css`
-			${specialC.map(v => special[v]).join(";")}
+		let ref = useRef();
+		let oldOffset = 0;
+		let specialCss = specialC.map(v => special[v]).join(";");
+
+		setTimeout(() => {
+			oldOffset = updateChroma(ref, specialCss, oldOffset);
+		});
+
+		let id = setInterval(() => {
+			oldOffset = updateChroma(ref, specialCss, oldOffset);
+		}, 1000);
+
+		ref.onRemove(() => clearInterval(id));
+
+		return html`<span ${ref} ${chromaCss} ${css`
+		  ${specialC.map(v => special[v]).join(";")}
 		`}>`;
 	}
 	return html`<span ${css`
-		color: #${colors[color] || colors["f"]};
-		text-shadow: 2px 2px #${shadowColors[color] || shadowColors["f"]};
-		${specialC.map(v => special[v]).join(";")}
+	  color: #${colors[color] || colors["f"]};
+	  text-shadow: 2px 2px #${shadowColors[color] || shadowColors["f"]};
+	  ${specialC.map(v => special[v]).join(";")}
 	`}>`;
+}
+
+function updateChroma(ref, specialC, oldOffset) {
+	if (!ref.exists()) return;
+	let offset = ref.getElm().offsetTop + ref.getElm().offsetLeft;
+	if (offset !== oldOffset) {
+		ref.css`
+			background-position-y: ${-offset}px;
+			${specialC}
+		`;
+	}
+
+	return offset;
 }
 
 function exitSection() {
