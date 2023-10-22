@@ -150,7 +150,12 @@ export function css(...args) {
 function toCssString(asd) {
 	let css = "";
 	asd[0].forEach((s, i) => {
-		css += s + (asd[i + 1] || "");
+		if ((typeof asd[i + 1] == "object" || typeof asd[i + 1] == "function")
+			&& (asd[i + 1]._classType === "DynamicCss")) {
+			css += s + asd[i + 1].getRawCss();
+		} else {
+			css += s + (asd[i + 1] || "");
+		}
 	});
 	return css;
 }
@@ -164,8 +169,9 @@ function fromCssString(str) {
 
 		return fromCssString(val + css);
 	};
-	ret.toString = () => `style="${val.replace("\"", "\\\"").replace(/[\n\t]/g, "")}"`;
+	ret.toString = () => `style="${val.replace("\"", "\\\"").replace(/[\n\t]/g, "").replace(/;;+/g, ";")}"`;
 	ret.getRawCss = () => val;
+	ret._classType = "DynamicCss";
 
 	return ret;
 }
@@ -205,7 +211,11 @@ function toStaticCssData(asd) {
 	asd[0].forEach((s, i) => {
 		css.push(s);
 		if ((typeof asd[i + 1] == "object" || typeof asd[i + 1] == "function")
-			&& (asd[i + 1].internal_isCssClassGetter === true || asd[i + 1]._classType === "StaticCss")) {
+			&& (
+				asd[i + 1].internal_isCssClassGetter === true
+				|| asd[i + 1].internal_isCssClassUUIDGetter === true
+				|| asd[i + 1]._classType === "StaticCss"
+			)) {
 			css.push(asd[i + 1]);
 		} else if (asd[i + 1]) {
 			css.push(asd[i + 1] + "");
@@ -244,6 +254,7 @@ function fromStaticCssData(data, classes = [], nextName) {
 	};
 	ret.getCss = () => val.map(d => {
 		if (d.internal_isCssClassGetter) return `.${classes[classes.length - 1]}`;
+		if (d.internal_isCssClassUUIDGetter) return `${classes[classes.length - 1]}`;
 		if (d._classType === "StaticCss") return `.${d.getClassName()}`;
 
 		return d;
@@ -261,7 +272,10 @@ function fromStaticCssData(data, classes = [], nextName) {
 }
 
 export let thisClass = {
-	internal_isCssClassGetter: true
+	internal_isCssClassGetter: true,
+	uuid: {
+		internal_isCssClassUUIDGetter: true,
+	}
 };
 
 let generatedIds = new Set([""]);

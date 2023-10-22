@@ -26,5 +26,6 @@ export function ErrorContent(playerData) {
 			Error loading stats for ${playerData.username}
 			<br>
 			${playerData.error}
-		</div>`;
+		</div>
+	`;
 }
