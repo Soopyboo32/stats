@@ -1,5 +1,5 @@
-Number.prototype.floored = function (digits) {
-	let pow = Math.pow(10, digits);
+Number.prototype.floored = function (fractionDigits = 0) {
+	let pow = Math.pow(10, fractionDigits);
 	return Math.floor(this * pow) / pow;
 };
 

@@ -11,10 +11,7 @@ let minecraftTextStyle = staticCss.named("minecraft-text").css`{
 	}
 }`;
 
-/**
- * @param str
- * @param options NOTE THIS IS NOT SUPPORTED YET
- */
+//TODO: make shadow: false work
 export function MinecraftText(str, {shadow = true} = {}) {
 	return `<span ${minecraftTextStyle}>${addColors(str)}</span>`;
 }
@@ -103,6 +100,7 @@ function addColors(str) {
 			if (sectionLen === 0) ret.pop(); //remove sections with 0 chars
 
 			ret.push(enterSection(color, specialT));
+			sectionLen = 0;
 			nextIsColor = false;
 			continue;
 		}
