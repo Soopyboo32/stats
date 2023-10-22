@@ -1,26 +1,21 @@
 import { staticCss, thisClass } from "../../../helpers.js";
-import { colors } from "../../css.js";
 
 let startColor = "#25025C";
 let endColor = "#180134";
 
 //TODO: better border
-let wrapperCss = staticCss.named("hover-wrapper").css`{
-	${thisClass} {
-		border: 1px solid #120313;
-		position: absolute;
-		border-radius: 3px;
-		background: linear-gradient(to bottom, ${startColor}, ${endColor});
-		padding: 2px;
-	}
+let wrapperCss = staticCss.named("hover-wrapper").css`${thisClass} {
+	border: 1px solid #120313;
+	position: absolute;
+	border-radius: 3px;
+	background: linear-gradient(to bottom, ${startColor}, ${endColor});
+	padding: 2px;
 }`;
 
-let internalCss = staticCss.named("hover-inner").css`{
-	${thisClass} {
-		padding: 4px;
-		background: #120313;
-	}
-}`
+let internalCss = staticCss.named("hover-inner").css`${thisClass} {
+	padding: 4px;
+	background: #120313;
+}`;
 
 /**
  * @param ref {Reference}
@@ -45,18 +40,18 @@ export function Hover(ref, elm) {
 	});
 
 	ref.onHoverMove((e) => {
-		if(!onScreen) return;
+		if (!onScreen) return;
 		position(wrapper, e);
 	});
 
 	ref.onHoverExit((e) => {
-		if(!onScreen) return;
+		if (!onScreen) return;
 		wrapperInner.innerHTML = "";
 		document.body.removeChild(wrapper);
 	});
 
 	ref.onRemove((e) => {
-		if(!onScreen) return;
+		if (!onScreen) return;
 		wrapper.remove();
 		wrapper = undefined;
 	});

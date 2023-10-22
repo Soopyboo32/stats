@@ -81,16 +81,28 @@ function addColors(str) {
 			char = char.toLowerCase();
 
 			if (char === "r") {
-				if (color === "f" && specialT.length === 0) continue; //skip unneeded color codes
+				if (color === "f" && specialT.length === 0) {
+					//skip unneeded color codes
+					nextIsColor = false;
+					continue;
+				}
 				color = "f";
 				specialT = [];
 			} else if (special[char]) {
 				let oldLen = specialT.length;
 				specialT.push(char);
 				specialT = [...new Set(specialT)];
-				if (oldLen === specialT.length) continue; //skip unneeded color codes
+				if (oldLen === specialT.length) {
+					//skip unneeded color codes
+					nextIsColor = false;
+					continue;
+				}
 			} else {
-				if (color === char && specialT.length === 0) continue; //skip unneeded color codes
+				if (color === char && specialT.length === 0) {
+					//skip unneeded color codes
+					nextIsColor = false;
+					continue;
+				}
 				color = char;
 				specialT = [];
 			}

@@ -7,6 +7,7 @@
  * @property {(callback: (MouseEvent) => any) => Reference} onHoverExit
  * @property {(data: String) => Reference} reRender
  * @property {(data: String) => Reference} renderInner
+ * @property {() => Reference} css
  * @property {() => boolean} exists
  * @property {() => HTMLElement | null} getElm
  * @property {(callback: () => any) => Reference} onRemove
