@@ -163,7 +163,7 @@ function fromCssString(str) {
 
 		return fromCssString(val + css);
 	};
-	ret.toString = () => `style="${val.replace("\"", "\\\"")}"`;
+	ret.toString = () => `style="${val.replace("\"", "\\\"").replace(/[\n\t]/g, "")}"`;
 	ret.getRawCss = () => val;
 
 	return ret;

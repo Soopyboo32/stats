@@ -8,12 +8,15 @@ let minecraftTextStyle = staticCss.named("minecraft-text").css`{
 
 	${thisClass} {
 		font-family: "Minecraft", serif;
-		text-shadow: 1px 1px #595959;
 	}
 }`;
 
-export function MinecraftText(str) {
-	return ` <span ${minecraftTextStyle}>${addColors(str)}</span> `;
+/**
+ * @param str
+ * @param options NOTE THIS IS NOT SUPPORTED YET
+ */
+export function MinecraftText(str, {shadow = true} = {}) {
+	return `<span ${minecraftTextStyle}>${addColors(str)}</span>`;
 }
 
 let colors = {
@@ -33,6 +36,25 @@ let colors = {
 	'd': 'FF55FF',
 	'e': 'FFFF55',
 	'f': 'FFFFFF',
+};
+
+let shadowColors = {
+	'0': '000000',
+	'1': '00002A',
+	'2': '002A00',
+	'3': '002A2A',
+	'4': '2A0000',
+	'5': '2A002A',
+	'6': '2B2A00',
+	'7': '2A2A2A',
+	'8': '151515',
+	'9': '15153F',
+	'a': '153F15',
+	'b': '153F3F',
+	'c': '3F1515',
+	'd': '3F153F',
+	'e': '3F3F15',
+	'f': '3F3F3F',
 };
 
 let special = {
@@ -93,11 +115,12 @@ function addColors(str) {
 	return ret.join("");
 }
 
-function enterSection(color, special = []) {
+function enterSection(color, specialC = []) {
 	return html`<span ${css`
 		color: #${colors[color] || colors["f"]};
-		${special.map(v => special[v]).join(";")}
-	`.toString().replace(/[ \n\t]/g, "")}>`;
+		text-shadow: 2px 2px #${shadowColors[color] || shadowColors["f"]};
+		${specialC.map(v => special[v]).join(";")}
+	`}>`;
 }
 
 function exitSection() {
