@@ -8,8 +8,7 @@ export function MainPage() {
 
 	return html`
 		Wow, this is the main page!<br>
-		${MinecraftText("TESTING §zCHROMA!!!!§rASDASDASD")}<br>
-		${MinecraftText("§zCHROMAAAAAAAAAA!!!!")}<br>
+		${MinecraftText("TESTING §zCHROMA!!!!§r WOW WOW")}<br>
 		${MinecraftText("§zCHROMAAAAAAAAAA!!!!")}<br>
 		${MinecraftText("§zCHROMAAAAAAAAAA!!!!")}<br>
 	`;

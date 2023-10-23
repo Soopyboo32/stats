@@ -126,7 +126,7 @@ function addColors(str) {
 	return ret.join("");
 }
 
-let chromaCss = staticCss.named("text-chroma").css`{
+let chromaCss = staticCss.named("chroma-shadow").css`{
 	${thisClass} {
 		display: inline-block;
 		background-image: repeating-linear-gradient(
@@ -171,7 +171,7 @@ let chromaCss = staticCss.named("text-chroma").css`{
 	}
 }`;
 
-let chromaShadowCss = staticCss.named("chroma-shadow").css`{
+let chromaShadowCss = staticCss.named("chroma-text").css`{
 	${thisClass} {
 		display: inline-block;
 		width: 0;
