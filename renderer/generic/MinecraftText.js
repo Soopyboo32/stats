@@ -13,7 +13,7 @@ let minecraftTextStyle = staticCss.named("minecraft-text").css`{
 
 //TODO: make shadow: false work
 export function MinecraftText(str, {shadow = true} = {}) {
-	return `<span ${minecraftTextStyle}>${addColors(str)}</span>`;
+	return `<span ${minecraftTextStyle}>${addColors(str, shadow)}</span>`;
 }
 
 let colors = {
@@ -63,11 +63,11 @@ let special = {
 	'r': undefined //reset
 };
 
-function addColors(str) {
+function addColors(str, shadow = true) {
 	let ret = [];
 	let chars = str.split("");
 
-	ret.push(enterSection("f"));
+	ret.push(enterSection("f", [], shadow));
 
 	let sectionLen = 0;
 	let color = "f";
@@ -112,7 +112,7 @@ function addColors(str) {
 
 			if (sectionLen === 0) ret.pop(); //remove sections with 0 chars
 
-			ret.push(enterSection(color, specialT));
+			ret.push(enterSection(color, specialT, shadow));
 			sectionLen = 0;
 			nextIsColor = false;
 			continue;
@@ -126,23 +126,43 @@ function addColors(str) {
 	return ret.join("");
 }
 
-let chromaCss = staticCss.named("chroma-shadow").css`{
+let chromaGradient = `
+	repeating-linear-gradient(
+		-45deg,
+		hsl(calc(0 * 360 / 10), 100%, 50%),
+		hsl(calc(1 * 360 / 10), 100%, 50%),
+		hsl(calc(2 * 360 / 10), 100%, 50%),
+		hsl(calc(3 * 360 / 10), 100%, 50%),
+		hsl(calc(4 * 360 / 10), 100%, 50%),
+		hsl(calc(5 * 360 / 10), 100%, 50%),
+		hsl(calc(6 * 360 / 10), 100%, 50%),
+		hsl(calc(7 * 360 / 10), 100%, 50%),
+		hsl(calc(8 * 360 / 10), 100%, 50%),
+		hsl(calc(9 * 360 / 10), 100%, 50%),
+		hsl(calc(10 * 360 / 10), 100%, 50%) 100px
+	)
+`;
+
+let chromaShadowGradient = `
+	repeating-linear-gradient(
+		-45deg,
+		hsl(calc(0 * 360 / 10), 50%, 20%),
+		hsl(calc(1 * 360 / 10), 50%, 20%),
+		hsl(calc(2 * 360 / 10), 50%, 20%),
+		hsl(calc(3 * 360 / 10), 50%, 20%),
+		hsl(calc(4 * 360 / 10), 50%, 20%),
+		hsl(calc(5 * 360 / 10), 50%, 20%),
+		hsl(calc(6 * 360 / 10), 50%, 20%),
+		hsl(calc(7 * 360 / 10), 50%, 20%),
+		hsl(calc(8 * 360 / 10), 50%, 20%),
+		hsl(calc(9 * 360 / 10), 50%, 20%),
+		hsl(calc(10 * 360 / 10), 50%, 20%) 100px
+	)
+`;
+
+let chromaCss = staticCss.named("chroma-text").css`{
 	${thisClass} {
-		display: inline-block;
-		background-image: repeating-linear-gradient(
-			-45deg,
-			hsl(calc(0 * 360 / 10), 50%, 20%),
-			hsl(calc(1 * 360 / 10), 50%, 20%),
-			hsl(calc(2 * 360 / 10), 50%, 20%),
-			hsl(calc(3 * 360 / 10), 50%, 20%),
-			hsl(calc(4 * 360 / 10), 50%, 20%),
-			hsl(calc(5 * 360 / 10), 50%, 20%),
-			hsl(calc(6 * 360 / 10), 50%, 20%),
-			hsl(calc(7 * 360 / 10), 50%, 20%),
-			hsl(calc(8 * 360 / 10), 50%, 20%),
-			hsl(calc(9 * 360 / 10), 50%, 20%),
-			hsl(calc(10 * 360 / 10), 50%, 20%) 100px
-		);
+		background-image: ${chromaGradient};
 		background-clip: text;
 		-webkit-background-clip: text;
 		color: transparent;
@@ -155,9 +175,6 @@ let chromaCss = staticCss.named("chroma-shadow").css`{
 		background-size: 142px 142px;
 		background-origin: padding-box;
 		position: relative;
-		top: 2px;
-		left: 2px;
-		padding-right: 1px;
 	}
 
 	@keyframes ${thisClass.uuid}-background {
@@ -171,7 +188,29 @@ let chromaCss = staticCss.named("chroma-shadow").css`{
 	}
 }`;
 
-let chromaShadowCss = staticCss.named("chroma-text").css`{
+let chromaShadowShadowCss = staticCss.named("chroma-shadow-shadow").css`{
+	${thisClass} {
+		display: inline-block;
+		background-image: ${chromaShadowGradient};
+		background-clip: text;
+		-webkit-background-clip: text;
+		color: transparent;
+		-webkit-text-fill-color: transparent;
+		animation-name: ${chromaCss.getClassName}-background;
+		animation-iteration-count: infinite;
+		animation-duration: 40000s;
+		animation-timing-function: linear;
+		animation-direction: normal;
+		background-size: 142px 142px;
+		background-origin: padding-box;
+		position: relative;
+		top: 2px;
+		left: 2px;
+		padding-right: 1px;
+	}
+}`;
+
+let chromaShadowCss = staticCss.named("chroma-shadow-text").css`{
 	${thisClass} {
 		display: inline-block;
 		width: 0;
@@ -179,20 +218,7 @@ let chromaShadowCss = staticCss.named("chroma-text").css`{
 	}
 
 	${thisClass} > span {
-		background-image: repeating-linear-gradient(
-			-45deg,
-			hsl(calc(0 * 360 / 10), 100%, 50%),
-			hsl(calc(1 * 360 / 10), 100%, 50%),
-			hsl(calc(2 * 360 / 10), 100%, 50%),
-			hsl(calc(3 * 360 / 10), 100%, 50%),
-			hsl(calc(4 * 360 / 10), 100%, 50%),
-			hsl(calc(5 * 360 / 10), 100%, 50%),
-			hsl(calc(6 * 360 / 10), 100%, 50%),
-			hsl(calc(7 * 360 / 10), 100%, 50%),
-			hsl(calc(8 * 360 / 10), 100%, 50%),
-			hsl(calc(9 * 360 / 10), 100%, 50%),
-			hsl(calc(10 * 360 / 10), 100%, 50%) 100px
-		);
+		background-image: ${chromaGradient};
 		background-size: 142px 142px;
 		background-origin: padding-box;
 		background-clip: text;
@@ -208,7 +234,7 @@ let chromaShadowCss = staticCss.named("chroma-text").css`{
 	}
 }`;
 
-function enterSection(color, specialC = []) {
+function enterSection(color, specialC = [], shadow = true) {
 	if (color === "z") {
 		let ref = useRef();
 		let refInner = useRef();
@@ -225,13 +251,19 @@ function enterSection(color, specialC = []) {
 
 		ref.onRemove(() => clearInterval(id));
 
-		return html`<span ${ref} ${chromaCss} ${css`
+		if (!shadow) {
+			return html`<span ${ref} ${chromaCss} ${css`
+			  ${specialC.map(v => special[v]).join(";")}
+			`}>`;
+		}
+
+		return html`<span ${ref} ${chromaShadowShadowCss} ${css`
 		  ${specialC.map(v => special[v]).join(";")}
 		`}><span ${refInner} ${chromaShadowCss}><span></span></span>`;
 	}
 	return html`<span ${css`
 	  color: #${colors[color] || colors["f"]};
-	  text-shadow: 2px 2px #${shadowColors[color] || shadowColors["f"]};
+	  ${shadow ? `text-shadow: 2px 2px #${shadowColors[color] || shadowColors["f"]};` : ""}
 	  ${specialC.map(v => special[v]).join(";")}
 	`}>`;
 }
@@ -250,7 +282,7 @@ function updateChroma(ref, refInner, specialC, oldOffset) {
 			background-position-y: ${-offset}px;
 			${specialC}
 		`;
-		refInner.getElm().children[0].style.backgroundPositionY = ( - offset) + "px";
+		refInner.getElm().children[0].style.backgroundPositionY = (-offset) + "px";
 		refInner.getElm().children[0].innerText = ref.getElm().childNodes[1].textContent;
 	}
 

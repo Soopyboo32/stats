@@ -1,5 +1,4 @@
 import { html } from "../helpers.js";
-import { MinecraftText } from "./generic/MinecraftText.js";
 
 let title = document.getElementById("title");
 
@@ -7,9 +6,6 @@ export function MainPage() {
 	title.innerHTML = "Soopy Stats Viewer";
 
 	return html`
-		Wow, this is the main page!<br>
-		${MinecraftText("TESTING §zCHROMA!!!!§r WOW WOW")}<br>
-		${MinecraftText("§zCHROMAAAAAAAAAA!!!!")}<br>
-		${MinecraftText("§zCHROMAAAAAAAAAA!!!!")}<br>
+		Wow, this is the main page!
 	`;
 }
