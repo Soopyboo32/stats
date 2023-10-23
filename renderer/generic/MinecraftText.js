@@ -196,7 +196,7 @@ let chromaShadowShadowCss = staticCss.named("chroma-shadow-shadow").css`{
 		-webkit-background-clip: text;
 		color: transparent;
 		-webkit-text-fill-color: transparent;
-		animation-name: ${chromaCss.getClassName}-background;
+		animation-name: ${chromaCss.getClassName()}-background;
 		animation-iteration-count: infinite;
 		animation-duration: 40000s;
 		animation-timing-function: linear;
