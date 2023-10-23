@@ -128,21 +128,25 @@ function addColors(str) {
 
 let chromaCss = staticCss.named("text-chroma").css`{
 	${thisClass} {
+		display: inline-block;
 		background-image: repeating-linear-gradient(
 			-45deg,
-			hsl(calc(0 * 360 / 5), 100%, 50%),
-			hsl(calc(1 * 360 / 5), 100%, 50%),
-			hsl(calc(2 * 360 / 5), 100%, 50%),
-			hsl(calc(3 * 360 / 5), 100%, 50%),
-			hsl(calc(4 * 360 / 5), 100%, 50%),
-			hsl(calc(5 * 360 / 5), 100%, 50%),
-			hsl(calc(5 * 360 / 5), 100%, 50%) 100px
+			hsl(calc(0 * 360 / 10), 50%, 20%),
+			hsl(calc(1 * 360 / 10), 50%, 20%),
+			hsl(calc(2 * 360 / 10), 50%, 20%),
+			hsl(calc(3 * 360 / 10), 50%, 20%),
+			hsl(calc(4 * 360 / 10), 50%, 20%),
+			hsl(calc(5 * 360 / 10), 50%, 20%),
+			hsl(calc(6 * 360 / 10), 50%, 20%),
+			hsl(calc(7 * 360 / 10), 50%, 20%),
+			hsl(calc(8 * 360 / 10), 50%, 20%),
+			hsl(calc(9 * 360 / 10), 50%, 20%),
+			hsl(calc(10 * 360 / 10), 50%, 20%) 100px
 		);
+		background-clip: text;
 		-webkit-background-clip: text;
 		color: transparent;
 		-webkit-text-fill-color: transparent;
-		-webkit-filter: drop-shadow(2px 2px #333);
-		filter: drop-shadow(2px 2px #333);
 		animation-name: ${thisClass.uuid}-background;
 		animation-iteration-count: infinite;
 		animation-duration: 40000s;
@@ -150,6 +154,10 @@ let chromaCss = staticCss.named("text-chroma").css`{
 		animation-direction: normal;
 		background-size: 142px 142px;
 		background-origin: padding-box;
+		position: relative;
+		top: 2px;
+		left: 2px;
+		padding-right: 1px;
 	}
 
 	@keyframes ${thisClass.uuid}-background {
@@ -163,25 +171,63 @@ let chromaCss = staticCss.named("text-chroma").css`{
 	}
 }`;
 
+let chromaShadowCss = staticCss.named("chroma-shadow").css`{
+	${thisClass} {
+		display: inline-block;
+		width: 0;
+		overflow: visible;
+	}
+
+	${thisClass} > span {
+		background-image: repeating-linear-gradient(
+			-45deg,
+			hsl(calc(0 * 360 / 10), 100%, 50%),
+			hsl(calc(1 * 360 / 10), 100%, 50%),
+			hsl(calc(2 * 360 / 10), 100%, 50%),
+			hsl(calc(3 * 360 / 10), 100%, 50%),
+			hsl(calc(4 * 360 / 10), 100%, 50%),
+			hsl(calc(5 * 360 / 10), 100%, 50%),
+			hsl(calc(6 * 360 / 10), 100%, 50%),
+			hsl(calc(7 * 360 / 10), 100%, 50%),
+			hsl(calc(8 * 360 / 10), 100%, 50%),
+			hsl(calc(9 * 360 / 10), 100%, 50%),
+			hsl(calc(10 * 360 / 10), 100%, 50%) 100px
+		);
+		background-size: 142px 142px;
+		background-origin: padding-box;
+		background-clip: text;
+		-webkit-background-clip: text;
+		position: relative;
+		top: -2px;
+		left: -2px;
+		animation-name: ${chromaCss.getClassName()}-background;
+		animation-iteration-count: infinite;
+		animation-duration: 40000s;
+		animation-timing-function: linear;
+		animation-direction: normal;
+	}
+}`;
+
 function enterSection(color, specialC = []) {
 	if (color === "z") {
 		let ref = useRef();
+		let refInner = useRef();
 		let oldOffset = 0;
 		let specialCss = specialC.map(v => special[v]).join(";");
 
 		setTimeout(() => {
-			oldOffset = updateChroma(ref, specialCss, oldOffset);
+			oldOffset = updateChroma(ref, refInner, specialCss, oldOffset);
 		});
 
 		let id = setInterval(() => {
-			oldOffset = updateChroma(ref, specialCss, oldOffset);
+			oldOffset = updateChroma(ref, refInner, specialCss, oldOffset);
 		}, 1000);
 
 		ref.onRemove(() => clearInterval(id));
 
 		return html`<span ${ref} ${chromaCss} ${css`
 		  ${specialC.map(v => special[v]).join(";")}
-		`}>`;
+		`}><span ${refInner} ${chromaShadowCss}><span></span></span>`;
 	}
 	return html`<span ${css`
 	  color: #${colors[color] || colors["f"]};
@@ -190,7 +236,13 @@ function enterSection(color, specialC = []) {
 	`}>`;
 }
 
-function updateChroma(ref, specialC, oldOffset) {
+/**
+ * @param ref {Reference}
+ * @param refInner {Reference}
+ * @param specialC {string}
+ * @param oldOffset {number}
+ */
+function updateChroma(ref, refInner, specialC, oldOffset) {
 	if (!ref.exists()) return;
 	let offset = ref.getElm().offsetTop + ref.getElm().offsetLeft;
 	if (offset !== oldOffset) {
@@ -198,6 +250,8 @@ function updateChroma(ref, specialC, oldOffset) {
 			background-position-y: ${-offset}px;
 			${specialC}
 		`;
+		refInner.getElm().children[0].style.backgroundPositionY = ( - offset) + "px";
+		refInner.getElm().children[0].innerText = ref.getElm().childNodes[1].textContent;
 	}
 
 	return offset;
