@@ -24,10 +24,5 @@ function getName(playerData) {
 		return playerData.username;
 	}
 
-	if (playerData.username.toLowerCase() === "soopyboo32") {
-		//temp thing to test chroma
-		return playerData.playerData.prefix + "§z" + playerData.playerData.name;
-	}
-
 	return playerData.playerData.prefix + playerData.playerData.name;
 }

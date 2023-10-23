@@ -3,10 +3,11 @@ import { SbLevel } from "../skyblock/SbLevel.js";
 import { OnlineState } from "./OnlineState.js";
 import { html, useRef } from "../../../helpers.js";
 import { Networth } from "../skyblock/Networth.js";
+import { MinecraftText } from "../../generic/MinecraftText.js";
 
 export function PlayerInfo(playerData) {
 	return html`
-		${Username(playerData)} [${SbLevel(playerData, true)}]
+		${Username(playerData)} ${SbLevel(playerData, true, true)}
 		<br>
 		Currently: ${OnlineState(playerData)}
 		<br>

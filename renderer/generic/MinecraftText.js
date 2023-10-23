@@ -249,7 +249,16 @@ function enterSection(color, specialC = [], shadow = true) {
 			oldOffset = updateChroma(ref, refInner, specialCss, oldOffset);
 		}, 1000);
 
-		ref.onRemove(() => clearInterval(id));
+		let id2 = setInterval(() => {
+			oldOffset = updateChroma(ref, refInner, specialCss, oldOffset);
+		}, 50);
+
+		setTimeout(() => clearInterval(id2), 5000);
+
+		ref.onRemove(() => {
+			clearInterval(id);
+			clearInterval(id2);
+		});
 
 		if (!shadow) {
 			return html`<span ${ref} ${chromaCss} ${css`
@@ -268,7 +277,7 @@ function enterSection(color, specialC = [], shadow = true) {
 	`}>`;
 }
 
-let pageOpen = Date.now()
+let pageOpen = Date.now();
 
 /**
  * @param ref {Reference}
@@ -280,13 +289,22 @@ function updateChroma(ref, refInner, specialC, oldOffset) {
 	if (!ref.exists()) return;
 	let offset = ref.getElm().offsetTop + ref.getElm().offsetLeft;
 	if (offset !== oldOffset) {
-		let timeOffset = (Date.now()-pageOpen) / 1000 / 40000 * 1000000;
+		let timeOffset = (Date.now() - pageOpen) / 1000 / 40000 * 1000000;
 		ref.css`
-			background-position-y: ${timeOffset-offset}px;
+			background-position-y: ${timeOffset - offset}px;
 			${specialC}
 		`;
-		refInner.getElm().children[0].style.backgroundPositionY = (timeOffset-offset) + "px";
-		refInner.getElm().children[0].innerText = ref.getElm().childNodes[1].textContent;
+		refInner.getElm().children[0].style.backgroundPositionY = (timeOffset - offset) + "px";
+	}
+
+	let innerText = "";
+	let childNodes = ref.getElm().childNodes;
+	for (let i = 1; i < childNodes.length; i++) {
+		innerText += childNodes[i].textContent;
+	}
+
+	if (refInner.getElm().children[0].innerText !== innerText) {
+		refInner.getElm().children[0].innerText = innerText;
 	}
 
 	return offset;
