@@ -231,7 +231,7 @@ let chromaShadowCss = staticCss.named("chroma-shadow-text").css`{
 		animation-duration: 40000s;
 		animation-timing-function: linear;
 		animation-direction: normal;
-		text-wrap: nowrap;
+		white-space: nowrap;
 	}
 }`;
 
