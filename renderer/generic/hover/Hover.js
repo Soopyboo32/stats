@@ -64,7 +64,23 @@ export function Hover(ref, elm) {
 function position(wrapper, e) {
 	let x = e.x + 20;
 	let y = e.y - 30;
+	let right = false;
+	let bottom = false;
 
-	wrapper.style.left = x + "px";
-	wrapper.style.top = y + "px";
+	if (x > window.innerWidth - wrapper.clientWidth) {
+		x = window.innerWidth - e.x + 20;
+		right = true;
+	}
+	if (y > window.innerHeight - wrapper.clientHeight) {
+		y = window.innerHeight - e.x + 20;
+		right = true;
+	}
+
+	if(x < 2) x = 2;
+	if(y < 2) y = 2;
+
+	if (right) wrapper.style.right = x + "px";
+	else wrapper.style.left = x + "px";
+	if (bottom) wrapper.style.bottom = y + "px";
+	else wrapper.style.top = y + "px";
 }

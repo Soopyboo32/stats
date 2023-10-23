@@ -3,6 +3,8 @@ import { css, html, staticCss, thisClass, useRef } from "../helpers.js";
 import { Icon } from "./Icon.js";
 import { UsernameSearch } from "./components/UsernameSearch.js";
 import { buttonCss, colors } from "./css.js";
+import { Hover } from "./generic/hover/Hover.js";
+import { Lore } from "./generic/hover/Lore.js";
 
 let headerCss = staticCss.named("header").css`${thisClass} {
 	position: fixed;
@@ -147,6 +149,9 @@ function HeaderRightElement(refreshData) {
 		refreshButton.css`background-color: ${d.can ? colors.primary_dark : colors.grey};`;
 	});
 
+	Hover(settingsButton, () => {
+		return Lore("Hidden §zCHROMA§r Thingo", "wow so cool", "very real", "§zi spent a long time getting chroma to work", "§d:(");
+	});
 
 	return html`
 		<div ${headerContainerCss}>

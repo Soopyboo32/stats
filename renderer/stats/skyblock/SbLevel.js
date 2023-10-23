@@ -7,6 +7,7 @@ import { MinecraftText } from "../../generic/MinecraftText.js";
 /**
  * @param {PlayerData} playerData
  * @param integer
+ * @param minecraft
  */
 export function SbLevel(playerData, integer = false, minecraft = true) {
 	let level = useRef();
