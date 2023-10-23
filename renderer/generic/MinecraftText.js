@@ -268,6 +268,8 @@ function enterSection(color, specialC = [], shadow = true) {
 	`}>`;
 }
 
+let pageOpen = Date.now()
+
 /**
  * @param ref {Reference}
  * @param refInner {Reference}
@@ -278,11 +280,12 @@ function updateChroma(ref, refInner, specialC, oldOffset) {
 	if (!ref.exists()) return;
 	let offset = ref.getElm().offsetTop + ref.getElm().offsetLeft;
 	if (offset !== oldOffset) {
+		let timeOffset = (Date.now()-pageOpen) / 1000 / 40000 * 1000000;
 		ref.css`
-			background-position-y: ${-offset}px;
+			background-position-y: ${timeOffset-offset}px;
 			${specialC}
 		`;
-		refInner.getElm().children[0].style.backgroundPositionY = (-offset) + "px";
+		refInner.getElm().children[0].style.backgroundPositionY = (timeOffset-offset) + "px";
 		refInner.getElm().children[0].innerText = ref.getElm().childNodes[1].textContent;
 	}
 
