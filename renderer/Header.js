@@ -150,7 +150,14 @@ function HeaderRightElement(refreshData) {
 	});
 
 	Hover(settingsButton, () => {
-		return Lore("Hidden §zCHROMA§r Thingo", "wow so cool", "very real", "§zi spent a long time getting chroma to work", "§d:(");
+		return Lore(
+			"Hidden §zCHROMA§r Thingo",
+			"wow so cool",
+			"very real",
+			"§zi spent a long time getting chroma to work",
+			"§d:(",
+			"Soon ill add &k support: §kIIasdkjhgksdfg WOW!"
+		);
 	});
 
 	return html`

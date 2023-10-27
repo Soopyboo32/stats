@@ -54,9 +54,9 @@ function getColor(level) {
 	if(level >= 120) return "§a"
 	if(level >= 80) return "§e"
 	if(level >= 40) return "§f"
-	return "§8";
+	return "§7";
 }
 
 function getBracketColor(level) {
-	return "§7";
+	return "§8";
 }
