@@ -7,6 +7,7 @@ export class PlayerData {
 	profile;
 	/** @type {{}} */
 	playerData = {};
+	/** @type {SkyblockProfileData} */
 	sbData = {};
 	#updateCallbacks = [];
 	_observableIgnore = true;
@@ -54,7 +55,7 @@ export class PlayerData {
 			this.#callUpdates();
 		});
 
-		getSoopyApi("stat_next_to_name_stats/" + this.uuid).then(sbData => {
+		getSoopyApi("skyblock/stats/" + this.uuid).then(sbData => {
 			if (!sbData.success) {
 				this.error = "Server error downloading player skyblock stats: " + sbData.cause;
 				this.#callUpdates();
@@ -66,6 +67,7 @@ export class PlayerData {
 				//TODO: this
 				this.profile = "some-profile";
 			}
+			console.log(this)
 
 			this.#callUpdates();
 		});
