@@ -2,13 +2,11 @@ import { html, useRef } from "../../../helpers.js";
 import TimeSince from "../generic/TimeSince.js";
 
 export function OnlineState(playerData) {
-	let ref = useRef();
-
 	let state = getState(playerData);
 
-	playerData.onUpdate(() => ref.exists(), () => {
+	let ref = useRef().onRemove(playerData.onUpdate(() => {
 		ref.renderInner(getState(playerData));
-	});
+	}));
 
 	return html`<span ${ref}> ${state} </span>`;
 }

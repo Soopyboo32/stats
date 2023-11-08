@@ -5,13 +5,11 @@ import { html, numberWithCommas, useRef } from "../../../helpers.js";
  * @param {PlayerData} playerData
  */
 export function Networth(playerData) {
-	let networth = useRef();
+	let networth = useRef().onRemove(playerData.onUpdate(() => {
+		networth.renderInner(getNwStr(playerData.getSbPlayerData()?.networth?.total));
+	}));
 
-	playerData.onUpdate(() => networth.exists(), () => {
-		networth.renderInner(getNwStr(playerData.sbData.networth));
-	});
-
-	return html`<span ${networth}>${getNwStr(playerData.sbData.networth)}</span>`;
+	return html`<span ${networth}>${getNwStr(playerData.getSbPlayerData()?.networth?.total)}</span>`;
 }
 
 function getNwStr(nw) {

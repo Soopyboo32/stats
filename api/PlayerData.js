@@ -7,9 +7,9 @@ export class PlayerData {
 	profile;
 	/** @type {{}} */
 	playerData = {};
-	/** @type {SkyblockProfileData} */
-	sbData = {};
-	#updateCallbacks = [];
+	/** @type {SkyblockProfileData[]} */
+	sbData = [];
+	#updateCallbacks = new Set();
 	_observableIgnore = true;
 
 	constructor(name, profile) {
@@ -64,29 +64,52 @@ export class PlayerData {
 
 			this.sbData = sbData.data;
 			if (!this.profile) {
-				//TODO: this
-				this.profile = "some-profile";
+				let bestProfile = undefined;
+				let bestProfileExp = 0;
+				for (let profile of this.sbData) {
+					let player = profile.members.find(m => m.uuid.replaceAll("-", "") === this.uuid.replaceAll("-", ""));
+
+					if (player.sb_exp > bestProfileExp) {
+						bestProfileExp = player.sb_exp;
+						bestProfile = profile.profile_name;
+					}
+				}
+				this.profile = bestProfile;
 			}
-			console.log(this)
 
 			this.#callUpdates();
 		});
 	}
 
 	/**
-	 * @param {() => boolean} keepUpdateFunction function that returns true while this callback should exist
 	 * @param {() => {}} callback
+	 * @return {() => {}} removeCallbackFn
 	 */
-	onUpdate(keepUpdateFunction, callback) {
-		//TODO: use keepUpdateFunction to throw away callback and not get memory leaks
-		this.#updateCallbacks.push([keepUpdateFunction, callback]);
+	onUpdate(callback) {
+		this.#updateCallbacks.add(callback);
+
+		return () => {
+			this.#updateCallbacks.delete(callback);
+		};
 	}
 
 	#callUpdates() {
-		for (let [keepUpdateFunction, callback] of this.#updateCallbacks) {
-			if (keepUpdateFunction()) {
-				callback();
-			}
+		for (let callback of this.#updateCallbacks) {
+			callback();
 		}
+	}
+
+	/**
+	 * @returns {undefined|SkyblockProfileData}
+	 */
+	getSbProfileData() {
+		return this.sbData?.find(p => p.profile_name === this.profile);
+	}
+
+	/**
+	 * @returns {undefined|SkyblockProfileMemberData}
+	 */
+	getSbPlayerData() {
+		return this.getSbProfileData()?.members?.find(m => m.uuid.replaceAll("-", "") === this.uuid.replaceAll("-", ""));
 	}
 }

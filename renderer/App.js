@@ -24,6 +24,8 @@ let appState = new Observable({
 	playerData: undefined,
 });
 
+window.appState = appState;
+
 export function App() {
 	let contentDiv = useRef();
 

@@ -5,13 +5,12 @@ import { html, staticCss, thisClass, useRef } from "../../../helpers.js";
  * @param {PlayerData} playerData
  */
 export function AchievementsTable(playerData) {
-	let table = useRef();
-
-	playerData.onUpdate(() => table.exists(), () => {
+	let table = useRef().onRemove(playerData.onUpdate(() => {
 		table.renderInner(genTable(playerData));
-	});
+	}));
 
-	return html`One time achievements: <span ${table}>
+	return html`
+		<span ${table}>
         ${genTable(playerData)}
     </span>`;
 }

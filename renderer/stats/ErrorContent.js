@@ -8,18 +8,16 @@ let title = document.getElementById("title");
  * @param {PlayerData} playerData
  */
 export function ErrorContent(playerData) {
-	let ref = useRef();
-
 	title.innerHTML = "Soopy Stats Viewer";
 	document.location.hash = playerData.username + (playerData.profile ? "/" + playerData.profile : "");
 
-	playerData.onUpdate(() => ref.exists(), () => {
+	let ref = useRef().onRemove(playerData.onUpdate(() => {
 		document.location.hash = playerData.username + (playerData.profile ? "/" + playerData.profile : "");
 
 		if (!playerData.error) {
 			ref.reRender(Content(playerData));
 		}
-	});
+	}));
 
 	return html`
 		<div ${ref}>

@@ -6,11 +6,9 @@ import { MinecraftText } from "../../generic/MinecraftText.js";
  * @param {PlayerData} playerData
  */
 export function Username(playerData) {
-	let name = useRef();
-
-	playerData.onUpdate(() => name.exists(), () => {
+	let name = useRef().onRemove(playerData.onUpdate(() => {
 		name.renderInner(MinecraftText(getName(playerData)));
-	});
+	}));
 
 	return html`<span ${name}> ${MinecraftText(getName(playerData))} </span>`;
 }

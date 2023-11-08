@@ -76,6 +76,4 @@ export let cardCss = staticCss.named("card").css`${thisClass} {
 	webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.05);
 	-moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.05);
 	box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.05);
-	width: -webkit-fill-available;
-	width: -moz-available;
 }`;
