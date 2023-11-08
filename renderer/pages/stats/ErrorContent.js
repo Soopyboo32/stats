@@ -1,6 +1,6 @@
-import { PlayerData } from "../../api/PlayerData.js";
-import { html, useRef } from "../../helpers.js";
-import { Content } from "./Content.js";
+import { PlayerData } from "../../../api/PlayerData.js";
+import { html, useRef } from "../../../helpers.js";
+import { StatsPage } from "./StatsPage.js";
 
 let title = document.getElementById("title");
 
@@ -15,7 +15,7 @@ export function ErrorContent(playerData) {
 		document.location.hash = playerData.username + (playerData.profile ? "/" + playerData.profile : "");
 
 		if (!playerData.error) {
-			ref.reRender(Content(playerData));
+			ref.reRender(StatsPage(playerData));
 		}
 	}));
 

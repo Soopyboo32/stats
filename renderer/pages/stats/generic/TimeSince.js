@@ -1,4 +1,4 @@
-import { html, useRef } from "../../../helpers.js";
+import { html, useRef } from "../../../../helpers.js";
 
 export default function TimeSince(timestamp) {
 	let time = useRef();

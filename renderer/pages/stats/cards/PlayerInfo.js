@@ -1,7 +1,7 @@
 import { Username } from "../generic/Username.js";
 import { SbLevel } from "../skyblock/SbLevel.js";
 import { OnlineState } from "../hypixel/OnlineState.js";
-import { html } from "../../../helpers.js";
+import { html } from "../../../../helpers.js";
 import { Networth } from "../skyblock/Networth.js";
 
 export function PlayerInfo(playerData) {

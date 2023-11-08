@@ -1,5 +1,5 @@
-import { PlayerData } from "../../../api/PlayerData.js";
-import { html, staticCss, thisClass, useRef } from "../../../helpers.js";
+import { PlayerData } from "../../../../api/PlayerData.js";
+import { html, staticCss, thisClass, useRef } from "../../../../helpers.js";
 
 /**
  * @param {PlayerData} playerData

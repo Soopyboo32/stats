@@ -1,6 +1,6 @@
-import { PlayerData } from "../../api/PlayerData.js";
-import { html, staticCss, thisClass, useRef } from "../../helpers.js";
-import { Card } from "../components/Card.js";
+import { PlayerData } from "../../../api/PlayerData.js";
+import { html, staticCss, thisClass, useRef } from "../../../helpers.js";
+import { Card } from "../../components/Card.js";
 import { ErrorContent } from "./ErrorContent.js";
 import { AchievementsTable } from "./cards/AchievementsTable.js";
 import { PlayerInfo } from "./cards/PlayerInfo.js";
@@ -17,14 +17,14 @@ let contentCss = staticCss.named("content").css`${thisClass} {
 /**
  * @param {PlayerData} playerData
  */
-export function Content(playerData) {
+export function StatsPage(playerData) {
 	//TODO: change icon as well
 	title.innerHTML = playerData.username + " | Soopy Stats Viewer";
-	document.location.hash = playerData.username + (playerData.profile ? "/" + playerData.profile : "");
+	document.location.hash = "stats/" + playerData.username + (playerData.profile ? "/" + playerData.profile : "");
 
-	let ref = useRef().onRemove(playerData.onUpdate( () => {
+	let ref = useRef().onRemove(playerData.onUpdate(() => {
 		title.innerHTML = playerData.username + " | Soopy Stats Viewer";
-		document.location.hash = playerData.username + (playerData.profile ? "/" + playerData.profile : "");
+		document.location.hash = "stats/" + playerData.username + (playerData.profile ? "/" + playerData.profile : "");
 
 		if (playerData.error) {
 			ref.reRender(ErrorContent(playerData));

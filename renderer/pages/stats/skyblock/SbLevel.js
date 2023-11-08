@@ -1,8 +1,8 @@
-import { PlayerData } from "../../../api/PlayerData.js";
-import { html, useRef } from "../../../helpers.js";
-import { Hover } from "../../generic/hover/Hover.js";
-import { Lore } from "../../generic/hover/Lore.js";
-import { MinecraftText } from "../../generic/MinecraftText.js";
+import { PlayerData } from "../../../../api/PlayerData.js";
+import { html, useRef } from "../../../../helpers.js";
+import { Hover } from "../../../generic/hover/Hover.js";
+import { Lore } from "../../../generic/hover/Lore.js";
+import { MinecraftText } from "../../../generic/MinecraftText.js";
 
 /**
  * @param {PlayerData} playerData

@@ -1,4 +1,4 @@
-import { html, useRef } from "../../../helpers.js";
+import { html, useRef } from "../../../../helpers.js";
 import TimeSince from "../generic/TimeSince.js";
 
 export function OnlineState(playerData) {

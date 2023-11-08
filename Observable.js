@@ -1,9 +1,17 @@
+/**
+ * @template T
+ */
 export class Observable {
 	/**@type {ProxyHandler} */
 	#proxyObj;
+	/**@type {T} */
 	#data;
 	#cbArr;
 
+	/**
+	 * Observe some data for changes
+	 * @param data {T}
+	 */
 	constructor(data) {
 		this.#data = data;
 		this.#cbArr = new Set();
@@ -30,6 +38,9 @@ export class Observable {
 		};
 	}
 
+	/**
+	 * @param val {T}
+	 */
 	set data(val) {
 		this.#data = val;
 
@@ -43,6 +54,9 @@ export class Observable {
 		}
 	}
 
+	/**
+	 * @returns {T}
+	 */
 	get data() {
 		return new Proxy(this.#data, this.#proxyObj);
 	}

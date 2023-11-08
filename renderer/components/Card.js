@@ -1,11 +1,50 @@
-import { css, html } from "../../helpers.js";
-import { cardCss } from "../css.js";
+import { css, html, staticCss, thisClass, useRef } from "../../helpers.js";
+import { colors } from "../css.js";
+import { Icon } from "../Icon.js";
 
-export function Card(title, contents, width) {
+let cardCss = staticCss.named("card").css`${thisClass} {
+	background: ${colors.background_light_1};
+	margin: 10px;
+	padding: 10px;
+		/*border: 1px solid ${colors.primary_dark};*/
+	border-radius: 5px;
+	webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.05);
+	box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.05);
+}`;
+
+//TODO: hover anim, more button looks, ect
+let arrowCss = staticCss.named("cardArrow").css`${thisClass} {
+	/*float: right;*/
+	cursor: pointer;
+}`
+
+let hrCss = staticCss.named("cardHr").css`${thisClass} {
+	padding: 0;
+}`
+
+let cardTitleCss = staticCss.named("cardTitle").css`${thisClass} {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	font-size: 22px;
+}`
+
+export function Card(title, contents, width, openFn) {
+	let ref = useRef().onClick(() => {
+		if (!openFn) return;
+		openFn();
+	});
+
 	return html`
 		<div ${cardCss} ${css`width: ${width.toFixed(0)}px;`}>
-			${title}
-			<hr>
+			<div ${cardTitleCss}>
+				${title}
+				${openFn ? `<div ${ref} ${arrowCss}>${Icon("arrow_forward")}</div>` : ""}
+			</div>
+			<!-- TODO: fix this hr not being the whole card? -->
+			<hr ${hrCss}>
 			${contents}
 		</div>
 	`;

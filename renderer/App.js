@@ -2,9 +2,10 @@ import { Observable } from "../Observable.js";
 import { PlayerData } from "../api/PlayerData.js";
 import { html, staticCss, thisClass, useRef } from "../helpers.js";
 import { Header } from "./Header.js";
-import { MainPage } from "./MainPage.js";
+import { MainPage } from "./pages/main/MainPage.js";
 import { colors } from "./css.js";
-import { Content } from "./stats/Content.js";
+import { StatsPage } from "./pages/stats/StatsPage.js";
+import { Leaderboard } from "./pages/leaderboard/LeaderboardPage.js";
 
 let appCss = staticCss.named("app").css`${thisClass} {
 	background-color: ${colors.background};
@@ -22,6 +23,7 @@ let appState = new Observable({
 	player: undefined,
 	profile: undefined,
 	playerData: undefined,
+	lbType: undefined,
 });
 
 window.appState = appState;
@@ -34,36 +36,56 @@ export function App() {
 		appState.data.profile = profile;
 
 		if (!player) {
-			contentDiv.renderInner(MainPage());
+			contentDiv.renderInner(MainPage(updateHash));
 			appState.data.playerData = undefined;
 			return;
 		}
 
 		appState.data.playerData = PlayerData.load(player, profile);
 
-		contentDiv.renderInner(Content(appState.data.playerData));
+		contentDiv.renderInner(StatsPage(appState.data.playerData));
 	}
 
 	async function refreshData() {
 		await appState.data.playerData?.loadData();
 	}
 
-	if (document.location.hash !== "") {
-		let [player, profile] = document.location.hash.substring(1).split("/");
-		appState.data.player = player;
-		appState.data.profile = profile;
+	function updateHash() {
+		if (document.location.hash !== "") {
+			let [page, ...data] = document.location.hash.substring(1).split("/");
+			switch (page) {
+				case "stats": {
+					let [player, profile] = data;
+					appState.data.player = player;
+					appState.data.profile = profile;
 
-		setTimeout(() => {
-			search(player, profile);
-		});
+					setTimeout(() => {
+						search(player, profile);
+					});
+					return true;
+				}
+				case "leaderboard": {
+					let [lbtype] = data;
+					appState.data.lbType = lbtype;
+
+					setTimeout(() => {
+						contentDiv.renderInner(Leaderboard(appState, updateHash));
+					});
+					return true;
+				}
+			}
+		}
+		return false;
 	}
+
+	let loadMainPage = !updateHash();
 
 	return html`
 		<div ${appCss}>
 			${Header(search, refreshData, appState)}
 
 			<div ${contentDiv} ${contentDivCss}>
-				${MainPage()}
+				${loadMainPage ? MainPage(updateHash) : ""}
 			</div>
 		</div>`;
 }
