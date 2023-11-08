@@ -6,19 +6,34 @@ import { buttonCss, colors } from "./css.js";
 import { Hover } from "./generic/hover/Hover.js";
 import { Lore } from "./generic/hover/Lore.js";
 
-let headerCss = staticCss.named("header").css`${thisClass} {
-	position: fixed;
-	left: 0;
-	top: 0;
-	width: 100%;
-	background-color: ${colors.background_light_2};
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	webkit-box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
-	-moz-box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
-	box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
-	transition: 0.5s;
+let headerCss = staticCss.named("header").css`{
+	${thisClass} {
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 50px;
+		background-color: ${colors.background_light_2};
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		webkit-box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
+		-moz-box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
+		box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
+		transition: 0.5s;
+	}
+
+	@media only screen and (max-width: 600px) {
+		${thisClass} {
+			flex-direction: column;
+			height: unset !important;
+			position: relative;
+		}
+	}
+}`;
+
+let headerTallCss = headerCss.named("header-tall").css`${thisClass} {
+	height: 75px;
 }`;
 
 let headerRightButtonCss = buttonCss.named("header-right-button").css`${thisClass} {
@@ -38,8 +53,21 @@ let headerContainerCss = staticCss.named("header-container").css`${thisClass} {
 	align-items: center;
 }`;
 
-let spacerCss = staticCss.named("spacer").css`${thisClass} {
-	width: 100%;
+let spacerCss = staticCss.named("spacer").css`{
+	${thisClass} {
+		width: 100%;
+		height: 50px;
+	}
+
+	@media only screen and (max-width: 600px) {
+		${thisClass} {
+			display: none;
+		}
+	}
+}`;
+
+let spacerTallCss = spacerCss.named("spacer-tall").css`${thisClass} {
+	height: 75px;
 }`;
 
 let iconContainerCss = staticCss.named("icon-container").css`{
@@ -75,17 +103,19 @@ export function Header(search, refreshData, appState) {
 	let spacer = useRef();
 
 	header.onRemove(appState.onChange((path, data) => {
-		if (!path.startsWith("player")) return;
+		if (!path.startsWith("largeHeader")) return;
 
-		header.css`height: ${data.player ? 50 : 75}px;`;
-		spacer.css`height: ${data.player ? 50 : 75}px;`;
+		if (header.getElm()) {
+			header.getElm().className = data.largeHeader ? headerTallCss.getAllClasses().join(" ") : headerCss.getAllClasses().join(" ");
+		}
+		if (spacer.getElm()) {
+			spacer.getElm().className = data.largeHeader ? spacerTallCss.getAllClasses().join(" ") : spacerCss.getAllClasses().join(" ");
+		}
 	}));
 
 	//language=html
 	return html`
-		<header ${header} ${headerCss} ${css`
-			height: ${appState.data.player ? 50 : 75}px;
-		`}>
+		<header ${header} ${appState.data.largeHeader ? headerTallCss : headerCss}>
 			${HeaderLeftElement(search, appState)}
 
 			<div ${headerContainerCss}>
@@ -96,18 +126,16 @@ export function Header(search, refreshData, appState) {
 		</header>
 
 		<!-- Spacer -->
-		<div ${spacer} ${spacerCss} ${css`
-			height: ${appState.data.player ? 50 : 75}px;
-		`}></div>
+		<div ${spacer} ${appState.data.largeHeader ? spacerTallCss : spacerCss}></div>
 	`;
 }
 
 
 function HeaderLeftElement(search, appState) {
 	let h1Elm = useRef().onRemove(appState.onChange((path, data) => {
-		if (!path.startsWith("player")) return;
+		if (!path.startsWith("largeHeader")) return;
 
-		h1Elm.css`font-size: ${data.player ? 20 : 25}px;`;
+		h1Elm.css`font-size: ${data.largeHeader ? 25 : 20}px;`;
 	}));
 
 	let iconContainer = useRef().onClick(() => {
@@ -119,7 +147,7 @@ function HeaderLeftElement(search, appState) {
 		<div ${iconContainer} ${iconContainerCss}>
 			<img ${iconCss} src="https://avatars.githubusercontent.com/u/49228220?v=4" alt="Soopy Picture">
 			<h1 ${h1Elm} ${h1Css} ${css`
-				font-size: ${appState.data.player ? 20 : 25}px;
+				font-size: ${appState.data.largeHeader ? 25 : 20}px;
 			`}>Soopy Stats Viewer</h1>
 		</div>
 	`;

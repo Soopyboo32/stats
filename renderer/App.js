@@ -24,6 +24,7 @@ let appState = new Observable({
 	profile: undefined,
 	playerData: undefined,
 	lbType: undefined,
+	largeHeader: true,
 });
 
 window.appState = appState;
@@ -38,10 +39,12 @@ export function App() {
 		if (!player) {
 			contentDiv.renderInner(MainPage(updateHash));
 			appState.data.playerData = undefined;
+			appState.data.largeHeader = true;
 			return;
 		}
 
 		appState.data.playerData = PlayerData.load(player, profile);
+		appState.data.largeHeader = false;
 
 		contentDiv.renderInner(StatsPage(appState.data.playerData));
 	}
@@ -70,6 +73,7 @@ export function App() {
 
 					setTimeout(() => {
 						contentDiv.renderInner(Leaderboard(appState, updateHash));
+						appState.data.largeHeader = false;
 					});
 					return true;
 				}
