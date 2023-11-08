@@ -20,6 +20,11 @@ export function MainPage(updateHash) {
 				document.location.hash = "leaderboard/";
 				updateHash();
 			})}
+			${Card("Soopyboo32", "I wanted a quick button to my profile for testing<br>(im lazy ok deal with it)", () => {
+				//Open lb page
+				document.location.hash = "stats/soopyboo32";
+				updateHash();
+			})}
 		</div>
 	`;
 }
