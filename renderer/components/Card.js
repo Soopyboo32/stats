@@ -6,6 +6,8 @@ let cardCss = staticCss.named("card").css`${thisClass} {
 	background: ${colors.background_light_1};
 	margin: 10px;
 	padding: 10px;
+	min-width: min(500px, calc(100% - 40px)); /* will take less than 500px if there is an overflow */
+	max-width: calc(100% - 40%);
 		/*border: 1px solid ${colors.primary_dark};*/
 	border-radius: 5px;
 	webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.05);
@@ -31,14 +33,14 @@ let cardTitleCss = staticCss.named("cardTitle").css`${thisClass} {
 	font-size: 22px;
 }`
 
-export function Card(title, contents, width, openFn) {
+export function Card(title, contents, openFn) {
 	let ref = useRef().onClick(() => {
 		if (!openFn) return;
 		openFn();
 	});
 
 	return html`
-		<div ${cardCss} ${css`width: ${width.toFixed(0)}px;`}>
+		<div ${cardCss}>
 			<div ${cardTitleCss}>
 				${title}
 				${openFn ? `<div ${ref} ${arrowCss}>${Icon("arrow_forward")}</div>` : ""}

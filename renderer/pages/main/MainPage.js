@@ -15,7 +15,7 @@ export function MainPage(updateHash) {
 	return html`
 		<!-- Wow, this is the main page! -->
 		<div ${contentCss}>
-			${Card("Leaderboards", "Some lb stuff idk", 500, () => {
+			${Card("Leaderboards", "Some lb stuff idk", () => {
 				//Open lb page
 				document.location.hash = "leaderboard/";
 				updateHash();

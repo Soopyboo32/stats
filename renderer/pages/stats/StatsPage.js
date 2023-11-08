@@ -33,9 +33,9 @@ export function StatsPage(playerData) {
 
 	return html`
 		<div ${ref} ${contentCss}>
-			${Card("Overview", PlayerInfo(playerData), 400)}
-			${Card("Slayers", SlayerInfo(playerData), 400)}
-			${Card("One Time Achievements", AchievementsTable(playerData), 400)}
+			${Card("Overview", PlayerInfo(playerData))}
+			${Card("Slayers", SlayerInfo(playerData))}
+			${Card("One Time Achievements", AchievementsTable(playerData))}
 		</div>
 	`;
 }
