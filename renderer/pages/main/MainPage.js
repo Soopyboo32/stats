@@ -22,7 +22,7 @@ export function MainPage(updateHash) {
 			})}
 			${Card("Soopyboo32", "I wanted a quick button to my profile for testing<br>(im lazy ok deal with it)", () => {
 				//Open lb page
-				document.location.hash = "stats/soopyboo32";
+				document.location.hash = "stats/Soopyboo32";
 				updateHash();
 			})}
 		</div>

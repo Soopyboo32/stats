@@ -9,21 +9,21 @@ let title = document.getElementById("title");
  */
 export function ErrorContent(playerData) {
 	title.innerHTML = "Soopy Stats Viewer";
-	document.location.hash = playerData.username + (playerData.profile ? "/" + playerData.profile : "");
+	document.location.hash = playerData.getData().username + (playerData.getData().profile ? "/" + playerData.getData().profile : "");
 
 	let ref = useRef().onRemove(playerData.onUpdate(() => {
-		document.location.hash = playerData.username + (playerData.profile ? "/" + playerData.profile : "");
+		document.location.hash = playerData.getData().username + (playerData.getData().profile ? "/" + playerData.getData().profile : "");
 
-		if (!playerData.error) {
+		if (!playerData.getData().error) {
 			ref.reRender(StatsPage(playerData));
 		}
 	}));
 
 	return html`
 		<div ${ref}>
-			Error loading stats for ${playerData.username}
+			Error loading stats for ${playerData.getData().username}
 			<br>
-			${playerData.error}
+			${playerData.getData().error}
 		</div>
 	`;
 }

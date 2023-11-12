@@ -7,7 +7,7 @@ let title = document.getElementById("title");
  * @param appstate {Observable<T>}
  */
 export function Leaderboard(appstate, updateHash) {
-	if (!appstate.data.lbType) {
+	if (!appstate.get().lbType) {
 		title.innerHTML = "Leaderboards | Soopy Stats Viewer";
 
 		return html`
@@ -20,9 +20,9 @@ export function Leaderboard(appstate, updateHash) {
 		`;
 	}
 
-	title.innerHTML = appstate.data.lbType + " Leaderboard | Soopy Stats Viewer";
+	title.innerHTML = appstate.get().lbType + " Leaderboard | Soopy Stats Viewer";
 
 	return html`
-		Wow, this is the lb page for ${appstate.data.lbType}!
+		Wow, this is the lb page for ${appstate.get().lbType}!
 	`;
 }

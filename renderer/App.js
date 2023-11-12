@@ -19,10 +19,14 @@ let contentDivCss = staticCss.named("content").css`${thisClass} {
 	margin: 5px;
 }`;
 
-let appState = new Observable({
+let appState = Observable.from({
+	/** @type {string|undefined} */
 	player: undefined,
+	/** @type {string|undefined} */
 	profile: undefined,
+	/** @type {PlayerData|undefined} */
 	playerData: undefined,
+	/** @type {string|undefined} */
 	lbType: undefined,
 	largeHeader: true,
 });
@@ -33,24 +37,24 @@ export function App() {
 	let contentDiv = useRef();
 
 	function search(player, profile) {
-		appState.data.player = player;
-		appState.data.profile = profile;
+		appState.get().player = player;
+		appState.get().profile = profile;
 
 		if (!player) {
 			contentDiv.renderInner(MainPage(updateHash));
-			appState.data.playerData = undefined;
-			appState.data.largeHeader = true;
+			appState.get().playerData = undefined;
+			appState.get().largeHeader = true;
 			return;
 		}
 
-		appState.data.playerData = PlayerData.load(player, profile);
-		appState.data.largeHeader = false;
+		appState.get().playerData = PlayerData.load(player, profile);
+		appState.get().largeHeader = false;
 
-		contentDiv.renderInner(StatsPage(appState.data.playerData));
+		contentDiv.renderInner(StatsPage(appState.get().playerData));
 	}
 
 	async function refreshData() {
-		await appState.data.playerData?.loadData();
+		await appState.get().playerData?.loadData();
 	}
 
 	function updateHash() {
@@ -59,8 +63,8 @@ export function App() {
 			switch (page) {
 				case "stats": {
 					let [player, profile] = data;
-					appState.data.player = player;
-					appState.data.profile = profile;
+					appState.get().player = player;
+					appState.get().profile = profile;
 
 					setTimeout(() => {
 						search(player, profile);
@@ -69,11 +73,11 @@ export function App() {
 				}
 				case "leaderboard": {
 					let [lbtype] = data;
-					appState.data.lbType = lbtype;
+					appState.get().lbType = lbtype;
 
 					setTimeout(() => {
 						contentDiv.renderInner(Leaderboard(appState, updateHash));
-						appState.data.largeHeader = false;
+						appState.get().largeHeader = false;
 					});
 					return true;
 				}
@@ -83,6 +87,8 @@ export function App() {
 	}
 
 	let loadMainPage = !updateHash();
+	//Prevent header from zooming out on every refresh on non-main pages
+	appState.get().largeHeader = loadMainPage;
 
 	return html`
 		<div ${appCss}>

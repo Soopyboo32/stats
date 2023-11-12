@@ -1,20 +1,33 @@
 import { getSoopyApi } from "./soopy.js";
+import { Observable } from "../Observable.js";
+
+/**
+ * @typedef {{
+ *     error: string|undefined,
+ *     username: string|undefined,
+ *     uuid: string|undefined,
+ *     profile: string|undefined,
+ *     playerData: {},
+ *     sbData: SkyblockProfileData[],
+ * }} PlayerDataData
+ */
 
 export class PlayerData {
-	error;
-	username;
-	uuid;
-	profile;
-	/** @type {{}} */
-	playerData = {};
-	/** @type {SkyblockProfileData[]} */
-	sbData = [];
+	/** @type {Observable<PlayerDataData>} */
+	data = Observable.from({
+		error: undefined,
+		username: undefined,
+		uuid: undefined,
+		profile: undefined,
+		playerData: {},
+		sbData: []
+	});
 	#updateCallbacks = new Set();
 	_observableIgnore = true;
 
 	constructor(name, profile) {
-		this.username = name;
-		this.profile = profile;
+		this.getData().username = name;
+		this.getData().profile = profile;
 		this.#callUpdates();
 	}
 
@@ -29,56 +42,63 @@ export class PlayerData {
 	async loadData() {
 		//TODO: all these api endpoints are temporary
 		if (!this.uuid) {
-			let uuidData = await getSoopyApi("mojang/username/" + this.username);
+			let uuidData = await getSoopyApi("mojang/username/" + this.getData().username);
 			if (!uuidData.success || uuidData.data.errorMessage) {
 				if (!uuidData.success) {
-					this.error = "Server error downloading mojang data: " + uuidData.cause;
+					this.getData().error = "Server error downloading mojang data: " + uuidData.cause;
 				} else {
-					this.error = "Mojang error downloading mojang data: " + uuidData.data.errorMessage;
+					this.getData().error = "Mojang error downloading mojang data: " + uuidData.data.errorMessage;
 				}
 				this.#callUpdates();
 				return; //TODO: error handling ModCheck?
 			}
-			this.username = uuidData.data.name;
-			this.uuid = uuidData.data.id;
+			this.getData().username = uuidData.data.name;
+			this.getData().uuid = uuidData.data.id;
 			this.#callUpdates();
 		}
 
-		getSoopyApi("player/" + this.uuid).then(playerData => {
+		getSoopyApi("player/" + this.getData().uuid).then(playerData => {
 			if (!playerData.success) {
-				this.error = "Server error downloading hypixel player data: " + playerData.cause;
+				this.getData().error = "Server error downloading hypixel player data: " + playerData.cause;
 				this.#callUpdates();
 				return;
 			}
-			this.playerData = playerData.data;
+			this.getData().playerData = playerData.data;
 
 			this.#callUpdates();
 		});
 
-		getSoopyApi("skyblock/stats/" + this.uuid).then(sbData => {
+		getSoopyApi("skyblock/stats/" + this.getData().uuid).then(sbData => {
 			if (!sbData.success) {
-				this.error = "Server error downloading player skyblock stats: " + sbData.cause;
+				this.getData().error = "Server error downloading player skyblock stats: " + sbData.cause;
 				this.#callUpdates();
 				return;
 			}
 
-			this.sbData = sbData.data;
-			if (!this.profile) {
+			this.getData().sbData = sbData.data;
+			if (!this.getData().profile) {
 				let bestProfile = undefined;
 				let bestProfileExp = 0;
-				for (let profile of this.sbData) {
-					let player = profile.members.find(m => m.uuid.replaceAll("-", "") === this.uuid.replaceAll("-", ""));
+				for (let profile of this.getData().sbData) {
+					let player = profile.members.find(m => m.uuid.replaceAll("-", "") === this.getData().uuid.replaceAll("-", ""));
 
 					if (player.sb_exp > bestProfileExp) {
 						bestProfileExp = player.sb_exp;
 						bestProfile = profile.profile_name;
 					}
 				}
-				this.profile = bestProfile;
+				this.getData().profile = bestProfile;
 			}
 
 			this.#callUpdates();
 		});
+	}
+
+	/**
+	 * @returns {PlayerDataData}
+	 */
+	getData() {
+		return this.data.get();
 	}
 
 	/**
@@ -103,13 +123,13 @@ export class PlayerData {
 	 * @returns {undefined|SkyblockProfileData}
 	 */
 	getSbProfileData() {
-		return this.sbData?.find(p => p.profile_name === this.profile);
+		return this.getData().sbData?.find(p => p.profile_name === this.getData().profile);
 	}
 
 	/**
 	 * @returns {undefined|SkyblockProfileMemberData}
 	 */
 	getSbPlayerData() {
-		return this.getSbProfileData()?.members?.find(m => m.uuid.replaceAll("-", "") === this.uuid.replaceAll("-", ""));
+		return this.getSbProfileData()?.members?.find(m => m.uuid.replaceAll("-", "") === this.getData().uuid.replaceAll("-", ""));
 	}
 }

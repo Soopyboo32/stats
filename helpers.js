@@ -7,7 +7,9 @@
  * @property {(callback: (MouseEvent) => any) => Reference} onHoverExit
  * @property {(data: String) => Reference} reRender
  * @property {(data: String) => Reference} renderInner
- * @property {() => Reference} css
+ * @property {(...any[]) => Reference} css
+ * @property {(callback: () => any, timeout: number) => Reference} interval
+ * @property {(callback: () => any, timeout: number) => Reference} timeout
  * @property {() => boolean} exists
  * @property {() => HTMLElement | null} getElm
  * @property {(callback: () => any) => Reference} onRemove
@@ -24,6 +26,8 @@ export function useRef() {
 	let id = generateId();
 
 	let removeCb = [];
+	let intervals = [];
+	let timeouts = [];
 
 	/**
 	 * @type {Reference}
@@ -72,28 +76,66 @@ export function useRef() {
 		},
 		getElm: () => document.getElementById(id),
 		onRemove: (callback) => {
+			if (!removeCb.length) {
+				let interval = setInterval(() => {
+					if (ref.exists()) {
+						return;
+					}
+
+					clearInterval(interval);
+					for (let cb of removeCb) {
+						cb();
+					}
+				}, 1000);
+
+			}
 			removeCb.push(callback);
 			return ref;
 		},
 		css: (...args) => {
 			let elm = ref.getElm();
 			if (!elm) return ref;
+
+			if (args[0]._classType === "StaticCss") {
+				ref.getElm().className = args[0].getAllClasses().join(" ");
+				return ref;
+			}
+
 			elm.style = toCssString(args);
 
 			return ref;
+		},
+		interval: (callback, timeout) => {
+			if (!intervals.length) {
+				ref.onRemove(() => {
+					for (let id of intervals) {
+						clearInterval(id);
+					}
+				});
+			}
+
+			intervals.push(setInterval(() => {
+				if (!ref.exists()) return;
+				callback();
+			}, timeout));
+			return ref;
+		},
+		timeout: (callback, timeout) => {
+			if (!timeouts.length) {
+				ref.onRemove(() => {
+					for (let id of timeouts) {
+						clearTimeout(id);
+					}
+				});
+			}
+
+			timeouts.push(setTimeout(() => {
+				if (!ref.exists()) return;
+				callback();
+			}, timeout));
+			return ref;
 		}
 	};
-
-	let interval = setInterval(() => {
-		if (ref.exists()) {
-			return;
-		}
-
-		clearInterval(interval);
-		for (let cb of removeCb) {
-			cb();
-		}
-	}, 1000);
 
 	return ref;
 }
@@ -120,6 +162,9 @@ function onEventRaw(ref, event, callback) {
 	});
 }
 
+/**
+ * @returns {string}
+ */
 function toHtmlString(asd) {
 	let css = "";
 	asd[0].forEach((s, i) => {

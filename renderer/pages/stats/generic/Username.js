@@ -6,21 +6,17 @@ import { MinecraftText } from "../../../generic/MinecraftText.js";
  * @param {PlayerData} playerData
  */
 export function Username(playerData) {
-	let name = useRef().onRemove(playerData.onUpdate(() => {
-		name.renderInner(MinecraftText(getName(playerData)));
-	}));
-
-	return html`<span ${name}> ${MinecraftText(getName(playerData))} </span>`;
+	return html`${playerData.data.observe(() => MinecraftText(getName(playerData)))}`;
 }
 
 function getName(playerData) {
-	if (!playerData.username) {
+	if (!playerData.getData().username) {
 		return "...";
 	}
 
-	if (!playerData.playerData.prefix) {
-		return playerData.username;
+	if (!playerData.getData().playerData.prefix) {
+		return playerData.getData().username;
 	}
 
-	return playerData.playerData.prefix + playerData.playerData.name;
+	return playerData.getData().playerData.prefix + playerData.getData().username;
 }

@@ -10,9 +10,7 @@ import { MinecraftText } from "../../../generic/MinecraftText.js";
  * @param minecraft
  */
 export function SbLevel(playerData, integer = false, minecraft = true) {
-	let level = useRef().onRemove(playerData.onUpdate(() => {
-		level.renderInner(getVal(playerData, integer, minecraft));
-	}));
+	let level = useRef();
 
 	Hover(level, () => {
 		if (playerData.getSbPlayerData()?.sb_exp === undefined) return undefined;
@@ -21,24 +19,22 @@ export function SbLevel(playerData, integer = false, minecraft = true) {
 		return Lore("§7Level §e" + (playerData.getSbPlayerData().sb_exp / 100).toFixed(2));
 	});
 
-	return html`<span ${level}>${getVal(playerData, integer, minecraft)}</span>`;
-}
+	return html`<span ${level}>${playerData.data.observe(() => {
+		let exp = playerData.getSbPlayerData()?.sb_exp;
+		let expStr = exp === undefined ? "???" : (exp / 100).floored(integer ? 0 : 2)?.toFixed(integer ? 0 : 2);
 
-function getVal(playerData, integer, minecraft) {
-	let exp = playerData.getSbPlayerData()?.sb_exp;
-	let expStr = exp === undefined ? "???" : (exp / 100).floored(integer ? 0 : 2)?.toFixed(integer ? 0 : 2);
-
-	if (minecraft) {
-		return MinecraftText(
-			getBracketColor(exp ? exp / 100 : undefined)
-			+ "["
-			+ getColor(exp ? exp / 100 : undefined)
-			+ expStr
-			+ getBracketColor(exp ? exp / 100 : undefined)
-			+ "]"
-		);
-	}
-	return expStr;
+		if (minecraft) {
+			return MinecraftText(
+					getBracketColor(exp ? exp / 100 : undefined)
+					+ "["
+					+ getColor(exp ? exp / 100 : undefined)
+					+ expStr
+					+ getBracketColor(exp ? exp / 100 : undefined)
+					+ "]"
+			);
+		}
+		return expStr;
+	})}</span>`;
 }
 
 function getColor(level) {

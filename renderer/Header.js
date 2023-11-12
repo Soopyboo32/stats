@@ -94,9 +94,7 @@ let iconCss = staticCss.named("icon").css`${thisClass} {
 	border-radius: 5px;
 }`;
 
-let canRefresh = new Observable({
-	can: true,
-});
+let canRefresh = Observable.from(true);
 
 export function Header(search, refreshData, appState) {
 	let header = useRef();
@@ -105,17 +103,13 @@ export function Header(search, refreshData, appState) {
 	header.onRemove(appState.onChange((path, data) => {
 		if (!path.startsWith("largeHeader")) return;
 
-		if (header.getElm()) {
-			header.getElm().className = data.largeHeader ? headerTallCss.getAllClasses().join(" ") : headerCss.getAllClasses().join(" ");
-		}
-		if (spacer.getElm()) {
-			spacer.getElm().className = data.largeHeader ? spacerTallCss.getAllClasses().join(" ") : spacerCss.getAllClasses().join(" ");
-		}
+		header.css(data.largeHeader ? headerTallCss : headerCss);
+		spacer.css(data.largeHeader ? spacerTallCss : spacerCss);
 	}));
 
 	//language=html
 	return html`
-		<header ${header} ${appState.data.largeHeader ? headerTallCss : headerCss}>
+		<header ${header} ${appState.get().largeHeader ? headerTallCss : headerCss}>
 			${HeaderLeftElement(search, appState)}
 
 			<div ${headerContainerCss}>
@@ -126,7 +120,7 @@ export function Header(search, refreshData, appState) {
 		</header>
 
 		<!-- Spacer -->
-		<div ${spacer} ${appState.data.largeHeader ? spacerTallCss : spacerCss}></div>
+		<div ${spacer} ${appState.get().largeHeader ? spacerTallCss : spacerCss}></div>
 	`;
 }
 
@@ -147,7 +141,7 @@ function HeaderLeftElement(search, appState) {
 		<div ${iconContainer} ${iconContainerCss}>
 			<img ${iconCss} src="https://avatars.githubusercontent.com/u/49228220?v=4" alt="Soopy Picture">
 			<h1 ${h1Elm} ${h1Css} ${css`
-				font-size: ${appState.data.largeHeader ? 25 : 20}px;
+				font-size: ${appState.get().largeHeader ? 25 : 20}px;
 			`}>Soopy Stats Viewer</h1>
 		</div>
 	`;
@@ -159,22 +153,20 @@ function HeaderRightElement(refreshData) {
 	});
 
 	let refreshButton = useRef().onClick(() => {
-		if (!canRefresh.data.can) return;
+		if (!canRefresh.get()) return;
 
 		//TODO: spin animation?
 		//TODO: countdown animation
 		refreshData();
-		canRefresh.data.can = false;
+		canRefresh.set(false);
 
 		setTimeout(() => {
-			canRefresh.data.can = true;
+			canRefresh.set(true);
 		}, 10000);
 	});
 
 	canRefresh.onChange((p, d) => {
-		if (!p.startsWith("can")) return;
-
-		refreshButton.css`background-color: ${d.can ? colors.primary_dark : colors.grey};`;
+		refreshButton.css`background-color: ${d ? colors.primary_dark : colors.grey};`;
 	});
 
 	Hover(settingsButton, () => {
@@ -191,7 +183,7 @@ function HeaderRightElement(refreshData) {
 	return html`
 		<div ${headerContainerCss}>
 			<button ${refreshButton} ${headerRightButtonCss}
-					${css`background-color: ${canRefresh.data.can ? colors.primary_dark : colors.grey};`}>
+					${css`background-color: ${canRefresh.get() ? colors.primary_dark : colors.grey};`}>
 				${Icon("refresh")}
 			</button>
 			<button ${settingsButton} ${headerRightButtonCss}>${Icon("settings")}</button>

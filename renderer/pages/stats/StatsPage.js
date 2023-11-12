@@ -19,14 +19,14 @@ let contentCss = staticCss.named("content").css`${thisClass} {
  */
 export function StatsPage(playerData) {
 	//TODO: change icon as well
-	title.innerHTML = playerData.username + " | Soopy Stats Viewer";
-	document.location.hash = "stats/" + playerData.username + (playerData.profile ? "/" + playerData.profile : "");
+	title.innerHTML = playerData.getData().username + " | Soopy Stats Viewer";
+	document.location.hash = "stats/" + playerData.getData().username + (playerData.getData().profile ? "/" + playerData.getData().profile : "");
 
 	let ref = useRef().onRemove(playerData.onUpdate(() => {
-		title.innerHTML = playerData.username + " | Soopy Stats Viewer";
-		document.location.hash = "stats/" + playerData.username + (playerData.profile ? "/" + playerData.profile : "");
+		title.innerHTML = playerData.getData().username + " | Soopy Stats Viewer";
+		document.location.hash = "stats/" + playerData.getData().username + (playerData.getData().profile ? "/" + playerData.getData().profile : "");
 
-		if (playerData.error) {
+		if (playerData.getData().error) {
 			ref.reRender(ErrorContent(playerData));
 		}
 	}));
