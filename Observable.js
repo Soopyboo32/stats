@@ -137,7 +137,8 @@ export class Observable {
 		this.pushAccessTracking();
 		let contents = fn();
 		let accesses = this.popAccessTracking();
-		console.log(accesses);
+		//TODO: make this a debug function like Observable.debug() or smth
+		// console.log(accesses);
 
 		let ref = useRef().onRemove(this.onChange((path) => {
 			if (!accesses.has(path)) return;
@@ -145,7 +146,7 @@ export class Observable {
 			this.pushAccessTracking();
 			ref.renderInner(fn());
 			accesses = this.popAccessTracking();
-			console.log(accesses);
+			// console.log(accesses);
 		}));
 
 		return html`<span ${ref} data-1="observing">${contents}</span>`;
