@@ -133,7 +133,7 @@ function HeaderLeftElement(search, appState) {
 	}));
 
 	let iconContainer = useRef().onClick(() => {
-		document.location.hash = "";
+		document.location.hash = "/";
 		search();
 	});
 

@@ -9,10 +9,10 @@ let title = document.getElementById("title");
  */
 export function ErrorContent(playerData) {
 	title.innerHTML = "Soopy Stats Viewer";
-	document.location.hash = playerData.getData().username + (playerData.getData().profile ? "/" + playerData.getData().profile : "");
+	document.location.hash = "/" + playerData.getData().username + (playerData.getData().profile ? "/" + playerData.getData().profile : "");
 
 	let ref = useRef().onRemove(playerData.onUpdate(() => {
-		document.location.hash = playerData.getData().username + (playerData.getData().profile ? "/" + playerData.getData().profile : "");
+		document.location.hash = "/" + playerData.getData().username + (playerData.getData().profile ? "/" + playerData.getData().profile : "");
 
 		if (!playerData.getData().error) {
 			ref.reRender(StatsPage(playerData));

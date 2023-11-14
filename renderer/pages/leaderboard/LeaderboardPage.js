@@ -13,7 +13,7 @@ export function Leaderboard(appstate, updateHash) {
 		return html`
 			Wow this is the main lb page!<br>
 			<button ${useRef().onClick(() => {
-				document.location.hash = "leaderboard/sbLvl";
+				document.location.hash = "/leaderboard/sbLvl";
 				updateHash();
 			})}>sblvl lb
 			</button>

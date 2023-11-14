@@ -58,8 +58,8 @@ export function App() {
 	}
 
 	function updateHash() {
-		if (document.location.hash !== "") {
-			let [page, ...data] = document.location.hash.substring(1).split("/");
+		if (document.location.hash.length > 2) {
+			let [page, ...data] = document.location.hash.substring(2).split("/");
 			switch (page) {
 				case "stats": {
 					let [player, profile] = data;
