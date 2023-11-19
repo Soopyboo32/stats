@@ -66,3 +66,7 @@ export let textboxCss = staticCss.named("textbox").css`{
 		border: 1px solid ${colors.primary_dark};
 	}
 }`;
+
+export let invisibleCss = staticCss.named("invisible").css`${thisClass} {
+	opacity: 0;
+}`

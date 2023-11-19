@@ -7,12 +7,15 @@ import { colors } from "./css.js";
 import { StatsPage } from "./pages/stats/StatsPage.js";
 import { Leaderboard } from "./pages/leaderboard/LeaderboardPage.js";
 
-let appCss = staticCss.named("app").css`${thisClass} {
+document.getElementById("body").className = staticCss.named("body").css`${thisClass} {
 	background-color: ${colors.background};
+}`.getAllClasses().join(" ");
+
+let appCss = staticCss.named("app").css`${thisClass} {
+	// background-color: ${colors.background};
 	font-family: 'Montserrat', serif;
 	color: ${colors.text};
 	width: 100vw;
-	height: 100vh;
 }`;
 
 let contentDivCss = staticCss.named("content").css`${thisClass} {
@@ -73,7 +76,9 @@ export function App() {
 				}
 				case "leaderboard": {
 					let [lbtype] = data;
-					appState.get().lbType = lbtype;
+					if (appState.get().lbType !== lbtype) {
+						appState.get().lbType = lbtype;
+					}
 
 					setTimeout(() => {
 						contentDiv.renderInner(Leaderboard(appState, updateHash));
@@ -89,6 +94,13 @@ export function App() {
 	let loadMainPage = !updateHash();
 	//Prevent header from zooming out on every refresh on non-main pages
 	appState.get().largeHeader = loadMainPage;
+
+	appState.onChange((p) => {
+		if (p === "lbType") {
+			document.location.hash = "/leaderboard" + (appState.get().lbType ? "/" + appState.get().lbType : "");
+			updateHash();
+		}
+	});
 
 	return html`
 		<div ${appCss}>

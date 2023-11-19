@@ -16,7 +16,7 @@ export function SbLevel(playerData, integer = false, minecraft = true) {
 		if (playerData.getSbPlayerData()?.sb_exp === undefined) return undefined;
 
 		//TODO: show global & gamemode lb positions
-		return Lore("§7Level §e" + (playerData.getSbPlayerData().sb_exp / 100).toFixed(2));
+		return Lore("§7Level §e" + (playerData.getSbPlayerData().sb_exp / 100).toFixed(2).replace(".", "§7."));
 	});
 
 	return html`<span ${level}>${playerData.data.observe(() => {

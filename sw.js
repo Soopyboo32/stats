@@ -19,8 +19,39 @@ setInterval(async () => {
 	await updateCommit();
 }, 60000 * 60); //every hour
 
+/** @type {{string: [number, {}]}} */
+let cache = {};
+
+setInterval(async () => {
+	let now = Date.now();
+	for (let url in cache) {
+		if (now - cache[url][0] > 60000) {
+			delete cache[url];
+		}
+	}
+}, 60000); //every minute
+
 self.addEventListener('fetch', event => {
 	const url = new URL(event.request.url);
+
+	if (url.hostname === "cache") {
+		event.respondWith((async () => {
+			let [cacheTime, host] = url.pathname.substring(1).split("@");
+			let fullUrl = url.protocol + "//" + host;
+
+			if (fullUrl in cache) {
+				if (Date.now() - cache[fullUrl][0] < parseInt(cacheTime)) {
+					return new Response(JSON.stringify(cache[fullUrl]));
+				}
+			}
+
+			let data = await fetch(fullUrl);
+			let json = await data.json();
+			cache[fullUrl] = [Date.now(), json];
+			return new Response(JSON.stringify(cache[fullUrl]));
+		})());
+		return;
+	}
 
 	if (url.origin === location.origin) {
 		event.respondWith((async () => {
