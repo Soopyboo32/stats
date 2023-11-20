@@ -9,12 +9,11 @@ import { Leaderboard } from "./pages/leaderboard/LeaderboardPage.js";
 
 document.getElementById("body").className = staticCss.named("body").css`${thisClass} {
 	background-color: ${colors.background};
+	font-family: 'Montserrat', serif;
+	color: ${colors.text};
 }`.getAllClasses().join(" ");
 
 let appCss = staticCss.named("app").css`${thisClass} {
-	// background-color: ${colors.background};
-	font-family: 'Montserrat', serif;
-	color: ${colors.text};
 	width: 100vw;
 }`;
 
@@ -50,10 +49,20 @@ export function App() {
 			return;
 		}
 
-		appState.get().playerData = PlayerData.load(player, profile);
+		let playerData = PlayerData.load(player, profile);
+		appState.get().playerData = playerData;
 		appState.get().largeHeader = false;
 
-		contentDiv.renderInner(StatsPage(appState.get().playerData));
+		let ref = useRef().onRemove(playerData.onUpdate(() => {
+			document.location.hash = "/stats/" + playerData.getData().username + (playerData.getData().profile ? "/" + playerData.getData().profile : "");
+		}));
+		document.location.hash = "/stats/" + playerData.getData().username + (playerData.getData().profile ? "/" + playerData.getData().profile : "");
+
+		contentDiv.renderInner(html`
+			<div ${ref}>
+				${StatsPage(appState.get().playerData)}
+			</div>
+		`);
 	}
 
 	async function refreshData() {
@@ -81,7 +90,7 @@ export function App() {
 					}
 
 					setTimeout(() => {
-						contentDiv.renderInner(Leaderboard(appState, updateHash));
+						contentDiv.renderInner(Leaderboard(appState));
 						appState.get().largeHeader = false;
 					});
 					return true;

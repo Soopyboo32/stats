@@ -44,6 +44,7 @@ setInterval(async () => {
  * @returns {any | undefined}
  */
 export function getSoopyApiCache(endpoint, cb, cacheTime = 60 * 1000) {
+	//TODO: deal with already loading data but not loaded yet
 	if (endpoint in cache) {
 		if (Date.now() - cache[endpoint][0] < cacheTime) {
 			return cache[endpoint][1];
