@@ -1,6 +1,7 @@
 {
   "name": "Soopy Stats Viewer",
   "start_url": "/",
+  "display": "standalone",
   "icons": [
     {
       "src": "https://avatars.githubusercontent.com/u/49228220?v=4",
