@@ -1,5 +1,5 @@
 import { html, staticCss, thisClass, useRef } from "../../helpers.js";
-import { colors } from "../css.js";
+import { colors, getBg } from "../css.js";
 import { Icon } from "../Icon.js";
 
 let wrapperCss = staticCss.named("popupWrapper").css`${thisClass} {
@@ -14,29 +14,34 @@ let wrapperCss = staticCss.named("popupWrapper").css`${thisClass} {
 	flex-wrap: wrap;
 	overflow-y: scroll;
 	overscroll-behavior: none;
+	backdrop-filter: blur(2px);
 }`
 
 let popupCss = staticCss.named("popup").css`${thisClass} {
-	background: ${colors.background_light_1};
 	margin: 10px;
-	padding: 10px;
 	min-width: min(500px, calc(100% - 40px)); /* will take less than 500px if there is an overflow */
 	max-width: calc(100% - 40%);
-		/*border: 1px solid ${colors.primary_dark};*/
-	border-radius: 5px;
-	webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.05);
-	-moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.05);
-	box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.05);
+	/*border: 1px solid ${colors.primary_dark};*/
 }`;
+
+let popupTopCss = staticCss.named("popupTop").css`${thisClass} {
+	padding: 10px;
+	// background: ${getBg(1)};
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border-bottom: 2px solid ${colors.text};
+}`
+let popupBottomCss = staticCss.named("popupBottom").css`${thisClass} {
+	padding: 10px;
+	/*background: ${getBg(0)};*/
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}`
 
 //TODO: hover anim, more button looks, ect
 let closeCss = staticCss.named("popupClose").css`${thisClass} {
 	/*float: right;*/
 	cursor: pointer;
-}`;
-
-let hrCss = staticCss.named("cardHr").css`${thisClass} {
-	padding: 0;
 }`;
 
 let popupTitleCss = staticCss.named("popupTitle").css`${thisClass} {
@@ -61,16 +66,20 @@ export function Popup(title, content, onclose = () => 0) {
 	};
 	let close = useRef().onClick(closeFn);
 
+	let height = 0;
+
 	wrapper.className = wrapperCss.getAllClasses().join(" ");
 	wrapper.innerHTML = html`
 		<div ${popupCss}>
-			<div ${popupTitleCss}>
-				${title}
-				${onclose ? `<div ${close} ${closeCss}>${Icon("close")}</div>` : ""}
+			<div ${popupTopCss} data-height="${height+1}">
+				<div ${popupTitleCss}>
+					${title}
+					${onclose ? `<div ${close} ${closeCss}>${Icon("close")}</div>` : ""}
+				</div>
 			</div>
-			<!-- TODO: fix this hr not being the whole card? -->
-			<hr ${hrCss}>
-			${content(closeFn)}
+			<div ${popupBottomCss} data-height="${height}">
+				${content(closeFn)}
+			</div>
 		</div>
 	`;
 

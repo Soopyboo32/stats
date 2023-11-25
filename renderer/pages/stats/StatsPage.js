@@ -16,8 +16,9 @@ let contentCss = staticCss.named("content").css`${thisClass} {
 
 /**
  * @param {PlayerData} playerData
+ * @param height
  */
-export function StatsPage(playerData) {
+export function StatsPage(playerData, height = 0) {
 	//TODO: change icon as well
 	title.innerHTML = playerData.getData().username + " | Soopy Stats Viewer";
 
@@ -31,9 +32,9 @@ export function StatsPage(playerData) {
 
 	return html`
 		<div ${ref} ${contentCss}>
-			${Card("Overview", PlayerInfo(playerData))}
-			${Card("Slayers", SlayerInfo(playerData))}
-			${Card("One Time Achievements", AchievementsTable(playerData))}
+			${Card("Overview", PlayerInfo(playerData), height+1)}
+			${Card("Slayers", SlayerInfo(playerData), height+1)}
+			${Card("One Time Achievements", AchievementsTable(playerData), height+1)}
 		</div>
 	`;
 }

@@ -15,12 +15,12 @@ export function MainPage(updateHash) {
 	return html`
 		<!-- Wow, this is the main page! -->
 		<div ${contentCss}>
-			${Card("Leaderboards", "Some lb stuff idk", () => {
+			${Card("Leaderboards", "Some lb stuff idk", 1, () => {
 				//Open lb page
 				document.location.hash = "/leaderboard/";
 				updateHash();
 			})}
-			${Card("Soopyboo32", "I wanted a quick button to my profile for testing<br>(im lazy ok deal with it)", () => {
+			${Card("Soopyboo32", "I wanted a quick button to my profile for testing<br>(im lazy ok deal with it)", 1, () => {
 				//Open lb page
 				document.location.hash = "/stats/Soopyboo32";
 				updateHash();

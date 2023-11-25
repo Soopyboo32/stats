@@ -1,28 +1,39 @@
 import { css, html, staticCss, thisClass, useRef } from "../../helpers.js";
-import { colors } from "../css.js";
+import { colors, getBg } from "../css.js";
 import { Icon } from "../Icon.js";
 
 let cardCss = staticCss.named("card").css`${thisClass} {
-	background: ${colors.background_light_1};
+	display: flex;
+	flex-direction: column;
 	margin: 10px;
-	padding: 10px;
 	min-width: min(500px, calc(100% - 40px)); /* will take less than 500px if there is an overflow */
 	max-width: calc(100% - 40%);
 		/*border: 1px solid ${colors.primary_dark};*/
 	border-radius: 5px;
-	webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.05);
-	-moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.05);
-	box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.05);
+	webkit-box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.15);
+	-moz-box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.15);
+	box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.15);
 }`;
+
+let cardTopCss = staticCss.named("cardTop").css`${thisClass} {
+	padding: 10px;
+	/*background: ${getBg(1)};*/
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border-bottom: 2px solid ${colors.text};
+}`
+let cardBottomCss = staticCss.named("cardBottom").css`${thisClass} {
+	padding: 10px;
+	/*background: ${getBg(0)};*/
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	height: 100%;
+}`
 
 //TODO: hover anim, more button looks, ect
 let arrowCss = staticCss.named("cardArrow").css`${thisClass} {
 	/*float: right;*/
 	cursor: pointer;
-}`
-
-let hrCss = staticCss.named("cardHr").css`${thisClass} {
-	padding: 0;
 }`
 
 let cardTitleCss = staticCss.named("cardTitle").css`${thisClass} {
@@ -33,7 +44,7 @@ let cardTitleCss = staticCss.named("cardTitle").css`${thisClass} {
 	font-size: 22px;
 }`
 
-export function Card(title, contents, openFn) {
+export function Card(title, contents, height=1, openFn) {
 	let ref = useRef().onClick(() => {
 		if (!openFn) return;
 		openFn();
@@ -41,13 +52,15 @@ export function Card(title, contents, openFn) {
 
 	return html`
 		<div ${cardCss}>
-			<div ${cardTitleCss}>
-				${title}
-				${openFn ? `<div ${ref} ${arrowCss}>${Icon("arrow_forward")}</div>` : ""}
+			<div ${cardTopCss} data-height="${height+1}">
+				<div ${cardTitleCss}>
+					${title}
+					${openFn ? `<div ${ref} ${arrowCss}>${Icon("arrow_forward")}</div>` : ""}
+				</div>
 			</div>
-			<!-- TODO: fix this hr not being the whole card? -->
-			<hr ${hrCss}>
-			${contents}
+			<div ${cardBottomCss} data-height="${height}">
+				${contents}
+			</div>
 		</div>
 	`;
 }

@@ -2,10 +2,6 @@ import { staticCss, thisClass } from "../helpers.js";
 
 export let colors = {
 	text: "rgb(229, 231, 235)",
-	background: "hsl(221 20% 11%)",
-	//background: "rgb(17, 24, 39)",
-	background_light_1: "hsl(229 20% 15%)",
-	background_light_2: "hsl(229 25% 18%)",
 	//background_light: "rgb(32, 37, 59)",
 	primary: "rgb(192, 132, 252)",
 	primary_dark: "hsl(271 57% 56%)",
@@ -14,6 +10,21 @@ export let colors = {
 	grey: "rgb(55, 65, 81)",
 	error: "#CF6679"
 };
+
+export function getBg(height = 0) {
+	return `hsl(229 25% ${9 + height * 3}%)`;
+}
+
+staticCss`{
+	[data-height] {
+		background-color: ${getBg(0)};
+	}
+	${Array.from(Array(10)).map((_, i)=>`
+		[data-height="${i}"] {
+			background-color: ${getBg(i)};
+		}
+	`).join("")}
+}`
 
 export let buttonCss = staticCss.named("button").css`{
 	${thisClass} {
@@ -62,11 +73,11 @@ export let textboxCss = staticCss.named("textbox").css`{
 	}
 
 	${thisClass}:focus {
-		background: ${colors.background};
+		background: ${getBg(0)};
 		border: 1px solid ${colors.primary_dark};
 	}
 }`;
 
 export let invisibleCss = staticCss.named("invisible").css`${thisClass} {
 	opacity: 0;
-}`
+}`;

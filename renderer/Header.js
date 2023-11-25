@@ -2,7 +2,7 @@ import { Observable } from "../Observable.js";
 import { css, html, staticCss, thisClass, useRef } from "../helpers.js";
 import { Icon } from "./Icon.js";
 import { UsernameSearch } from "./components/UsernameSearch.js";
-import { buttonCss, colors } from "./css.js";
+import { buttonCss, colors, getBg } from "./css.js";
 import { Hover } from "./generic/hover/Hover.js";
 import { Lore } from "./generic/hover/Lore.js";
 
@@ -13,7 +13,7 @@ let headerCss = staticCss.named("header").css`{
 		top: 0;
 		width: 100%;
 		height: 50px;
-		background-color: ${colors.background_light_2};
+		background-color: ${getBg(2)};
 		display: flex;
 		justify-content: space-between;
 		align-items: center;

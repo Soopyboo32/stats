@@ -3,12 +3,12 @@ import { PlayerData } from "../api/PlayerData.js";
 import { html, staticCss, thisClass, useRef } from "../helpers.js";
 import { Header } from "./Header.js";
 import { MainPage } from "./pages/main/MainPage.js";
-import { colors } from "./css.js";
+import { colors, getBg } from "./css.js";
 import { StatsPage } from "./pages/stats/StatsPage.js";
 import { Leaderboard } from "./pages/leaderboard/LeaderboardPage.js";
 
 document.getElementById("body").className = staticCss.named("body").css`${thisClass} {
-	background-color: ${colors.background};
+	background-color: ${getBg(0)};
 	font-family: 'Montserrat', serif;
 	color: ${colors.text};
 }`.getAllClasses().join(" ");

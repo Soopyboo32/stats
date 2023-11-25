@@ -39,6 +39,7 @@ export function Leaderboard(appstate) {
 			${Object.keys(lbConstants).map(lbType => Card(
 					`${lbConstants[lbType].display} Leaderboard`,
 					ActualLeaderboardPage(lbType, 0, 10),
+					1,
 					() => {
 						appstate.get().lbType = lbType;
 					}
@@ -130,7 +131,7 @@ function ActualLbPageFromData(data, lbType, start) {
 						let ref = useRef().onClick(() => {
 							let playerData = PlayerData.load(user.username);
 							let titleText = title.innerHTML;
-							Popup(user.username + "'s Stats", () => StatsPage(playerData), () => {
+							Popup(user.username + "'s Stats", () => StatsPage(playerData, 1), () => {
 								title.innerHTML = titleText;
 							});
 						});
