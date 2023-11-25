@@ -42,18 +42,26 @@ export class PlayerData {
 	async loadData() {
 		//TODO: all these api endpoints are temporary
 		if (!this.uuid) {
-			let uuidData = await getSoopyApi("mojang/username/" + this.getData().username);
-			if (!uuidData.success || uuidData.data.errorMessage) {
-				if (!uuidData.success) {
-					this.getData().error = "Server error downloading mojang data: " + uuidData.cause;
-				} else {
-					this.getData().error = "Mojang error downloading mojang data: " + uuidData.data.errorMessage;
+			try {
+				let uuidData = await getSoopyApi("mojang/username/" + this.getData().username);
+				if (!uuidData.success || uuidData.data.errorMessage) {
+					if (!uuidData.success) {
+						this.getData().error = "Server error downloading mojang data: " + uuidData.cause;
+					} else {
+						this.getData().error = "Mojang error downloading mojang data: " + uuidData.data.errorMessage;
+					}
+					this.#callUpdates();
+					return; //TODO: error handling ModCheck?
 				}
-				this.#callUpdates();
-				return; //TODO: error handling ModCheck?
+				this.getData().username = uuidData.data.name;
+				this.getData().uuid = uuidData.data.id;
+			} catch (e) {
+				if (e instanceof TypeError) {
+					this.getData().error = "A network error occured!";
+				} else {
+					this.getData().error = "A unknown error occured!";
+				}
 			}
-			this.getData().username = uuidData.data.name;
-			this.getData().uuid = uuidData.data.id;
 			this.#callUpdates();
 		}
 
@@ -65,6 +73,13 @@ export class PlayerData {
 			}
 			this.getData().playerData = playerData.data;
 
+			this.#callUpdates();
+		}).catch(e=>{
+			if (e instanceof TypeError) {
+				this.getData().error = "A network error occured!";
+			} else {
+				this.getData().error = "A unknown error occured!";
+			}
 			this.#callUpdates();
 		});
 
@@ -90,6 +105,13 @@ export class PlayerData {
 				this.getData().profile = bestProfile;
 			}
 
+			this.#callUpdates();
+		}).catch(e=>{
+			if (e instanceof TypeError) {
+				this.getData().error = "A network error occured!";
+			} else {
+				this.getData().error = "A unknown error occured!";
+			}
 			this.#callUpdates();
 		});
 	}
