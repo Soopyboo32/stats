@@ -9,7 +9,8 @@ export function SlayerInfo(playerData) {
 		}
 
 		return html`
-			${Table([],
+			${Table({},
+					[],
 					["Revenant Horror", numberWithCommas(player.slayer.zombie.xp)],
 					["Tarantula Broodfather", numberWithCommas(player.slayer.spider.xp)],
 					["Sven Packmaster", numberWithCommas(player.slayer.wolf.xp)],

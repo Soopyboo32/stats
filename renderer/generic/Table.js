@@ -2,10 +2,10 @@ import { css, html, staticCss, thisClass } from "../../helpers.js";
 
 let tableCss = staticCss.named("table").css`${thisClass} {
 	width: 100%;
-}`
+}`;
 
 /**
- * @param options {{centeredElms: boolean?}}
+ * @param options {{centeredElms: boolean?, rightElms: boolean?}}
  * @param headerElms {HTML[]}
  * @param rows {...HTML[][]}
  * @returns {HTML}
@@ -13,8 +13,9 @@ let tableCss = staticCss.named("table").css`${thisClass} {
 export function Table(options, headerElms, ...rows) {
 	return html`
 		<table ${tableCss} ${css`
-			${options.centeredElms?"text-align: center;":""}
-			${options.centeredElms?"font-family: 'Open Sans', sans-serif;":""}
+			${options.centeredElms ? "text-align: center;" : ""}
+			${options.rightElms ? "text-align: right;" : ""}
+			${options.centeredElms || options.rightElms ? "font-family: 'Open Sans', sans-serif;" : ""}
 		`}>
 			<tr>
 				${headerElms.map(e => html`

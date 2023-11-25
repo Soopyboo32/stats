@@ -15,6 +15,7 @@ export function getBg(height = 0) {
 	return `hsl(229 25% ${9 + height * 3}%)`;
 }
 
+//TODO: should this have a class?
 staticCss`{
 	[data-height] {
 		background-color: ${getBg(0)};
