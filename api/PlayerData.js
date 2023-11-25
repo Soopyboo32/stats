@@ -40,6 +40,8 @@ export class PlayerData {
 	}
 
 	async loadData() {
+		this.getData().error = undefined;
+
 		//TODO: all these api endpoints are temporary
 		if (!this.getData().uuid) {
 			try {
@@ -51,15 +53,17 @@ export class PlayerData {
 						this.getData().error = "Mojang error downloading Mojang data: " + uuidData.data.errorMessage;
 					}
 					this.#callUpdates();
-					return; //TODO: error handling ModCheck?
+					return;
 				}
 				this.getData().username = uuidData.data.name;
 				this.getData().uuid = uuidData.data.id;
+				this.#callUpdates();
 			} catch (e) {
 				if (e instanceof TypeError) this.getData().error = "A network error occurred!";
 				else this.getData().error = "A unknown error occurred!";
+				this.#callUpdates();
+				return;
 			}
-			this.#callUpdates();
 		}
 
 		getSoopyApi("player/" + this.getData().uuid).then(playerData => {

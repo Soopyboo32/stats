@@ -1,29 +1,47 @@
 import { PlayerData } from "../../../api/PlayerData.js";
-import { html, useRef } from "../../../helpers.js";
+import { html, staticCss, thisClass, useRef } from "../../../helpers.js";
 import { StatsPage } from "./StatsPage.js";
+import { Card } from "../../components/Card.js";
+import { buttonCss } from "../../css.js";
 
 let title = document.getElementById("title");
+
+let contentCss = staticCss.named("content").css`${thisClass} {
+	display: flex;
+	justify-content: space-evenly;
+	flex-wrap: wrap;
+}`;
 
 /**
  * @param {PlayerData} playerData
  */
 export function ErrorContent(playerData) {
 	title.innerHTML = "Soopy Stats Viewer";
-	document.location.hash = "/" + playerData.getData().username + (playerData.getData().profile ? "/" + playerData.getData().profile : "");
+	document.location.hash = "/stats/" + playerData.getData().username + (playerData.getData().profile ? "/" + playerData.getData().profile : "");
 
 	let ref = useRef().onRemove(playerData.onUpdate(() => {
-		document.location.hash = "/" + playerData.getData().username + (playerData.getData().profile ? "/" + playerData.getData().profile : "");
+		document.location.hash = "/stats/" + playerData.getData().username + (playerData.getData().profile ? "/" + playerData.getData().profile : "");
 
 		if (!playerData.getData().error) {
 			ref.reRender(StatsPage(playerData));
 		}
 	}));
 
+	let retryButton = useRef().onClick(()=>{
+		playerData.loadData().then();
+
+		ref.reRender(StatsPage(playerData));
+	})
+
 	return html`
-		<div ${ref}>
-			Error loading stats for ${playerData.getData().username}
-			<br>
-			${playerData.getData().error}
+		<div ${ref} ${contentCss}>
+			${Card(
+			`Error loading stats for ${playerData.getData().username}`,
+			html`
+					${playerData.getData().error}<br>
+					<button ${buttonCss} ${retryButton}>Retry</button>
+				`
+			)}
 		</div>
 	`;
 }

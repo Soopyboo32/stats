@@ -30,6 +30,12 @@ export function StatsPage(playerData, height = 0) {
 		}
 	}));
 
+	setTimeout(()=>{
+		if (playerData.getData().error) {
+			ref.reRender(ErrorContent(playerData));
+		}
+	},0)
+
 	return html`
 		<div ${ref} ${contentCss}>
 			${Card("Overview", PlayerInfo(playerData), height+1)}
