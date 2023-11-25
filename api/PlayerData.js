@@ -56,11 +56,8 @@ export class PlayerData {
 				this.getData().username = uuidData.data.name;
 				this.getData().uuid = uuidData.data.id;
 			} catch (e) {
-				if (e instanceof TypeError) {
-					this.getData().error = "A network error occured!";
-				} else {
-					this.getData().error = "A unknown error occured!";
-				}
+				if (e instanceof TypeError) this.getData().error = "A network error occured!";
+				else this.getData().error = "A unknown error occured!";
 			}
 			this.#callUpdates();
 		}
@@ -75,11 +72,8 @@ export class PlayerData {
 
 			this.#callUpdates();
 		}).catch(e=>{
-			if (e instanceof TypeError) {
-				this.getData().error = "A network error occured!";
-			} else {
-				this.getData().error = "A unknown error occured!";
-			}
+			if (e instanceof TypeError) this.getData().error = "A network error occured!";
+			else this.getData().error = "A unknown error occured!";
 			this.#callUpdates();
 		});
 
@@ -107,11 +101,8 @@ export class PlayerData {
 
 			this.#callUpdates();
 		}).catch(e=>{
-			if (e instanceof TypeError) {
-				this.getData().error = "A network error occured!";
-			} else {
-				this.getData().error = "A unknown error occured!";
-			}
+			if (e instanceof TypeError) this.getData().error = "A network error occured!";
+			else this.getData().error = "A unknown error occured!";
 			this.#callUpdates();
 		});
 	}
