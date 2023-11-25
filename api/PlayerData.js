@@ -41,14 +41,14 @@ export class PlayerData {
 
 	async loadData() {
 		//TODO: all these api endpoints are temporary
-		if (!this.uuid) {
+		if (!this.getData().uuid) {
 			try {
 				let uuidData = await getSoopyApi("mojang/username/" + this.getData().username);
 				if (!uuidData.success || uuidData.data.errorMessage) {
 					if (!uuidData.success) {
-						this.getData().error = "Server error downloading mojang data: " + uuidData.cause;
+						this.getData().error = "Server error downloading Mojang data: " + uuidData.cause;
 					} else {
-						this.getData().error = "Mojang error downloading mojang data: " + uuidData.data.errorMessage;
+						this.getData().error = "Mojang error downloading Mojang data: " + uuidData.data.errorMessage;
 					}
 					this.#callUpdates();
 					return; //TODO: error handling ModCheck?
@@ -56,15 +56,15 @@ export class PlayerData {
 				this.getData().username = uuidData.data.name;
 				this.getData().uuid = uuidData.data.id;
 			} catch (e) {
-				if (e instanceof TypeError) this.getData().error = "A network error occured!";
-				else this.getData().error = "A unknown error occured!";
+				if (e instanceof TypeError) this.getData().error = "A network error occurred!";
+				else this.getData().error = "A unknown error occurred!";
 			}
 			this.#callUpdates();
 		}
 
 		getSoopyApi("player/" + this.getData().uuid).then(playerData => {
 			if (!playerData.success) {
-				this.getData().error = "Server error downloading hypixel player data: " + playerData.cause;
+				this.getData().error = "Server error downloading Hypixel player data: " + playerData.cause;
 				this.#callUpdates();
 				return;
 			}
@@ -72,14 +72,14 @@ export class PlayerData {
 
 			this.#callUpdates();
 		}).catch(e=>{
-			if (e instanceof TypeError) this.getData().error = "A network error occured!";
-			else this.getData().error = "A unknown error occured!";
+			if (e instanceof TypeError) this.getData().error = "A network error occurred!";
+			else this.getData().error = "A unknown error occurred!";
 			this.#callUpdates();
 		});
 
 		getSoopyApi("skyblock/stats/" + this.getData().uuid).then(sbData => {
 			if (!sbData.success) {
-				this.getData().error = "Server error downloading player skyblock stats: " + sbData.cause;
+				this.getData().error = "Server error downloading player Skyblock stats: " + sbData.cause;
 				this.#callUpdates();
 				return;
 			}
@@ -101,8 +101,8 @@ export class PlayerData {
 
 			this.#callUpdates();
 		}).catch(e=>{
-			if (e instanceof TypeError) this.getData().error = "A network error occured!";
-			else this.getData().error = "A unknown error occured!";
+			if (e instanceof TypeError) this.getData().error = "A network error occurred!";
+			else this.getData().error = "A unknown error occurred!";
 			this.#callUpdates();
 		});
 	}
