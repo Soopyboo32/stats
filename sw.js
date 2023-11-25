@@ -86,9 +86,13 @@ self.addEventListener('fetch', event => {
 let updating = false;
 
 async function updateCommit() {
-	let res = await fetch("/commit.txt");
-	commit = await res.text();
-	commit += "-" + version;
+	try {
+		let res = await fetch("/commit.txt");
+		commit = await res.text();
+		commit += "-" + version;
+	} catch (e) {
+		return;
+	}
 
 	if (!cacheCommitToUse) {
 		cacheCommitToUse = commit;
