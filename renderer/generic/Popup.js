@@ -19,8 +19,7 @@ let wrapperCss = staticCss.named("popupWrapper").css`${thisClass} {
 
 let popupCss = staticCss.named("popup").css`${thisClass} {
 	margin: 10px;
-	min-width: min(500px, calc(100% - 40px)); /* will take less than 500px if there is an overflow */
-	max-width: calc(100% - 40%);
+	width: min(560px, calc(100% - 40px)); 
 	/*border: 1px solid ${colors.primary_dark};*/
 }`;
 
@@ -48,7 +47,7 @@ let popupTitleCss = staticCss.named("popupTitle").css`${thisClass} {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	font-size: 22px;
 }`;
 

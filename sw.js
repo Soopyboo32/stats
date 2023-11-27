@@ -63,6 +63,10 @@ self.addEventListener('fetch', event => {
 				updateCommit();
 			}
 
+			if (url.pathname === "/hassw.txt") {
+				return new Response("YES");
+			}
+
 			if (commit.startsWith("DEV-") || url.pathname === "/commit.txt" || url.pathname === "/files.txt") {
 				return await fetch(url);
 			}

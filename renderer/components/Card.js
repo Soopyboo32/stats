@@ -6,8 +6,7 @@ let cardCss = staticCss.named("card").css`${thisClass} {
 	display: flex;
 	flex-direction: column;
 	margin: 10px;
-	min-width: min(500px, calc(100% - 40px)); /* will take less than 500px if there is an overflow */
-	max-width: calc(100% - 40%);
+	width: min(500px, calc(100% - 40px)); /* will take less than 500px if there is an overflow */
 		/*border: 1px solid ${colors.primary_dark};*/
 	border-radius: 5px;
 	webkit-box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.15);
@@ -40,7 +39,7 @@ let cardTitleCss = staticCss.named("cardTitle").css`${thisClass} {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	font-size: 22px;
 }`
 

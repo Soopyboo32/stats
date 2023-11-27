@@ -37,6 +37,8 @@ setInterval(async () => {
 	}
 }, 60000); //every minute
 
+let hasSw = (await (await fetch("/hassw.txt")).text()) === "YES";
+
 /**
  * @param endpoint {string}
  * @param cb {(data: any)=>any}
@@ -49,6 +51,15 @@ export function getSoopyApiCache(endpoint, cb, cacheTime = 60 * 1000) {
 		if (Date.now() - cache[endpoint][0] < cacheTime) {
 			return cache[endpoint][1];
 		}
+	}
+
+	if (!hasSw) {
+		fetch(url + endpoint).then(async (data) => {
+			let json = await data.json();
+			cache[endpoint] = [Date.now(), json];
+			cb(json);
+		});
+		return;
 	}
 
 	fetch(urlSceme + "cache/" + cacheTime + "@" + urlRaw + endpoint).then(async (data) => {

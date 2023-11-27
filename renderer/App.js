@@ -67,6 +67,8 @@ export function App() {
 
 	async function refreshData() {
 		await appState.get().playerData?.loadData();
+		//TODO: reload leaderboard data
+		// await appState.get().playerData?.loadData();
 	}
 
 	function updateHash() {
