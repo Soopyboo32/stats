@@ -3,6 +3,7 @@
   "start_url": "/",
   "display": "standalone",
   "theme_color": "hsl(229 25% 15%)",
+  "background_color": "hsl(229 25% 9%)",
   "icons": [
     {
       "src": "https://avatars.githubusercontent.com/u/49228220?v=4",
