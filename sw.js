@@ -172,8 +172,16 @@ async function loadFiles() {
 	let cache = await caches.open(commit);
 	await Promise.allSettled(urlList.map(async u => {
 		let response = await fetch(u);
-		console.log(u + " - " + response.status);
+		if (response.status === 404) {
+			console.log("404 status for " + u);
+			was404 = true;
+			return;
+		}
 
 		await cache.put(u, response);
 	}));
+
+	if (was404) {
+		await caches.delete(commit);
+	}
 }
