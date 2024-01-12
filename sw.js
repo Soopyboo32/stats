@@ -1,4 +1,4 @@
-let version = 5;
+let version = 6;
 let commit = "";
 let cacheCommitToUse = "";
 let fullyLoaded = false;
@@ -115,6 +115,7 @@ async function updateCommit() {
 		console.log("Updating website...");
 		let start = Date.now();
 		await loadFiles();
+		fullyLoaded = true;
 
 		await Promise.all(keys.map(key => {
 			if (key !== commit) {
@@ -133,8 +134,6 @@ async function updateCommit() {
 	while (updating) {
 		await new Promise(r => setTimeout(r, 100));
 	}
-
-	fullyLoaded = true;
 }
 
 async function loadFiles() {
