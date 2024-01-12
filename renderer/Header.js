@@ -94,7 +94,7 @@ let iconCss = staticCss.named("icon").css`${thisClass} {
 	border-radius: 5px;
 }`;
 
-let canRefresh = Observable.from(true);
+let canRefresh = Observable.of(true);
 
 //TODO: sidebar
 export function Header(search, refreshData, appState) {

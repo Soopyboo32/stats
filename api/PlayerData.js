@@ -14,7 +14,7 @@ import { Observable } from "../soopyframework/Observable.js";
 
 export class PlayerData {
 	/** @type {Observable<PlayerDataData>} */
-	data = Observable.from({
+	data = Observable.of({
 		error: undefined,
 		username: undefined,
 		uuid: undefined,

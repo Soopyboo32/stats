@@ -21,7 +21,7 @@ let contentDivCss = staticCss.named("content").css`${thisClass} {
 	margin: 5px;
 }`;
 
-let appState = Observable.from({
+let appState = Observable.of({
 	/** @type {string|undefined} */
 	player: undefined,
 	/** @type {string|undefined} */
