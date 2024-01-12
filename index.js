@@ -3,6 +3,7 @@ Number.prototype.floored = function (fractionDigits = 0) {
 	return Math.floor(this * pow) / pow;
 };
 
+
 import { App } from "./renderer/App.js";
 
 document.getElementById("app").outerHTML = App();
