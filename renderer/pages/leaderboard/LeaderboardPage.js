@@ -1,10 +1,10 @@
-import { css, html, numberWithCommas, staticCss, thisClass, useRef } from "../../../helpers.js";
-import { Card } from "../../components/Card.js";
+import { css, html, numberWithCommas, staticCss, thisClass, useRef } from "../../../soopyframework/helpers.js";
+import { Card } from "../../../soopyframework/components/generic/Card.js";
 import { getSoopyApiCache } from "../../../api/soopy.js";
-import { Table } from "../../generic/Table.js";
-import { Font } from "../../generic/Font.js";
-import { invisibleCss } from "../../css.js";
-import { Popup } from "../../generic/Popup.js";
+import { Table } from "../../../soopyframework/components/generic/Table.js";
+import { Font } from "../../../soopyframework/components/generic/Font.js";
+import { invisibleCss } from "../../../soopyframework/css.js";
+import { Popup } from "../../../soopyframework/components/generic/Popup.js";
 import { StatsPage } from "../stats/StatsPage.js";
 import { PlayerData } from "../../../api/PlayerData.js";
 

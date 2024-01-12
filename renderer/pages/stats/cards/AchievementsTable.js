@@ -1,5 +1,5 @@
 import { PlayerData } from "../../../../api/PlayerData.js";
-import { html, staticCss, thisClass, useRef } from "../../../../helpers.js";
+import { html, staticCss, thisClass, useRef } from "../../../../soopyframework/helpers.js";
 
 let tableCss = staticCss.named("table").css`${thisClass} {
 	height: 200px;

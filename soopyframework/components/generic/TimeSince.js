@@ -1,11 +1,11 @@
-import { html, useRef } from "../../../../helpers.js";
+import { html, useRef } from "../../helpers.js";
 
 export default function TimeSince(timestamp) {
 	let time = useRef().interval(()=>{
 		time.renderInner(getTime(timestamp));
 	}, 1000);
 
-	return html`<span ${time} data-1="aasd">${getTime(timestamp)}</span>`;
+	return html`<span ${time}>${getTime(timestamp)}</span>`;
 }
 
 function getTime(timestamp) {

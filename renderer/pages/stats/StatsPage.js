@@ -1,6 +1,6 @@
 import { PlayerData } from "../../../api/PlayerData.js";
-import { html, staticCss, thisClass, useRef } from "../../../helpers.js";
-import { Card } from "../../components/Card.js";
+import { html, staticCss, thisClass, useRef } from "../../../soopyframework/helpers.js";
+import { Card } from "../../../soopyframework/components/generic/Card.js";
 import { ErrorContent } from "./ErrorContent.js";
 import { AchievementsTable } from "./cards/AchievementsTable.js";
 import { PlayerInfo } from "./cards/PlayerInfo.js";

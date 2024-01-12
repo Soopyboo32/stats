@@ -1,5 +1,5 @@
 import { PlayerData } from "../../../../api/PlayerData.js";
-import { html, numberWithCommas, useRef } from "../../../../helpers.js";
+import { html, numberWithCommas, useRef } from "../../../../soopyframework/helpers.js";
 
 /**
  * @param {PlayerData} playerData

@@ -1,5 +1,5 @@
-import { html, staticCss, thisClass } from "../../../helpers.js";
-import { Card } from "../../components/Card.js";
+import { html, staticCss, thisClass } from "../../../soopyframework/helpers.js";
+import { Card } from "../../../soopyframework/components/generic/Card.js";
 
 let title = document.getElementById("title");
 

@@ -1,6 +1,6 @@
-import { html, staticCss, thisClass, useRef } from "../../helpers.js";
+import { html, staticCss, thisClass, useRef } from "../../soopyframework/helpers.js";
 import { Icon } from "../Icon.js";
-import { buttonCss, colors, textboxCss } from "../css.js";
+import { buttonCss, colors, textboxCss } from "../../soopyframework/css.js";
 
 let containerCss = staticCss.named("username-search-container").css`{
 	${thisClass} {

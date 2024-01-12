@@ -1,9 +1,9 @@
-import { Observable } from "../Observable.js";
+import { Observable } from "../soopyframework/Observable.js";
 import { PlayerData } from "../api/PlayerData.js";
-import { html, staticCss, thisClass, useRef } from "../helpers.js";
+import { html, staticCss, thisClass, useRef } from "../soopyframework/helpers.js";
 import { Header } from "./Header.js";
 import { MainPage } from "./pages/main/MainPage.js";
-import { colors, getBg } from "./css.js";
+import { colors, getBg } from "../soopyframework/css.js";
 import { StatsPage } from "./pages/stats/StatsPage.js";
 import { Leaderboard } from "./pages/leaderboard/LeaderboardPage.js";
 

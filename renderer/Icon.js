@@ -1,4 +1,4 @@
-import { css, html } from "../helpers.js";
+import { css, html } from "../soopyframework/helpers.js";
 
 export function Icon(name, {size, fill = true} = {}) {
 	let iconCss = css`

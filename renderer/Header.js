@@ -1,10 +1,10 @@
-import { Observable } from "../Observable.js";
-import { css, html, staticCss, thisClass, useRef } from "../helpers.js";
+import { Observable } from "../soopyframework/Observable.js";
+import { css, html, staticCss, thisClass, useRef } from "../soopyframework/helpers.js";
 import { Icon } from "./Icon.js";
 import { UsernameSearch } from "./components/UsernameSearch.js";
-import { buttonCss, colors, getBg } from "./css.js";
-import { Hover } from "./generic/hover/Hover.js";
-import { Lore } from "./generic/hover/Lore.js";
+import { buttonCss, colors, getBg } from "../soopyframework/css.js";
+import { Hover } from "../soopyframework/components/generic/hover/Hover.js";
+import { Lore } from "./components/Lore.js";
 
 let headerCss = staticCss.named("header").css`{
 	${thisClass} {

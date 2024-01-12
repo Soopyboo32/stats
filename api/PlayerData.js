@@ -1,5 +1,5 @@
 import { getSoopyApi } from "./soopy.js";
-import { Observable } from "../Observable.js";
+import { Observable } from "../soopyframework/Observable.js";
 
 /**
  * @typedef {{

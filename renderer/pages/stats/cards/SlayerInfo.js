@@ -1,5 +1,5 @@
-import { html, numberWithCommas, useRef } from "../../../../helpers.js";
-import { Table } from "../../../generic/Table.js";
+import { html, numberWithCommas, useRef } from "../../../../soopyframework/helpers.js";
+import { Table } from "../../../../soopyframework/components/generic/Table.js";
 
 export function SlayerInfo(playerData) {
 	return playerData.data.observe(() => {

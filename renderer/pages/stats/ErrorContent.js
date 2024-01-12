@@ -1,8 +1,8 @@
 import { PlayerData } from "../../../api/PlayerData.js";
-import { html, staticCss, thisClass, useRef } from "../../../helpers.js";
+import { html, staticCss, thisClass, useRef } from "../../../soopyframework/helpers.js";
 import { StatsPage } from "./StatsPage.js";
-import { Card } from "../../components/Card.js";
-import { buttonCss } from "../../css.js";
+import { Card } from "../../../soopyframework/components/generic/Card.js";
+import { buttonCss } from "../../../soopyframework/css.js";
 
 let title = document.getElementById("title");
 

@@ -1,4 +1,4 @@
-import { staticCss, thisClass } from "../helpers.js";
+import { staticCss, thisClass } from "./helpers.js";
 
 export let colors = {
 	text: "rgb(229, 231, 235)",
