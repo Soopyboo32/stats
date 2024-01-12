@@ -1,6 +1,7 @@
-let version = 4;
+let version = 5;
 let commit = "";
 let cacheCommitToUse = "";
+let fullyLoaded = false;
 
 self.addEventListener("install", event => {
 	console.log("Installing service worker...");
@@ -71,6 +72,10 @@ self.addEventListener('fetch', event => {
 				return await fetch(url);
 			}
 
+			if (!fullyLoaded) {
+				return await fetch(url);
+			}
+
 			let cache = await caches.open(commit);
 			return cache.match(url.pathname);
 			// } else {
@@ -128,6 +133,8 @@ async function updateCommit() {
 	while (updating) {
 		await new Promise(r => setTimeout(r, 100));
 	}
+
+	fullyLoaded = true;
 }
 
 async function loadFiles() {
@@ -166,7 +173,7 @@ async function loadFiles() {
 	let cache = await caches.open(commit);
 	await Promise.allSettled(urlList.map(async u => {
 		let response = await fetch(u);
-		console.log(u + " - " + response.statusText)
+		console.log(u + " - " + response.statusText);
 
 		await cache.put(u, response);
 	}));
