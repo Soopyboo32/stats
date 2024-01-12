@@ -1,4 +1,4 @@
-let version = 7;
+let version = 8;
 let commit = "";
 let cacheCommitToUse = "";
 let fullyLoaded = false;
@@ -168,7 +168,7 @@ async function loadFiles() {
 		urlList.push(pathPrefix + file);
 	}
 
-	console.log(urlList);
+	// console.log(urlList);
 	let was404 = false;
 	let cache = await caches.open(commit);
 	await Promise.allSettled(urlList.map(async u => {
