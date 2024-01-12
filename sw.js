@@ -1,4 +1,4 @@
-let version = 3;
+let version = 4;
 let commit = "";
 let cacheCommitToUse = "";
 
@@ -60,7 +60,7 @@ self.addEventListener('fetch', event => {
 			}
 
 			if (url.pathname === "/") {
-				updateCommit();
+				updateCommit().then();
 			}
 
 			if (url.pathname === "/hassw.txt") {
@@ -162,9 +162,11 @@ async function loadFiles() {
 		urlList.push(pathPrefix + file);
 	}
 
+	console.log(urlList);
 	let cache = await caches.open(commit);
 	await Promise.allSettled(urlList.map(async u => {
 		let response = await fetch(u);
+		console.log(u + " - " + response.statusText)
 
 		await cache.put(u, response);
 	}));
