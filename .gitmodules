@@ -1,0 +1,3 @@
+[submodule "soopyframework"]
+	path = soopyframework
+	url = https://github.com/Soopyboo32/soopyframework.git
