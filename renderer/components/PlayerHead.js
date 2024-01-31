@@ -8,7 +8,7 @@ let headCss = staticCss.named("head").css`${thisClass} {
 
 /**
  * @param uuid
- * @param options {width: String?, height: String?}
+ * @param options {{width: String?, height: String?}}
  * @returns {HTML}
  * @constructor
  */
