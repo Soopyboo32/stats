@@ -1,5 +1,5 @@
 import { html, staticCss, thisClass, useRef } from "../../soopyframework/helpers.js";
-import { Icon } from "../Icon.js";
+import { Icon } from "../../soopyframework/components/generic/Icon.js";
 import { buttonCss, colors, textboxCss } from "../../soopyframework/css.js";
 
 let containerCss = staticCss.named("username-search-container").css`{

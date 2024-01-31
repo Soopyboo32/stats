@@ -2,6 +2,8 @@ import { css, html, staticCss, thisClass } from "../../soopyframework/helpers.js
 
 let headCss = staticCss.named("head").css`${thisClass} {
 	aspect-ratio: 1;
+	width: auto;
+	image-rendering: crisp-edges;
 }`;
 
 /**

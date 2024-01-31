@@ -69,11 +69,11 @@ self.addEventListener('fetch', event => {
 			}
 
 			if (commit.startsWith("DEV-") || url.pathname === "/commit.txt" || url.pathname === "/files.txt") {
-				return await fetch(url);
+				return await fetch(event.request);
 			}
 
 			if (!fullyLoaded) {
-				return await fetch(url);
+				return await fetch(event.request);
 			}
 
 			let cache = await caches.open(commit);
