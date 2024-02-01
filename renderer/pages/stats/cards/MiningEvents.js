@@ -23,10 +23,10 @@ export function MiningEvents() {
 
 		return html`
 			<b>Crystal Hollows:</b>
-			${eventData.get().data.data.running_events.CRYSTAL_HOLLOWS.map(e => EventData(e, totalChLobbys))}
+			${eventData.get().data.data.running_events.CRYSTAL_HOLLOWS.map(e => EventData(e, totalChLobbys)).join("")}
 			<hr>
 			<b>Dwarven Mines:</b>
-			${eventData.get().data.data.running_events.DWARVEN_MINES.map(e => EventData(e, totalMinesLobbys))}
+			${eventData.get().data.data.running_events.DWARVEN_MINES.map(e => EventData(e, totalMinesLobbys)).join("")}
 		`;
 	}));
 }
