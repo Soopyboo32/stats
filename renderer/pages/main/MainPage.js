@@ -1,5 +1,6 @@
 import { html, staticCss, thisClass } from "../../../soopyframework/helpers.js";
 import { Card } from "../../../soopyframework/components/generic/Card.js";
+import { MiningEvents } from "../stats/cards/MiningEvents.js";
 
 let title = document.getElementById("title");
 
@@ -25,6 +26,7 @@ export function MainPage(updateHash) {
 				document.location.hash = "/stats/Soopyboo32";
 				updateHash();
 			})}
+			${MiningEvents()}
 		</div>
 	`;
 }
