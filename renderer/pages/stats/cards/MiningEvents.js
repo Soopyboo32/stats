@@ -18,20 +18,24 @@ export function MiningEvents() {
 	return Card(html`<span ${ref}>Mining Events</span>`, eventData.observe(() => {
 		if (!eventData.get().data) return html`Loading...`;
 
+		let totalChLobbys = eventData.get().data.data.running_events.CRYSTAL_HOLLOWS.reduce((acc, cur) => acc + cur.lobby_count, 0)
+		let totalMinesLobbys = eventData.get().data.data.running_events.DWARVEN_MINES.reduce((acc, cur) => acc + cur.lobby_count, 0)
+
 		return html`
 			<b>Crystal Hollows:</b>
-			${eventData.get().data.data.running_events.CRYSTAL_HOLLOWS.map(e => EventData(e))}
-			<hr></hr>
+			${eventData.get().data.data.running_events.CRYSTAL_HOLLOWS.map(e => EventData(e, totalChLobbys))}
+			<hr>
 			<b>Dwarven Mines:</b>
-			${eventData.get().data.data.running_events.DWARVEN_MINES.map(e => EventData(e))}
+			${eventData.get().data.data.running_events.DWARVEN_MINES.map(e => EventData(e, totalMinesLobbys))}
 		`;
 	}));
 }
 
-function EventData(e) {
+function EventData(e, totalLobbys) {
 	return html`
 		<div>
-			${e.event} (${e.lobby_count} lobbys) ends in ${TimeTill(e.ends_at)} ${e.is_double ? " -> " + e.event : ""}
+			${e.event} (${(e.lobby_count / totalLobbys * 100).toFixed(0)}% of lobbys) ends in ${TimeTill(e.ends_at)}
+			${e.is_double ? " -> " + e.event : ""}
 		</div>
 	`;
 }
