@@ -1,4 +1,6 @@
 import { css, html, staticCss, thisClass } from "../../soopyframework/helpers.js";
+import { SOOPY_API_URL } from "../../api/soopy.js";
+import { Img } from "../../soopyframework/components/vanilla/img.js";
 
 let fakeImgCss = staticCss.named("fake-img").css`${thisClass} {
 	aspect-ratio: 1;
@@ -35,9 +37,14 @@ export function PlayerHead(uuid, options = {}) {
 			${options.width ? `width: ${options.width};` : ""}
 			${options.height ? `height: ${options.height};` : ""}
 		`}></div>
-		${uuid ? html`<img src="https://api.soopy.dev/skin/${uuid}/head.png" width="8" height="8" ${headCss} ${css`
-			${options.width ? `width: ${options.width};` : ""}
-			${options.height ? `height: ${options.height};` : ""}
-		`}>` : ""}
+		${uuid ? Img(`${SOOPY_API_URL}/skin/${uuid}/head.png`, {
+			cssRaw: css`
+				${options.width ? `width: ${options.width};` : ""}
+				${options.height ? `height: ${options.height};` : ""}
+			`,
+			css: headCss,
+			width: 8,
+			height: 8,
+		}) : ""}
 	`;
 }

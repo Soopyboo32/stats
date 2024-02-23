@@ -1,4 +1,4 @@
-let url = "https://api.soopy.dev/";
+export let SOOPY_API_URL = "https://api.soopy.dev/";
 let urlSceme = "https://";
 let urlRaw = "api.soopy.dev/";
 
@@ -7,7 +7,7 @@ async function updateUseLocal() {
 		let data = await fetch("http://127.0.0.1:8000/");
 		data = await data.json();
 		if (data.success) {
-			url = "http://127.0.0.1:8000/";
+			SOOPY_API_URL = "http://127.0.0.1:8000/";
 			urlSceme = "http://";
 			urlRaw = "127.0.0.1:8000/";
 			console.log("Locally hosted api detected, using local address instead!");
@@ -21,7 +21,7 @@ if (window.location.origin.includes("127.0.0.1")) {
 }
 
 export async function getSoopyApi(endpoint) {
-	let data = await fetch(url + endpoint);
+	let data = await fetch(SOOPY_API_URL + endpoint);
 	return await data.json();
 }
 
@@ -54,7 +54,7 @@ export function getSoopyApiCache(endpoint, cb, cacheTime = 60 * 1000) {
 	}
 
 	if (!hasSw) {
-		fetch(url + endpoint).then(async (data) => {
+		fetch(SOOPY_API_URL + endpoint).then(async (data) => {
 			let json = await data.json();
 			cache[endpoint] = [Date.now(), json];
 			cb(json);
