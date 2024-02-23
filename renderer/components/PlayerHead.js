@@ -27,24 +27,27 @@ let headCss = fakeImgCss.named("head").css`{
 
 /**
  * @param uuid
- * @param options {{width: String?, height: String?}}
+ * @param options {{width: String?, height: String?, fadeInAlways: boolean?}}
  * @returns {HTML}
  * @constructor
  */
 export function PlayerHead(uuid, options = {}) {
 	return html`
-		<div ${fakeImgCss} ${css`
-			${options.width ? `width: ${options.width};` : ""}
-			${options.height ? `height: ${options.height};` : ""}
-		`}></div>
-		${uuid ? Img(`${SOOPY_API_URL}skin/${uuid}/head.png`, {
-			cssRaw: css`
+		<span>
+			<div ${fakeImgCss} ${css`
 				${options.width ? `width: ${options.width};` : ""}
 				${options.height ? `height: ${options.height};` : ""}
-			`,
-			css: headCss,
-			width: 8,
-			height: 8,
-		}) : ""}
+			`}></div>
+			${uuid ? Img(`${SOOPY_API_URL}skin/${uuid}/head.png`, {
+				cssRaw: css`
+					${options.width ? `width: ${options.width};` : ""}
+					${options.height ? `height: ${options.height};` : ""}
+				`,
+				css: headCss,
+				width: 8,
+				height: 8,
+				fadeIfLoaded: !!options.fadeInAlways
+			}) : ""}
+		</span>
 	`;
 }

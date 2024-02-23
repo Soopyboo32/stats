@@ -1,6 +1,10 @@
 import { html, staticCss, thisClass, useRef } from "../../soopyframework/helpers.js";
 import { Icon } from "../../soopyframework/components/generic/Icon.js";
-import { buttonCss, colors, textboxCss } from "../../soopyframework/css.js";
+import { buttonCss, colors, getBg, textboxCss } from "../../soopyframework/css.js";
+import { PlayerHead } from "./PlayerHead.js";
+import { MiningEvents } from "../pages/stats/cards/MiningEvents.js";
+import { MinecraftText } from "./MinecraftText.js";
+import { getSoopyApi, getSoopyApiCache } from "../../api/soopy.js";
 
 let containerCss = staticCss.named("username-search-container").css`{
 	${thisClass} {
@@ -24,13 +28,14 @@ let headerUsernameInputCss = textboxCss.named("username-input").css`{
 		padding-top: 0;
 		padding-bottom: 0;
 		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+		-moz-box-sizing: border-box; /* Firefox, other Gecko */
 		box-sizing: border-box;
 	}
 
 	${thisClass}:focus {
 		background: transparent;
 		border-right: none;
+		border-bottom-left-radius: 0;
 	}
 
 	${thisClass}:focus::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -97,6 +102,28 @@ let headerSearchIconContainerCss = staticCss.named("search-icon-container").css`
 	}
 }`;
 
+let autoCompleteCss = staticCss.named("autoComplete").css`{
+	${thisClass} {
+		position: relative;
+		display: none;
+	}
+
+	${thisClass}:has(~ ${headerUsernameInputCss}:focus) {
+		display: block;
+	}
+
+	${thisClass} > div {
+		position: absolute;
+		z-index: 1;
+		width: max-content;
+		top: 14px;
+		background-color: ${getBg(2)};
+		border-bottom-left-radius: 10px;
+		border-bottom-right-radius: 10px;
+		border: 1px solid ${colors.primary_dark};
+	}
+}`;
+
 /**
  * @param {(String) => any} callback
  */
@@ -109,6 +136,19 @@ export function UsernameSearch(callback) {
 		input.getElm().value = "";
 
 		callback(searchPlayer);
+	}).onKeyDown(async () => {
+		await new Promise(r => setTimeout(r, 0));
+
+		let searchPlayer = input.getElm().value;
+		if (searchPlayer.trim() === "") {
+			autoCompleteResults.renderInner("");
+			return;
+		}
+
+		let autocompleteRes = await getSoopyApi("tabcompletedetailed/" + searchPlayer);
+		if (input.getElm().value !== searchPlayer) return;
+
+		autoCompleteResults.renderInner(autocompleteRes.data.map(data => AutoCompleteResult(data[1], data[0], callback)).join(""));
 	});
 
 	let searchButton = useRef().onClick(() => {
@@ -120,14 +160,39 @@ export function UsernameSearch(callback) {
 		callback(searchPlayer);
 	});
 
+	let autoCompleteResults = useRef();
+
 	return html`
 		<div ${containerCss}>
+			<div ${autoCompleteCss}>
+				<div ${autoCompleteResults}>
+				</div>
+			</div>
 			<input ${input} type="text" placeholder="Username" autocomplete="off" ${headerUsernameInputCss}>
 			<button ${searchButton} ${headerSearchButtonCss}>
 				<div ${headerSearchIconContainerCss}>
 					${Icon("search")}
 				</div>
 			</button>
+		</div>
+	`;
+}
+
+let autoCompleteResultCss = buttonCss.named("autoCompleteResult").css`{
+	${thisClass} {
+		font-size: 20px;
+	}
+}`;
+
+function AutoCompleteResult(uuid, username, searchCallback) {
+	let autoCompleteResult = useRef().onClick(() => {
+		searchCallback(username);
+	});
+
+	return html`
+		<div ${autoCompleteResultCss} ${autoCompleteResult}>
+			${PlayerHead(uuid, {height: "20px", width: "20px", fadeInAlways: true})}
+			${username}
 		</div>
 	`;
 }
