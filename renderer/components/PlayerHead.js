@@ -37,7 +37,7 @@ export function PlayerHead(uuid, options = {}) {
 			${options.width ? `width: ${options.width};` : ""}
 			${options.height ? `height: ${options.height};` : ""}
 		`}></div>
-		${uuid ? Img(`${SOOPY_API_URL}/skin/${uuid}/head.png`, {
+		${uuid ? Img(`${SOOPY_API_URL}skin/${uuid}/head.png`, {
 			cssRaw: css`
 				${options.width ? `width: ${options.width};` : ""}
 				${options.height ? `height: ${options.height};` : ""}
