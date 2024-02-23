@@ -20,6 +20,12 @@ let headerUsernameInputCss = textboxCss.named("username-input").css`{
 		margin-left: 0;
 		margin-right: 0;
 		border-right: none;
+		height: 30px;
+		padding-top: 0;
+		padding-bottom: 0;
+		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+		box-sizing: border-box;
 	}
 
 	${thisClass}:focus {
@@ -49,6 +55,8 @@ let headerSearchButtonCss = buttonCss.named("search-button").css`{
 		margin-right: 0;
 		padding: 0;
 		width: 30px;
+		height: 30px;
+		border-width: 1px;
 	}
 
 	${thisClass}:hover {
