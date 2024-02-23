@@ -148,7 +148,11 @@ export function UsernameSearch(callback) {
 		let autocompleteRes = await getSoopyApi("tabcompletedetailed/" + searchPlayer);
 		if (input.getElm().value !== searchPlayer) return;
 
-		autoCompleteResults.renderInner(autocompleteRes.data.map(data => AutoCompleteResult(data[1], data[0], callback)).join(""));
+		autoCompleteResults.renderInner(autocompleteRes.data.map(data => AutoCompleteResult(data[1], data[0], () => {
+			input.getElm().value = "";
+
+			callback(data[0]);
+		})).join(""));
 	});
 
 	let searchButton = useRef().onClick(() => {
@@ -184,9 +188,9 @@ let autoCompleteResultCss = buttonCss.named("autoCompleteResult").css`{
 	}
 }`;
 
-function AutoCompleteResult(uuid, username, searchCallback) {
+function AutoCompleteResult(uuid, username, onClick) {
 	let autoCompleteResult = useRef().onMouseDown(() => {
-		searchCallback(username);
+		onClick();
 	});
 
 	return html`
