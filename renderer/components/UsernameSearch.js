@@ -185,7 +185,7 @@ let autoCompleteResultCss = buttonCss.named("autoCompleteResult").css`{
 }`;
 
 function AutoCompleteResult(uuid, username, searchCallback) {
-	let autoCompleteResult = useRef().onClick(() => {
+	let autoCompleteResult = useRef().onMouseDown(() => {
 		searchCallback(username);
 	});
 
