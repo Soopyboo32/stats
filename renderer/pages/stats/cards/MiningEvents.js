@@ -20,6 +20,7 @@ export function MiningEvents() {
 
 		let totalChLobbys = eventData.get().data.data.total_lobbys.CRYSTAL_HOLLOWS || 0;
 		let totalMinesLobbys = eventData.get().data.data.total_lobbys.DWARVEN_MINES || 0;
+		let totalMineshaftLobbys = eventData.get().data.data.total_lobbys.MINESHAFT || 0;
 
 		return html`
 			<b>Crystal Hollows:</b>
@@ -27,6 +28,9 @@ export function MiningEvents() {
 			<hr>
 			<b>Dwarven Mines:</b>
 			${eventData.get().data.data.running_events.DWARVEN_MINES.map(e => EventData(e, totalMinesLobbys)).join("")}
+			<hr>
+			<b>Mineshaft:</b>
+			${eventData.get().data.data.running_events.MINESHAFT.map(e => EventData(e, totalMineshaftLobbys)).join("")}
 		`;
 	}));
 }
