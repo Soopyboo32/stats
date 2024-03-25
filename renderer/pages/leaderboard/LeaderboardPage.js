@@ -7,6 +7,7 @@ import { invisibleCss } from "../../../soopyframework/css.js";
 import { Popup } from "../../../soopyframework/components/generic/Popup.js";
 import { StatsPage } from "../stats/StatsPage.js";
 import { PlayerData } from "../../../api/PlayerData.js";
+import { PlayerHead } from "../../components/PlayerHead.js";
 
 let contentCss = staticCss.named("content").css`${thisClass} {
 	display: flex;
@@ -136,7 +137,7 @@ function ActualLbPageFromData(data, lbType, start) {
 							});
 						});
 						username = html`
-							<div ${ref} ${css`cursor: pointer;`}>${username}</div>`;
+							<div ${ref} ${css`cursor: pointer;`}>${PlayerHead(user.uuid, {height: "1em"})} ${username}</div>`;
 					}
 
 					return [
