@@ -134,6 +134,7 @@ export function UsernameSearch(callback) {
 		let searchPlayer = input.getElm().value;
 		if (searchPlayer.trim() === "") return;
 		input.getElm().value = "";
+		input.getElm().blur();
 
 		callback(searchPlayer);
 	}).onKeyDown(async () => {
@@ -172,7 +173,9 @@ export function UsernameSearch(callback) {
 				<div ${autoCompleteResults}>
 				</div>
 			</div>
-			<input ${input} type="text" placeholder="Username" autocomplete="off" ${headerUsernameInputCss}>
+			<!-- data-lpignore disables lastpass autofill -->
+			<input ${input} type="text" placeholder="Username" autocomplete="off" data-lpignore="true"
+				   ${headerUsernameInputCss}>
 			<button ${searchButton} ${headerSearchButtonCss}>
 				<div ${headerSearchIconContainerCss}>
 					${Icon("search")}

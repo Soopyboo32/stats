@@ -1,10 +1,12 @@
-import { Observable } from "../soopyframework/Observable.js";
-import { css, html, staticCss, thisClass, useRef } from "../soopyframework/helpers.js";
-import { Icon } from "../soopyframework/components/generic/Icon.js";
-import { UsernameSearch } from "./components/UsernameSearch.js";
-import { buttonCss, colors, getBg } from "../soopyframework/css.js";
-import { Hover } from "../soopyframework/components/generic/hover/Hover.js";
-import { Lore } from "./components/Lore.js";
+import { Observable } from "../../soopyframework/Observable.js";
+import { css, html, staticCss, thisClass, useRef } from "../../soopyframework/helpers.js";
+import { Icon } from "../../soopyframework/components/generic/Icon.js";
+import { UsernameSearch } from "../components/UsernameSearch.js";
+import { buttonCss, colors, getBg } from "../../soopyframework/css.js";
+import { Hover } from "../../soopyframework/components/generic/hover/Hover.js";
+import { Lore } from "../components/Lore.js";
+import { Popup } from "../../soopyframework/components/generic/Popup.js";
+import { SettingsPage } from "../settings/SettingsPage.js";
 
 let headerCss = staticCss.named("header").css`{
 	${thisClass} {
@@ -21,6 +23,7 @@ let headerCss = staticCss.named("header").css`{
 		-moz-box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
 		box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
 		transition: 0.5s;
+		z-index: 1;
 	}
 
 	@media only screen and (max-width: 600px) {
@@ -150,7 +153,7 @@ function HeaderLeftElement(search, appState) {
 
 function HeaderRightElement(refreshData) {
 	let settingsButton = useRef().onClick(() => {
-		alert("This button does nothing yet!");
+		Popup("Settings", SettingsPage);
 	});
 
 	let refreshButton = useRef().onClick(() => {
@@ -168,17 +171,6 @@ function HeaderRightElement(refreshData) {
 
 	canRefresh.onChange((p, d) => {
 		refreshButton.css`background-color: ${d ? colors.primary_dark : colors.grey};`;
-	});
-
-	Hover(settingsButton, () => {
-		return Lore(
-			"Hidden §zCHROMA§r Thingo",
-			"wow so cool",
-			"very real",
-			"§zi spent a long time getting chroma to work",
-			"§d:(",
-			"Soon ill add &k support: §kIIasdkjhgksdfg WOW!"
-		);
 	});
 
 	return html`
