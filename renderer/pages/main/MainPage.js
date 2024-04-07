@@ -1,6 +1,7 @@
 import { html, staticCss, thisClass } from "../../../soopyframework/helpers.js";
 import { Card } from "../../../soopyframework/components/generic/Card.js";
 import { MiningEvents } from "../stats/cards/MiningEvents.js";
+import { MinecraftText } from "../../components/MinecraftText.js";
 
 let title = document.getElementById("title");
 

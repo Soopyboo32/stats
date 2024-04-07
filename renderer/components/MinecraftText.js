@@ -1,4 +1,5 @@
 import { css, html, staticCss, thisClass, useRef } from "../../soopyframework/helpers.js";
+import { getTextWidth } from "../../soopyframework/util/textWidth.js";
 
 let minecraftTextStyle = staticCss.named("minecraft-text").css`{
 	@font-face {
@@ -63,6 +64,33 @@ let special = {
 	'r': undefined //reset
 };
 
+let charWidths = computeCharWidths();
+let widthToChars = getWidthToChars(charWidths);
+document.fonts.addEventListener("loadingdone", (event) => {
+	charWidths = computeCharWidths();
+	widthToChars = getWidthToChars(charWidths);
+	console.log(widthToChars)
+});
+
+function computeCharWidths() {
+	let res = new Map();
+	for (let i = " ".codePointAt(0); i <= "~".codePointAt(0); i++) {
+	// for (let i = 0; i <= 128; i++) {
+		let char = String.fromCharCode(i);
+		res.set(char, getTextWidth(char, "normal 12px Minecraft"));
+	}
+	return res;
+}
+
+function getWidthToChars(charWidths) {
+	let res = new Map();
+	for (let [char, width] of charWidths) {
+		if (!res.has(width)) res.set(width, []);
+		res.get(width).push(char);
+	}
+	return res;
+}
+
 function addColors(str, shadow = true) {
 	let ret = [];
 	let chars = str.split("");
@@ -73,6 +101,7 @@ function addColors(str, shadow = true) {
 	let color = "f";
 	let specialT = [];
 	let nextIsColor = false;
+	let magic = false;
 	for (let char of chars) {
 		if (char === "§") {
 			nextIsColor = true;
@@ -81,14 +110,17 @@ function addColors(str, shadow = true) {
 		if (nextIsColor) {
 			char = char.toLowerCase();
 
-			if (char === "r") {
-				if (color === "f" && specialT.length === 0) {
+			if (char === "k") {
+				magic = true;
+			} else if (char === "r") {
+				if (color === "f" && specialT.length === 0 && !magic) {
 					//skip unneeded color codes
 					nextIsColor = false;
 					continue;
 				}
 				color = "f";
 				specialT = [];
+				magic = false;
 			} else if (special[char]) {
 				let oldLen = specialT.length;
 				specialT.push(char);
@@ -99,13 +131,14 @@ function addColors(str, shadow = true) {
 					continue;
 				}
 			} else {
-				if (color === char && specialT.length === 0) {
+				if (color === char && specialT.length === 0 && !magic) {
 					//skip unneeded color codes
 					nextIsColor = false;
 					continue;
 				}
 				color = char;
 				specialT = [];
+				magic = false;
 			}
 
 			ret[ret.length - 1] += exitSection();
@@ -117,7 +150,12 @@ function addColors(str, shadow = true) {
 			nextIsColor = false;
 			continue;
 		}
-		ret[ret.length - 1] += char;
+		if (magic) {
+			let charWidth = charWidths.get(char) || -1;
+			ret[ret.length - 1] += `<span data-magic-width="${charWidth}">${char}</span>`;
+		} else {
+			ret[ret.length - 1] += char;
+		}
 		sectionLen++;
 	}
 
@@ -263,18 +301,18 @@ function enterSection(color, specialC = [], shadow = true) {
 
 		if (!shadow) {
 			return html`<span ${ref} ${chromaCss} ${css`
-			  ${specialC.map(v => special[v]).join(";")}
+				${specialC.map(v => special[v]).join(";")}
 			`}>`;
 		}
 
 		return html`<span ${ref} ${chromaShadowShadowCss} ${css`
-		  ${specialC.map(v => special[v]).join(";")}
+			${specialC.map(v => special[v]).join(";")}
 		`}><span ${refInner} ${chromaShadowCss}><span></span></span>`;
 	}
 	return html`<span ${css`
-	  color: #${colors[color] || colors["f"]};
-	  ${shadow ? `text-shadow: 2px 2px #${shadowColors[color] || shadowColors["f"]};` : ""}
-	  ${specialC.map(v => special[v]).join(";")}
+		color: #${colors[color] || colors["f"]};
+		${shadow ? `text-shadow: 2px 2px #${shadowColors[color] || shadowColors["f"]};` : ""}
+		${specialC.map(v => special[v]).join(";")}
 	`}>`;
 }
 
@@ -314,3 +352,17 @@ function updateChroma(ref, refInner, specialC, oldOffset) {
 function exitSection() {
 	return html`</span>`;
 }
+
+function animateMagic() {
+	let magicElements = document.querySelectorAll("[data-magic-width]");
+	for (let elm of magicElements) {
+		let width = parseFloat(elm.dataset.magicWidth);
+		let chars = widthToChars.get(width);
+		if (!chars) continue;
+		elm.innerText = chars[Math.floor(chars.length * Math.random())];
+	}
+
+	window.requestAnimationFrame(animateMagic);
+}
+
+window.requestAnimationFrame(animateMagic);

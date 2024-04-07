@@ -3,6 +3,7 @@ import { html, staticCss, thisClass, useRef } from "../../../../soopyframework/h
 import { colors } from "../../../../soopyframework/css.js";
 import { Hover } from "../../../../soopyframework/components/generic/hover/Hover.js";
 import { Lore } from "../../../components/Lore.js";
+import { Img } from "../../../../soopyframework/components/vanilla/img.js";
 
 let inventoryCss = staticCss.named("inventory").css`${thisClass} {
 	display: flex;
@@ -16,6 +17,10 @@ export function Inventory(playerData) {
 	return playerData.data.observe(() => {
 		let inventory = playerData.getSbPlayerData()?.inventories?.inventory;
 
+		if (!playerData.getSbPlayerData()) {
+			return "Loading...";
+		}
+
 		if (!inventory) {
 			return "Api missing data!";
 		}
@@ -24,20 +29,20 @@ export function Inventory(playerData) {
 
 		return html`
 			<div ${inventoryCss}>
-			<table>
-				<tr>
-					${inventory.splice(0, 9).map(item => `<td>${Item(item)}</td>`).join("")}
-				</tr>
-				<tr>
-					${inventory.splice(0, 9).map(item => `<td>${Item(item)}</td>`).join("")}
-				</tr>
-				<tr>
-					${inventory.splice(0, 9).map(item => `<td>${Item(item)}</td>`).join("")}
-				</tr>
-				<tr>
-					${hotbar.map(item => `<td>${Item(item)}</td>`).join("")}
-				</tr>
-			</table>
+				<table>
+					<tr>
+						${inventory.splice(0, 9).map(item => `<td>${Item(item)}</td>`).join("")}
+					</tr>
+					<tr>
+						${inventory.splice(0, 9).map(item => `<td>${Item(item)}</td>`).join("")}
+					</tr>
+					<tr>
+						${inventory.splice(0, 9).map(item => `<td>${Item(item)}</td>`).join("")}
+					</tr>
+					<tr>
+						${hotbar.map(item => `<td>${Item(item)}</td>`).join("")}
+					</tr>
+				</table>
 			</div>
 		`;
 	});
@@ -70,9 +75,10 @@ function Item(item) {
 	}
 
 	let itemData = JSON.parse(item.nbt);
-	console.log(itemData);
 
-	let containerRef = useRef();
+	let containerRef = useRef().onClick(() => {
+		console.log("debug itemdata:", itemData);
+	});
 
 	Hover(containerRef, () => Lore(itemData.tag.display.Name, ...itemData.tag.display.Lore));
 
