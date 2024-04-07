@@ -26,7 +26,7 @@ export function MainPage(updateHash) {
 				document.location.hash = "/stats/Soopyboo32";
 				updateHash();
 			})}
-			${MiningEvents()} 
+			${MiningEvents()}
 		</div>
 	`;
 }
