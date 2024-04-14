@@ -1,8 +1,7 @@
 import { PlayerData } from "../../../../api/PlayerData.js";
 import { html, staticCss, thisClass, useRef } from "../../../../soopyframework/helpers.js";
 import { colors } from "../../../../soopyframework/css.js";
-import { Hover } from "../../../../soopyframework/components/generic/hover/Hover.js";
-import { Lore } from "../../../components/hover/Lore.js";
+import { ItemHover } from "../../../components/hover/ItemHover.js";
 
 let inventoryCss = staticCss.named("inventory").css`${thisClass} {
 	display: flex;

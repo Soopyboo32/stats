@@ -1,6 +1,7 @@
 import { Observable } from "../../soopyframework/Observable.js";
 
 export const settings = Observable.of({
+	theme: "dark",
 	showUUID: false,
 	debug: false,
 	hoverFormat: "minecraft"

@@ -5,6 +5,11 @@ import { SettingList } from "../../soopyframework/components/generic/settings/Se
 import { SettingDropdown } from "../../soopyframework/components/generic/settings/SettingDropdown.js";
 import { SettingRadioSelect } from "../../soopyframework/components/generic/settings/SettingRadioSelect.js";
 
+const themes = {
+	dark: "Dark",
+	light: "Light"
+};
+
 const hoverFormats = {
 	minecraft: "Minecraft",
 	fancy: "Fancy"
@@ -15,6 +20,16 @@ const hoverFormats = {
  */
 export function SettingsPage(closeFn) {
 	return SettingList(
+		//Maybe one day
+		// SettingElement(
+		// 	"Theme",
+		// 	SettingRadioSelect(settings.get().theme, themes, newVal => settings.get().theme = newVal)
+		// ),
+		//TODO: implement this hover format
+		SettingElement(
+			"Hover Format",
+			SettingRadioSelect(settings.get().hoverFormat, hoverFormats, newVal => settings.get().hoverFormat = newVal)
+		),
 		SettingElement(
 			"Debug",
 			SettingToggle(settings.get().debug, newVal => settings.get().debug = newVal)
@@ -26,11 +41,6 @@ export function SettingsPage(closeFn) {
 				observe: settings,
 				shouldShow: () => settings.get().debug,
 			}
-		),
-		//TODO: implement this hover format
-		SettingElement(
-			"Hover Format",
-			SettingRadioSelect(settings.get().hoverFormat, hoverFormats, newVal => settings.get().hoverFormat = newVal)
 		)
 	);
 }
