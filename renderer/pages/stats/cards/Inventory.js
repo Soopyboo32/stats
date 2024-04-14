@@ -2,8 +2,7 @@ import { PlayerData } from "../../../../api/PlayerData.js";
 import { html, staticCss, thisClass, useRef } from "../../../../soopyframework/helpers.js";
 import { colors } from "../../../../soopyframework/css.js";
 import { Hover } from "../../../../soopyframework/components/generic/hover/Hover.js";
-import { Lore } from "../../../components/Lore.js";
-import { Img } from "../../../../soopyframework/components/vanilla/img.js";
+import { Lore } from "../../../components/hover/Lore.js";
 
 let inventoryCss = staticCss.named("inventory").css`${thisClass} {
 	display: flex;
@@ -48,6 +47,7 @@ export function Inventory(playerData) {
 	});
 }
 
+//TODO: border based on rarity
 let itemIconContainerCss = staticCss.named("item-icon-container").css`${thisClass} {
 	position: relative;
 	border: 1px solid ${colors.primary_dark};
@@ -71,13 +71,13 @@ let itemIconCss = staticCss.named("item-icon-css").css`${thisClass} {
 function Item(item) {
 	if (!item.nbt || item.nbt === "{}") {
 		//air
-		return html``;
+		return html` <div ${itemIconContainerCss}></div> `;
 	}
 
 	let itemData = JSON.parse(item.nbt);
 
 	let containerRef = useRef().onClick(() => {
-		console.log("debug itemdata:", itemData);
+		console.log("debug itemdata:", itemData, item);
 	});
 
 	Hover(containerRef, () => Lore(itemData.tag.display.Name, ...itemData.tag.display.Lore));

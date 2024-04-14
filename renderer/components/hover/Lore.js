@@ -1,5 +1,5 @@
-import { MinecraftText } from "./MinecraftText.js";
-import { html, staticCss, thisClass } from "../../soopyframework/helpers.js";
+import { MinecraftText } from "../MinecraftText.js";
+import { html, staticCss, thisClass } from "../../../soopyframework/helpers.js";
 
 let loreSplitter = staticCss.named("loreSplitter").css`${thisClass} {
 	width: 100%;

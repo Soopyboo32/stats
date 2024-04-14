@@ -1,7 +1,7 @@
 import { PlayerData } from "../../../../api/PlayerData.js";
 import { html, useRef } from "../../../../soopyframework/helpers.js";
 import { Hover } from "../../../../soopyframework/components/generic/hover/Hover.js";
-import { Lore } from "../../../components/Lore.js";
+import { Lore } from "../../../components/hover/Lore.js";
 import { MinecraftText } from "../../../components/MinecraftText.js";
 
 /**

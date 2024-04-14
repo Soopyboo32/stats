@@ -1,7 +1,8 @@
 import { Observable } from "../../soopyframework/Observable.js";
 
 export const settings = Observable.of({
-	showUUID: false
+	showUUID: false,
+	hoverFormat: "minecraft"
 });
 
 let defaultSettings = JSON.parse(JSON.stringify(settings.get()));

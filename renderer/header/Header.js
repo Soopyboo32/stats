@@ -4,7 +4,7 @@ import { Icon } from "../../soopyframework/components/generic/Icon.js";
 import { UsernameSearch } from "../components/UsernameSearch.js";
 import { buttonCss, colors, getBg } from "../../soopyframework/css.js";
 import { Hover } from "../../soopyframework/components/generic/hover/Hover.js";
-import { Lore } from "../components/Lore.js";
+import { Lore } from "../components/hover/Lore.js";
 import { Popup } from "../../soopyframework/components/generic/Popup.js";
 import { SettingsPage } from "../settings/SettingsPage.js";
 

@@ -11,7 +11,7 @@ let title = document.getElementById("title");
 
 let contentCss = staticCss.named("content").css`${thisClass} {
 	display: flex;
-	justify-content: space-evenly;
+	justify-content: center;
 	flex-wrap: wrap;
 }`;
 
@@ -31,18 +31,20 @@ export function StatsPage(playerData, height = 0) {
 		}
 	}));
 
-	setTimeout(()=>{
-		if (playerData.getData().error) {
-			ref.reRender(ErrorContent(playerData));
-		}
-	},0)
+	if (playerData.getData().error) {
+		return html`
+			<div ${ref} ${contentCss}>
+				${ErrorContent(playerData)}
+			</div>
+		`;
+	}
 
 	return html`
 		<div ${ref} ${contentCss}>
-			${Card("Overview", PlayerInfo(playerData), height+1)}
-			${Card("Slayers", SlayerInfo(playerData), height+1)}
-			${Card("One Time Achievements", AchievementsTable(playerData), height+1)}
-			${Card("Inventory", Inventory(playerData), height+1)}
+			${Card("Overview", PlayerInfo(playerData), height + 1)}
+			${Card("Slayers", SlayerInfo(playerData), height + 1)}
+			${Card("One Time Achievements", AchievementsTable(playerData), height + 1)}
+			${Card("Inventory", Inventory(playerData), height + 1)}
 		</div>
 	`;
 }

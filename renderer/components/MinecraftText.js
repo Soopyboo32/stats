@@ -69,7 +69,6 @@ let widthToChars = getWidthToChars(charWidths);
 document.fonts.addEventListener("loadingdone", (event) => {
 	charWidths = computeCharWidths();
 	widthToChars = getWidthToChars(charWidths);
-	console.log(widthToChars)
 });
 
 function computeCharWidths() {

@@ -11,7 +11,7 @@ import { PlayerHead } from "../../components/PlayerHead.js";
 
 let contentCss = staticCss.named("content").css`${thisClass} {
 	display: flex;
-	justify-content: space-evenly;
+	justify-content: center;
 	flex-wrap: wrap;
 }`;
 
