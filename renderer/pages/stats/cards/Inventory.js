@@ -77,10 +77,12 @@ function Item(item) {
 	let itemData = JSON.parse(item.nbt);
 
 	let containerRef = useRef().onClick(() => {
-		console.log("debug itemdata:", itemData, item);
+		if (settings.get().debug) {
+			console.log("debug itemdata:", itemData, item);
+		}
 	});
 
-	Hover(containerRef, () => Lore(itemData.tag.display.Name, ...itemData.tag.display.Lore));
+	ItemHover(containerRef, item);
 
 	return html`
 		<div ${itemIconContainerCss} ${containerRef}>

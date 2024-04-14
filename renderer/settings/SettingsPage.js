@@ -16,8 +16,16 @@ const hoverFormats = {
 export function SettingsPage(closeFn) {
 	return SettingList(
 		SettingElement(
+			"Debug",
+			SettingToggle(settings.get().debug, newVal => settings.get().debug = newVal)
+		),
+		SettingElement(
 			"Show UUID In Overview",
-			SettingToggle(settings.get().showUUID, newVal => settings.get().showUUID = newVal)
+			SettingToggle(settings.get().showUUID, newVal => settings.get().showUUID = newVal),
+			{
+				observe: settings,
+				shouldShow: () => settings.get().debug,
+			}
 		),
 		//TODO: implement this hover format
 		SettingElement(

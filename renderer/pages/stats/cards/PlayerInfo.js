@@ -13,7 +13,7 @@ export function PlayerInfo(playerData) {
 		Currently: ${OnlineState(playerData)}
 		<br>
 		Networth: ${Networth(playerData)}
-		${settings.observe(() => settings.get().showUUID ? html`
+		${settings.observe(() => settings.get().showUUID && settings.get().debug ? html`
 			<br>
 			UUID: ${playerData.data.observe(() => playerData.getData().uuid)}
 		` : "")}

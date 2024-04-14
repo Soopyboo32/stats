@@ -2,6 +2,7 @@ import { Observable } from "../../soopyframework/Observable.js";
 
 export const settings = Observable.of({
 	showUUID: false,
+	debug: false,
 	hoverFormat: "minecraft"
 });
 
