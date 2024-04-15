@@ -30,6 +30,11 @@ export function SettingsPage(closeFn) {
 			"Hover Format",
 			SettingRadioSelect(settings.get().hoverFormat, hoverFormats, newVal => settings.get().hoverFormat = newVal)
 		),
+		//Testing for dropdown instead of radio button
+		// SettingElement(
+		// 	"Hover Format",
+		// 	SettingDropdown(settings.get().hoverFormat, hoverFormats, newVal => settings.get().hoverFormat = newVal)
+		// ),
 		SettingElement(
 			"Debug",
 			SettingToggle(settings.get().debug, newVal => settings.get().debug = newVal)
