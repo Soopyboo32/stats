@@ -1,5 +1,6 @@
 import { css, html, staticCss, thisClass, useRef } from "../../soopyframework/helpers.js";
 import { getTextWidth } from "../../soopyframework/util/textWidth.js";
+import { UnsafeText } from "../../soopyframework/components/generic/UnsafeText.js";
 
 let minecraftTextStyle = staticCss.named("minecraft-text").css`{
 	@font-face {
@@ -74,7 +75,7 @@ document.fonts.addEventListener("loadingdone", (event) => {
 function computeCharWidths() {
 	let res = new Map();
 	for (let i = " ".codePointAt(0); i <= "~".codePointAt(0); i++) {
-	// for (let i = 0; i <= 128; i++) {
+		// for (let i = 0; i <= 128; i++) {
 		let char = String.fromCharCode(i);
 		res.set(char, getTextWidth(char, "normal 12px Minecraft"));
 	}
@@ -95,6 +96,8 @@ function addColors(str, shadow = true) {
 	let chars = str.split("");
 
 	ret.push(enterSection("f", [], shadow));
+
+	let currSectionText = "";
 
 	let sectionLen = 0;
 	let color = "f";
@@ -140,7 +143,8 @@ function addColors(str, shadow = true) {
 				magic = false;
 			}
 
-			ret[ret.length - 1] += exitSection();
+			ret[ret.length - 1] += exitSection(currSectionText);
+			currSectionText = "";
 
 			if (sectionLen === 0) ret.pop(); //remove sections with 0 chars
 
@@ -153,12 +157,13 @@ function addColors(str, shadow = true) {
 			let charWidth = charWidths.get(char) || -1;
 			ret[ret.length - 1] += `<span data-magic-width="${charWidth}">${char}</span>`;
 		} else {
-			ret[ret.length - 1] += char;
+			currSectionText += char;
 		}
 		sectionLen++;
 	}
 
-	ret[ret.length - 1] += exitSection();
+	ret[ret.length - 1] += exitSection(currSectionText);
+	currSectionText = "";
 
 	return ret.join("");
 }
@@ -348,7 +353,10 @@ function updateChroma(ref, refInner, specialC, oldOffset) {
 	return offset;
 }
 
-function exitSection() {
+function exitSection(currSectionText) {
+	if (currSectionText) {
+		return html`${UnsafeText(currSectionText)}</span>`;
+	}
 	return html`</span>`;
 }
 
