@@ -149,7 +149,7 @@ export class PlayerData {
 			let playerData = this.getSbPlayerData(prof.profile_name);
 			let exp = playerData?.sb_exp || 0;
 			if (exp > bestProfileLvl) {
-				exp = bestProfileLvl;
+				bestProfileLvl = exp;
 				bestProfile = prof.profile_name;
 			}
 		}
