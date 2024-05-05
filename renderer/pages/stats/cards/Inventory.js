@@ -19,9 +19,11 @@ export function Inventory(playerData) {
 			return "Loading...";
 		}
 
-		if (!inventory) {
+		if (!inventory || inventory.length === 0) {
 			return "Api missing data!";
 		}
+
+		inventory = [...inventory]; //cus its mutated when splice
 
 		let hotbar = inventory.splice(0, 9);
 

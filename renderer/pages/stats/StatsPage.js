@@ -6,6 +6,7 @@ import { AchievementsTable } from "./cards/AchievementsTable.js";
 import { PlayerInfo } from "./cards/PlayerInfo.js";
 import { SlayerInfo } from "./cards/SlayerInfo.js";
 import { Inventory } from "./cards/Inventory.js";
+import { Profile } from "./cards/Profile.js";
 
 let title = document.getElementById("title");
 
@@ -41,6 +42,7 @@ export function StatsPage(playerData, height = 0) {
 
 	return html`
 		<div ${ref} ${contentCss}>
+			${Card("Profile", Profile(playerData), height + 1)}
 			${Card("Overview", PlayerInfo(playerData), height + 1)}
 			${Card("Slayers", SlayerInfo(playerData), height + 1)}
 			${Card("One Time Achievements", AchievementsTable(playerData), height + 1)}

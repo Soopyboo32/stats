@@ -75,7 +75,7 @@ export class PlayerData {
 			this.getData().playerData = playerData.data;
 
 			this.#callUpdates();
-		}).catch(e=>{
+		}).catch(e => {
 			if (e instanceof TypeError) this.getData().error = "A network error occurred!";
 			else this.getData().error = "A unknown error occurred!";
 			this.#callUpdates();
@@ -90,21 +90,11 @@ export class PlayerData {
 
 			this.getData().sbData = sbData.data;
 			if (!this.getData().profile) {
-				let bestProfile = undefined;
-				let bestProfileExp = 0;
-				for (let profile of this.getData().sbData) {
-					let player = profile.members.find(m => m.uuid.replaceAll("-", "") === this.getData().uuid.replaceAll("-", ""));
-
-					if (player.sb_exp > bestProfileExp) {
-						bestProfileExp = player.sb_exp;
-						bestProfile = profile.profile_name;
-					}
-				}
-				this.getData().profile = bestProfile;
+				this.getData().profile = this.getCurrentProfile() || this.getBestProfile();
 			}
 
 			this.#callUpdates();
-		}).catch(e=>{
+		}).catch(e => {
 			if (e instanceof TypeError) this.getData().error = "A network error occurred!";
 			else this.getData().error = "A unknown error occurred!";
 			this.#callUpdates();
@@ -139,14 +129,35 @@ export class PlayerData {
 	/**
 	 * @returns {undefined|SkyblockProfileData}
 	 */
-	getSbProfileData() {
-		return this.getData().sbData?.find(p => p.profile_name === this.getData().profile);
+	getSbProfileData(profile = undefined) {
+		if (!profile) profile = this.getData().profile;
+		return this.getData().sbData?.find(p => p.profile_name === profile);
 	}
 
 	/**
 	 * @returns {undefined|SkyblockProfileMemberData}
 	 */
-	getSbPlayerData() {
-		return this.getSbProfileData()?.members?.find(m => m.uuid.replaceAll("-", "") === this.getData().uuid.replaceAll("-", ""));
+	getSbPlayerData(profile = undefined) {
+		return this.getSbProfileData(profile || this.getData().profile)?.members?.find(m => m.uuid.replaceAll("-", "") === this.getData().uuid.replaceAll("-", ""));
+	}
+
+	getBestProfile() {
+		let bestProfile = undefined;
+		let bestProfileLvl = 0;
+
+		for (let prof of this.getData().sbData) {
+			let playerData = this.getSbPlayerData(prof.profile_name);
+			let exp = playerData?.sb_exp || 0;
+			if (exp > bestProfileLvl) {
+				exp = bestProfileLvl;
+				bestProfile = prof.profile_name;
+			}
+		}
+
+		return bestProfile;
+	}
+
+	getCurrentProfile() {
+		return this.getData().sbData?.find(p => p.selected)?.profile_name;
 	}
 }
