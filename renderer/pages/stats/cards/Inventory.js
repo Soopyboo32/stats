@@ -1,5 +1,5 @@
 import { PlayerData } from "../../../../api/PlayerData.js";
-import { html, staticCss, thisClass, useRef } from "../../../../soopyframework/helpers.js";
+import { css, html, staticCss, thisClass, useRef } from "../../../../soopyframework/helpers.js";
 import { colors } from "../../../../soopyframework/css.js";
 import { ItemHover } from "../../../components/hover/ItemHover.js";
 
@@ -84,6 +84,26 @@ function Item(item) {
 	});
 
 	ItemHover(containerRef, item);
+
+	/*
+	if (itemData.id === 397) {
+		let skinData = JSON.parse(atob(itemData.tag.SkullOwner.Properties.textures[0].Value));
+		// console.log(skinData);
+		let skinUrl = `https://api.soopy.dev/skin/${skinData.textures.SKIN.url.split("/").pop()}/skin.png`;
+// .icon-159_2{background-position:0 -1024px}
+		console.log(skinUrl);
+		return html`
+			<div ${itemIconContainerCss} ${containerRef}>
+				<div ${css`
+					background-image: url('${skinUrl}');
+					background-size: calc(64px * 16);
+					background-position: calc(-8px * 16) calc(-8px * 16);
+				`} ${itemIconCss}>
+				</div>
+			</div>
+		`;
+	}
+	 */
 
 	return html`
 		<div ${itemIconContainerCss} ${containerRef}>
