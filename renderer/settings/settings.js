@@ -4,6 +4,7 @@ export const settings = Observable.of({
 	theme: "dark",
 	showUUID: false,
 	debug: false,
+	centerPopups: false,
 	hoverFormat: "minecraft"
 });
 
@@ -35,3 +36,11 @@ function saveSettings() {
 }
 
 window.settings = settings;
+
+export function resetSettings() {
+	Object.keys(settings.get()).forEach((key) => {
+		if (settings.get()[key] !== defaultSettings[key]) {
+			settings.get()[key] = defaultSettings[key];
+		}
+	});
+}

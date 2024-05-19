@@ -1,9 +1,13 @@
-import { settings } from "./settings.js";
+import { resetSettings, settings } from "./settings.js";
 import { SettingToggle } from "../../soopyframework/components/generic/settings/SettingToggle.js";
 import { SettingElement } from "../../soopyframework/components/generic/settings/SettingElement.js";
 import { SettingList } from "../../soopyframework/components/generic/settings/SettingList.js";
 import { SettingDropdown } from "../../soopyframework/components/generic/settings/SettingDropdown.js";
 import { SettingRadioSelect } from "../../soopyframework/components/generic/settings/SettingRadioSelect.js";
+import { SettingButton } from "../../soopyframework/components/generic/settings/SettingButton.js";
+import { Popup } from "../../soopyframework/components/generic/Popup.js";
+import { ConfirmPopup } from "../../soopyframework/components/generic/popup/ConfirmPopup.js";
+import { HCenter } from "../../soopyframework/components/generic/util/HCenter.js";
 
 const themes = {
 	dark: "Dark",
@@ -30,6 +34,10 @@ export function SettingsPage(closeFn) {
 			"Hover Format",
 			SettingRadioSelect(settings.get().hoverFormat, hoverFormats, newVal => settings.get().hoverFormat = newVal)
 		),
+		SettingElement(
+			"Center Popups",
+			SettingToggle(settings.get().centerPopups, newVal => settings.get().centerPopups = newVal)
+		),
 		//Testing for dropdown instead of radio button
 		// SettingElement(
 		// 	"Hover Format",
@@ -46,6 +54,20 @@ export function SettingsPage(closeFn) {
 				observe: settings,
 				shouldShow: () => settings.get().debug,
 			}
+		),
+		SettingElement(
+			"Reset All Settings",
+			SettingButton("Reset", async () => {
+				if (!await ConfirmPopup(
+					"Are you sure you want to reset all settings?",
+					HCenter("This is not undo-able!")
+				)) {
+					return;
+				}
+				closeFn();
+				resetSettings();
+				Popup("Settings", SettingsPage);
+			})
 		)
 	);
 }
