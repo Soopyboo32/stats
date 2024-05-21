@@ -141,6 +141,9 @@ export class PlayerData {
 		return this.getSbProfileData(profile || this.getData().profile)?.members?.find(m => m.uuid.replaceAll("-", "") === this.getData().uuid.replaceAll("-", ""));
 	}
 
+	/**
+	 * @returns {undefined|SkyblockProfileData}
+	 */
 	getBestProfile() {
 		let bestProfile = undefined;
 		let bestProfileLvl = 0;
@@ -157,6 +160,9 @@ export class PlayerData {
 		return bestProfile;
 	}
 
+	/**
+	 * @returns {undefined|SkyblockProfileData}
+	 */
 	getCurrentProfile() {
 		return this.getData().sbData?.find(p => p.selected)?.profile_name;
 	}

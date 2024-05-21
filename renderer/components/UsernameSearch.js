@@ -173,9 +173,7 @@ export function UsernameSearch(callback) {
 				<div ${autoCompleteResults}>
 				</div>
 			</div>
-			<!-- data-lpignore disables lastpass autofill -->
-			<input ${input} type="text" placeholder="Username" autocomplete="off" data-lpignore="true"
-				   ${headerUsernameInputCss}>
+			<input ${input} type="text" placeholder="Username" autocomplete="off" ${headerUsernameInputCss}>
 			<button ${searchButton} ${headerSearchButtonCss}>
 				<div ${headerSearchIconContainerCss}>
 					${Icon("search")}

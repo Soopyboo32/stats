@@ -7,6 +7,7 @@ import { PlayerInfo } from "./cards/PlayerInfo.js";
 import { SlayerInfo } from "./cards/SlayerInfo.js";
 import { Inventory } from "./cards/Inventory.js";
 import { Profile } from "./cards/Profile.js";
+import { ChocolateFactory } from "./cards/chocolate_factory/ChocolateFactory.js";
 
 let title = document.getElementById("title");
 
@@ -47,6 +48,7 @@ export function StatsPage(playerData, height = 0) {
 			${Card("Slayers", SlayerInfo(playerData), height + 1)}
 			${Card("One Time Achievements", AchievementsTable(playerData), height + 1)}
 			${Card("Inventory", Inventory(playerData), height + 1)}
+			${Card("Chocolate Factory", ChocolateFactory(playerData), height + 1)}
 		</div>
 	`;
 }

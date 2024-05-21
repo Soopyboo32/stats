@@ -2,4 +2,4 @@
 import type { SkyblockGamemode } from "./SkyblockGamemode";
 import type { SkyblockProfileMemberData } from "./SkyblockProfileMemberData";
 
-export interface SkyblockProfileData { gamemode: SkyblockGamemode, bank_coins: number | null, profile_id: string, profile_name: string, members: Array<SkyblockProfileMemberData>, }
+export interface SkyblockProfileData { gamemode: SkyblockGamemode, bank_coins: number | null, profile_id: string, profile_name: string, members: Array<SkyblockProfileMemberData>, selected: boolean, }
