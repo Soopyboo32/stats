@@ -114,6 +114,10 @@ let lbConstants = {
 	"classAverage": {
 		display: "Class Average",
 		decimals: 2
+	},
+	"classAverageOverflow": {
+		display: "Class Average (Overflow)",
+		decimals: 2
 	}
 };
 
