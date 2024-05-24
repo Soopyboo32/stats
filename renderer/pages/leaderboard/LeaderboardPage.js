@@ -141,7 +141,8 @@ function ActualLbPageFromData(data, lbType, start) {
 							});
 						});
 						username = html`
-							<div ${ref} ${css`cursor: pointer;`}>${PlayerHead(user.uuid, {height: "1em"})} ${username}</div>`;
+							<div ${ref} ${css`cursor: pointer;`}>${PlayerHead(user.uuid, {height: "1em"})} ${username}
+							</div>`;
 					}
 
 					return [
