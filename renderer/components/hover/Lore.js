@@ -1,5 +1,5 @@
 import { MinecraftText } from "../MinecraftText.js";
-import { html, staticCss, thisClass } from "../../../soopyframework/helpers.js";
+import { html, Join, staticCss, thisClass } from "../../../soopyframework/helpers.js";
 
 let loreSplitter = staticCss.named("loreSplitter").css`${thisClass} {
 	width: 100%;
@@ -10,7 +10,7 @@ let loreSplitter = staticCss.named("loreSplitter").css`${thisClass} {
 export function Lore(...text) {
 	let lines = text.flat().map(t => MinecraftText(t));
 	if (lines.length <= 1) {
-		return lines.join("");
+		return Join(lines);
 	}
 
 	let [first, ...rest] = lines;
@@ -18,6 +18,6 @@ export function Lore(...text) {
 	return html`
 		${first}
 		<div ${loreSplitter}></div>
-		${rest.join("<br>")}
+		${Join(rest, html`<br>`)}
 	`;
 }

@@ -1,4 +1,4 @@
-import { css, html, numberWithCommas, staticCss, thisClass, useRef } from "../../../soopyframework/helpers.js";
+import { css, html, Join, numberWithCommas, staticCss, thisClass, useRef } from "../../../soopyframework/helpers.js";
 import { Card } from "../../../soopyframework/components/generic/Card.js";
 import { getSoopyApiCache } from "../../../api/soopy.js";
 import { Table } from "../../../soopyframework/components/generic/Table.js";
@@ -37,14 +37,14 @@ export function Leaderboard(appstate) {
 
 	return html`
 		<div ${contentCss}>
-			${Object.keys(lbConstants).map(lbType => Card(
+			${Join(Object.keys(lbConstants).map(lbType => Card(
 					`${lbConstants[lbType].display} Leaderboard`,
 					ActualLeaderboardPage(lbType, 0, 10),
 					1,
 					() => {
 						appstate.get().lbType = lbType;
 					}
-			)).join("")}
+			)))}
 		</div>
 	`;
 
@@ -66,7 +66,7 @@ function ActualLeaderboardPage(lbType, page = 0, displayCap = 100) {
 		<div ${div}>
 			${lbData
 					? ActualLbPageFromData(lbData.data.slice(0, displayCap), lbType, page * 100)
-					: `
+					: html`
 						<div ${invisibleCss}>
 							${ActualLbPageFromData(Array.from(Array(displayCap), () => ({})), lbType, page * 100)}
 						</div>

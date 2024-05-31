@@ -1,4 +1,4 @@
-import { html, staticCss, thisClass, useRef } from "../../soopyframework/helpers.js";
+import { html, Join, staticCss, thisClass, useRef } from "../../soopyframework/helpers.js";
 import { Icon } from "../../soopyframework/components/generic/Icon.js";
 import { buttonCss, colors, getBg, textboxCss } from "../../soopyframework/css.js";
 import { PlayerHead } from "./PlayerHead.js";
@@ -149,11 +149,11 @@ export function UsernameSearch(callback) {
 		let autocompleteRes = await getSoopyApi("tabcompletedetailed/" + searchPlayer);
 		if (input.getElm().value !== searchPlayer) return;
 
-		autoCompleteResults.renderInner(autocompleteRes.data.map(data => AutoCompleteResult(data[1], data[0], () => {
+		autoCompleteResults.renderInner(Join(autocompleteRes.data.map(data => AutoCompleteResult(data[1], data[0], () => {
 			input.getElm().value = "";
 
 			callback(data[0]);
-		})).join(""));
+		}))));
 	});
 
 	let searchButton = useRef().onClick(() => {

@@ -1,5 +1,5 @@
 import { PlayerData } from "../../../../api/PlayerData.js";
-import { css, html, staticCss, thisClass, useRef } from "../../../../soopyframework/helpers.js";
+import { css, html, Join, staticCss, thisClass, useRef } from "../../../../soopyframework/helpers.js";
 import { colors } from "../../../../soopyframework/css.js";
 import { ItemHover } from "../../../components/hover/ItemHover.js";
 
@@ -16,11 +16,11 @@ export function Inventory(playerData) {
 		let inventory = playerData.getSbPlayerData()?.inventories?.inventory;
 
 		if (!playerData.getSbPlayerData()) {
-			return "Loading...";
+			return html`Loading...`;
 		}
 
 		if (!inventory || inventory.length === 0) {
-			return "Api missing data!";
+			return html`Api missing data!`;
 		}
 
 		inventory = [...inventory]; //cus its mutated when splice
@@ -31,16 +31,16 @@ export function Inventory(playerData) {
 			<div ${inventoryCss}>
 				<table>
 					<tr>
-						${inventory.splice(0, 9).map(item => `<td>${Item(item)}</td>`).join("")}
+						${Join(inventory.splice(0, 9).map(item => html`<td>${Item(item)}</td>`))}
 					</tr>
 					<tr>
-						${inventory.splice(0, 9).map(item => `<td>${Item(item)}</td>`).join("")}
+						${Join(inventory.splice(0, 9).map(item => html`<td>${Item(item)}</td>`))}
 					</tr>
 					<tr>
-						${inventory.splice(0, 9).map(item => `<td>${Item(item)}</td>`).join("")}
+						${Join(inventory.splice(0, 9).map(item => html`<td>${Item(item)}</td>`))}
 					</tr>
 					<tr>
-						${hotbar.map(item => `<td>${Item(item)}</td>`).join("")}
+						${Join(hotbar.map(item => html`<td>${Item(item)}</td>`))}
 					</tr>
 				</table>
 			</div>
