@@ -221,6 +221,8 @@ self.addEventListener('fetch', event => {
 			else if (path.endsWith(".json")) mimeType = "application/json";
 			else if (path.endsWith(".html")) mimeType = "text/html";
 
+			console.log("loading:", path)
+
 			let fileBlob = zip.getFileBlob("." + path, mimeType);
 			return new Response(fileBlob);
 			// let cache = await caches.open(commit);
