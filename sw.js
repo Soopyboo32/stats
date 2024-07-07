@@ -79,7 +79,14 @@ self.addEventListener('fetch', event => {
 				return await fetch(event.request);
 			}
 
-			return new Response(zip.getFileBlob("./" + url.pathname));
+			let mimeType = "application/octet-stream"
+			if (url.pathname.endsWith(".txt")) mimeType = "text/plain";
+			else if (url.pathname.endsWith(".js")) mimeType = "text/javascript";
+			else if (url.pathname.endsWith(".css")) mimeType = "text/css";
+			else if (url.pathname.endsWith(".json")) mimeType = "application/json";
+
+			let fileBlob = zip.getFileBlob("./" + url.pathname, mimeType);
+			return new Response(fileBlob);
 			// let cache = await caches.open(commit);
 			// return cache.match(url.pathname);
 			// } else {
