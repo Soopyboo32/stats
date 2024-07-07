@@ -131,17 +131,18 @@ class TarReader {
 };
 //</editor-fold>
 
-let version = 8;
+let version = 9;
 let commit = "";
 let cacheCommitToUse = "";
 let fullyLoaded = false;
 let zip;
 
+updateCommit().then();
+
 self.addEventListener("install", event => {
 	console.log("Installing service worker...");
 
 	self.skipWaiting();
-	updateCommit().then();
 
 	console.log("Service worker installed!");
 });
