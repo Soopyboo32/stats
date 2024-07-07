@@ -9,7 +9,8 @@ let zip;
 self.addEventListener("install", event => {
 	console.log("Installing service worker...");
 
-	updateCommit().then(() => self.skipWaiting());
+	self.skipWaiting();
+	updateCommit().then();
 
 	console.log("Service worker installed!");
 });
@@ -59,8 +60,8 @@ self.addEventListener('fetch', event => {
 
 	if (url.origin === location.origin) {
 		event.respondWith((async () => {
-			if (!commit) {
-				await updateCommit();
+			while (!fullyLoaded) {
+				await new Promise(resolve => setTimeout(resolve, 50));
 			}
 
 			if (url.pathname === "/") {
