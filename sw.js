@@ -220,7 +220,6 @@ self.addEventListener('fetch', event => {
 			else if (path.endsWith(".css")) mimeType = "text/css";
 			else if (path.endsWith(".json")) mimeType = "application/json";
 			else if (path.endsWith(".html")) mimeType = "text/html";
-			console.log(path, mimeType);
 
 			let fileBlob = zip.getFileBlob("." + path, mimeType);
 			return new Response(fileBlob);
