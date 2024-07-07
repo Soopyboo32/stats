@@ -71,7 +71,7 @@ self.addEventListener('fetch', event => {
 				return new Response("YES");
 			}
 
-			if (commit.startsWith("DEV-") || url.pathname === "/commit.txt" || url.pathname === "/files.txt") {
+			if (commit.startsWith("DEV-") || url.pathname === "/commit.txt") {
 				return await fetch(event.request);
 			}
 
@@ -99,6 +99,7 @@ self.addEventListener('fetch', event => {
 let updating = false;
 
 async function updateCommit() {
+	//TODO: dont spam this
 	try {
 		let res = await fetch("/commit.txt");
 		commit = await res.text();
