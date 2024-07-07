@@ -30,9 +30,9 @@ class TarReader {
 		let file_size = 0;
 		let file_name = "";
 		let file_type = null;
-		while(offset < this.buffer.byteLength - 512) {
+		while (offset < this.buffer.byteLength - 512) {
 			file_name = this._readFileName(offset); // file name
-			if(file_name.length == 0) {
+			if (file_name.length == 0) {
 				break;
 			}
 			file_type = this._readFileType(offset);
@@ -45,8 +45,8 @@ class TarReader {
 				"header_offset": offset
 			});
 
-			offset += (512 + 512*Math.trunc(file_size/512));
-			if(file_size % 512) {
+			offset += (512 + 512 * Math.trunc(file_size / 512));
+			if (file_size % 512) {
 				offset += 512;
 			}
 		}
@@ -70,11 +70,11 @@ class TarReader {
 
 	_readFileType(header_offset) {
 		// offset: 156
-		let typeView = new Uint8Array(this.buffer, header_offset+156, 1);
+		let typeView = new Uint8Array(this.buffer, header_offset + 156, 1);
 		let typeStr = String.fromCharCode(typeView[0]);
-		if(typeStr == "0") {
+		if (typeStr == "0") {
 			return "file";
-		} else if(typeStr == "5") {
+		} else if (typeStr == "5") {
 			return "directory";
 		} else {
 			return typeStr;
@@ -83,12 +83,12 @@ class TarReader {
 
 	_readFileSize(header_offset) {
 		// offset: 124
-		let szView = new Uint8Array(this.buffer, header_offset+124, 12);
+		let szView = new Uint8Array(this.buffer, header_offset + 124, 12);
 		let szStr = "";
-		for(let i = 0; i < 11; i++) {
+		for (let i = 0; i < 11; i++) {
 			szStr += String.fromCharCode(szView[i]);
 		}
-		return parseInt(szStr,8);
+		return parseInt(szStr, 8);
 	}
 
 	_readFileBlob(file_offset, size, mimetype) {
@@ -111,21 +111,21 @@ class TarReader {
 	getTextFile(file_name) {
 		let info = this.fileInfo.find(info => info.name == file_name);
 		if (info) {
-			return this._readTextFile(info.header_offset+512, info.size);
+			return this._readTextFile(info.header_offset + 512, info.size);
 		}
 	}
 
 	getFileBlob(file_name, mimetype) {
 		let info = this.fileInfo.find(info => info.name == file_name);
 		if (info) {
-			return this._readFileBlob(info.header_offset+512, info.size, mimetype);
+			return this._readFileBlob(info.header_offset + 512, info.size, mimetype);
 		}
 	}
 
 	getFileBinary(file_name) {
 		let info = this.fileInfo.find(info => info.name == file_name);
 		if (info) {
-			return this._readFileBinary(info.header_offset+512, info.size);
+			return this._readFileBinary(info.header_offset + 512, info.size);
 		}
 	}
 };
@@ -213,7 +213,7 @@ self.addEventListener('fetch', event => {
 			}
 
 			let path = url.pathname;
-			if(url.pathname === "/") path = "/index.html";
+			if (url.pathname === "/") path = "/index.html";
 
 			let mimeType = "application/octet-stream"
 			if (path.endsWith(".txt")) mimeType = "text/plain";
@@ -243,21 +243,26 @@ self.addEventListener('fetch', event => {
 let updating = false;
 
 async function updateCommit() {
+	let keys = await caches.keys();
+
 	try {
 		let res = await fetch("/commit.txt");
 		commit = await res.text();
 		commit += "-" + version;
 	} catch (e) {
-		//todo: use cached commit on no network?
-		return;
+		if (keys.length > 0) {
+			console.log("Offline using cached data!")
+			commit = keys[0];
+		} else {
+			//no cached data sadge
+			return;
+		}
 	}
 
 	if (!cacheCommitToUse) {
 		cacheCommitToUse = commit;
 	}
 	//console.log("Commit updated:", commit);
-
-	let keys = await caches.keys();
 
 	if (!updating && (!fullyLoaded || !keys.includes(commit))) {
 		updating = true;
