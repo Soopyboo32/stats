@@ -1,7 +1,10 @@
+importScripts("/libs/tarball.js");
+
 let version = 8;
 let commit = "";
 let cacheCommitToUse = "";
 let fullyLoaded = false;
+let zip;
 
 self.addEventListener("install", event => {
 	console.log("Installing service worker...");
@@ -76,8 +79,9 @@ self.addEventListener('fetch', event => {
 				return await fetch(event.request);
 			}
 
-			let cache = await caches.open(commit);
-			return cache.match(url.pathname);
+			return new Response(zip.getFileBlob("./" + url.pathname));
+			// let cache = await caches.open(commit);
+			// return cache.match(url.pathname);
 			// } else {
 			// 	console.log("File not in cache!", url);
 			//
@@ -100,6 +104,7 @@ async function updateCommit() {
 		commit = await res.text();
 		commit += "-" + version;
 	} catch (e) {
+		//todo: use cached commit on no network?
 		return;
 	}
 
@@ -114,7 +119,7 @@ async function updateCommit() {
 		updating = true;
 		console.log("Updating website...");
 		let start = Date.now();
-		await loadFiles();
+		zip = await this.loadFilesNew(commit);
 		fullyLoaded = true;
 
 		await Promise.all(keys.map(key => {
@@ -132,57 +137,24 @@ async function updateCommit() {
 	}
 
 	while (updating) {
-		await new Promise(r => setTimeout(r, 100));
+		await new Promise(r => setTimeout(r, 50));
 	}
 }
 
-async function loadFiles() {
-	let res = await fetch("/files.txt");
-	let files = await res.text();
-
-	let urlList = ["/"];
-	let lastLine = "";
-	let pathPrefix = "";
-	for (let file of files.split("\n")) {
-		if (file === "") {
-			lastLine = file;
-			continue;
-		}
-
-		if (lastLine === "") {
-			pathPrefix = file.substring(1, file.length - 1);
-			if (pathPrefix === ".") {
-				pathPrefix = "";
-			}
-			pathPrefix += "/";
-			lastLine = file;
-			continue;
-		}
-
-		lastLine = file;
-		if (!file.includes(".")) {
-			//is a directory not a file!
-			continue;
-		}
-
-		urlList.push(pathPrefix + file);
-	}
-
-	// console.log(urlList);
-	let was404 = false;
+async function loadFilesNew(commit) {
+	let response;
+	let hasCache = await caches.has(commit);
 	let cache = await caches.open(commit);
-	await Promise.allSettled(urlList.map(async u => {
-		let response = await fetch(u);
-		if (response.status === 404) {
-			console.log("404 status for " + u);
-			was404 = true;
-			return;
-		}
-
-		await cache.put(u, response);
-	}));
-
-	if (was404) {
-		await caches.delete(commit);
+	if (hasCache) {
+		response = (await cache.match("source.tar.gz"));
+	} else {
+		response = await fetch("source.tar.gz");
+		await cache.put("source.tar.gz", response.clone());
 	}
+
+	let uncompressed = await response.body.pipeThrough(new DecompressionStream("gzip"))
+	let blob = await new Response(uncompressed).blob();
+	let reader = new tarball.TarReader();
+	await reader.readFile(blob)
+	return reader;
 }
