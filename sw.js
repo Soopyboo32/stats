@@ -259,7 +259,7 @@ async function updateCommit() {
 
 	let keys = await caches.keys();
 
-	if (!updating && !fullyLoaded) {
+	if (!updating && (!fullyLoaded || !keys.includes(commit))) {
 		updating = true;
 		console.log("Updating website...");
 		let start = Date.now();
