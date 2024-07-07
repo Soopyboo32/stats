@@ -78,16 +78,20 @@ const PRESTIGE_DATA = [
 export class ChocolateFactoryState {
 	/** @type {SkyblockChocolateFactoryDataSerialized} */
 	#data;
+	/** @type {boolean} */
+	#boosterCookieActive;
 
 	/**
 	 * @param {SkyblockChocolateFactoryDataSerialized} data
+	 * @param {boolean} boosterCookieActive
 	 */
-	constructor(data) {
+	constructor(data, boosterCookieActive) {
 		this.#data = data;
+		this.#boosterCookieActive = boosterCookieActive;
 	}
 
 	clone() {
-		return new ChocolateFactoryState(JSON.parse(JSON.stringify(this.#data)));
+		return new ChocolateFactoryState(JSON.parse(JSON.stringify(this.#data)), this.#boosterCookieActive);
 	}
 
 	/**
@@ -227,7 +231,12 @@ export class ChocolateFactoryState {
 			});
 		}
 
-		//TODO: cookie
+		if (this.#boosterCookieActive) {
+			multiplier.push({
+				amount: 0.25,
+				source: "§dBooster Cookie"
+			});
+		}
 
 		if (this.#data.upgrades.multiplier) {
 			multiplier.push({

@@ -1,6 +1,5 @@
-import { css, html, staticCss, thisClass, useRef } from "../../soopyframework/helpers.js";
+import { css, html, Join, staticCss, thisClass, useRef } from "../../soopyframework/helpers.js";
 import { getTextWidth } from "../../soopyframework/util/textWidth.js";
-import { UnsafeText } from "../../soopyframework/components/generic/UnsafeText.js";
 
 let minecraftTextStyle = staticCss.named("minecraft-text").css`{
 	@font-face {
@@ -15,7 +14,7 @@ let minecraftTextStyle = staticCss.named("minecraft-text").css`{
 
 //TODO: make shadow: false work
 export function MinecraftText(str, {shadow = true} = {}) {
-	return `<span ${minecraftTextStyle}>${addColors(str, shadow)}</span>`;
+	return html`<span ${minecraftTextStyle}>${html.unsafe(addColors(str, shadow))}</span>`;
 }
 
 let colors = {
@@ -355,7 +354,7 @@ function updateChroma(ref, refInner, specialC, oldOffset) {
 
 function exitSection(currSectionText) {
 	if (currSectionText) {
-		return html`${UnsafeText(currSectionText)}</span>`;
+		return html`${currSectionText}</span>`;
 	}
 	return html`</span>`;
 }

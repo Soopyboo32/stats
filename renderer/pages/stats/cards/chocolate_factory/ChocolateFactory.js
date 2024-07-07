@@ -7,7 +7,7 @@ import { html } from "../../../../../soopyframework/helpers.js";
 export function ChocolateFactory(playerData) {
 	return playerData.data.observe(() => {
 		if (!playerData.getSbPlayerData()?.chocolate_factory) return html`Loading...`;
-		let state = new ChocolateFactoryState(playerData.getSbPlayerData().chocolate_factory);
+		let state = new ChocolateFactoryState(playerData.getSbPlayerData().chocolate_factory, playerData.getSbPlayerData().booster_cookie_active);
 		console.log(state.getProduction());
 
 		return html`

@@ -1,4 +1,4 @@
-import { html, useRef } from "../../../../soopyframework/helpers.js";
+import { html, Join, useRef } from "../../../../soopyframework/helpers.js";
 import { Observable } from "../../../../soopyframework/Observable.js";
 import { getSoopyApi } from "../../../../api/soopy.js";
 import { Card } from "../../../../soopyframework/components/generic/Card.js";
@@ -24,13 +24,13 @@ export function MiningEvents() {
 
 		return html`
 			<b>Crystal Hollows:</b>
-			${eventData.get().data.data.running_events.CRYSTAL_HOLLOWS.map(e => EventData(e, totalChLobbys)).join("")}
+			${Join(eventData.get().data.data.running_events.CRYSTAL_HOLLOWS.map(e => EventData(e, totalChLobbys)))}
 			<hr>
 			<b>Dwarven Mines:</b>
-			${eventData.get().data.data.running_events.DWARVEN_MINES.map(e => EventData(e, totalMinesLobbys)).join("")}
+			${Join(eventData.get().data.data.running_events.DWARVEN_MINES.map(e => EventData(e, totalMinesLobbys)))}
 			<hr>
 			<b>Mineshaft:</b>
-			${eventData.get().data.data.running_events.MINESHAFT.map(e => EventData(e, totalMineshaftLobbys)).join("")}
+			${Join(eventData.get().data.data.running_events.MINESHAFT.map(e => EventData(e, totalMineshaftLobbys)))}
 		`;
 	}));
 }

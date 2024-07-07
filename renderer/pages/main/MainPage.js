@@ -21,7 +21,7 @@ export function MainPage(updateHash) {
 				document.location.hash = "/leaderboard/";
 				updateHash();
 			})}
-			${Card("Soopyboo32", "I wanted a quick button to my profile for testing<br>(im lazy ok deal with it)", 1, () => {
+			${Card("Soopyboo32", html`I wanted a quick button to my profile for testing<br>(im lazy ok deal with it)`, 1, () => {
 				//Open lb page
 				document.location.hash = "/stats/Soopyboo32";
 				updateHash();

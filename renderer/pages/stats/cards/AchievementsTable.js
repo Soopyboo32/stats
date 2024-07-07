@@ -1,5 +1,5 @@
 import { PlayerData } from "../../../../api/PlayerData.js";
-import { html, staticCss, thisClass, useRef } from "../../../../soopyframework/helpers.js";
+import { html, Join, staticCss, thisClass, useRef } from "../../../../soopyframework/helpers.js";
 
 let tableCss = staticCss.named("table").css`${thisClass} {
 	height: 200px;
@@ -15,18 +15,18 @@ export function AchievementsTable(playerData) {
 		let achievements = playerData.getData().playerData.onetime_achievements;
 
 		if (!achievements) {
-			return "Api missing data!";
+			return html`Api missing data!`;
 		}
 
 		return html`
 			<div ${tableCss}>
 				<!-- TODO: extract out to like FilterableList component or smth	-->
 				<table>
-					${achievements.map(a => `
+					${Join(achievements.map(a => html`
 						<tr>
 							<td>${a}</td>
 						</tr>
-					`).join("")}
+					`))}
 				</table>
 			</div>`;
 	});
