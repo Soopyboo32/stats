@@ -242,7 +242,6 @@ self.addEventListener('fetch', event => {
 let updating = false;
 
 async function updateCommit() {
-	//TODO: dont spam this
 	try {
 		let res = await fetch("/commit.txt");
 		commit = await res.text();
