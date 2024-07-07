@@ -119,6 +119,7 @@ export function App() {
 
 			<div ${contentDiv} ${contentDivCss}>
 				${loadMainPage ? MainPage(updateHash) : ""}
+				ASJDHLJKASD:Jh
 			</div>
 		</div>`;
 }
