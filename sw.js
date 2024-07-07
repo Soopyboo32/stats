@@ -263,7 +263,9 @@ async function updateCommit() {
 		updating = true;
 		console.log("Updating website...");
 		let start = Date.now();
-		zip = await this.loadFilesNew(commit);
+		if (!commit.startsWith("DEV-")) {
+			zip = await this.loadFilesNew(commit);
+		}
 		fullyLoaded = true;
 
 		await Promise.all(keys.map(key => {
