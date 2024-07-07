@@ -80,15 +80,18 @@ self.addEventListener('fetch', event => {
 				return await fetch(event.request);
 			}
 
-			let mimeType = "application/octet-stream"
-			if (url.pathname.endsWith(".txt")) mimeType = "text/plain";
-			else if (url.pathname.endsWith(".js")) mimeType = "text/javascript";
-			else if (url.pathname.endsWith(".css")) mimeType = "text/css";
-			else if (url.pathname.endsWith(".json")) mimeType = "application/json";
-			else if (url.pathname.endsWith(".html")) mimeType = "text/html";
-			console.log(url.pathname, mimeType);
+			let path = url.pathname;
+			if(url.pathname === "/") path = "/index.html";
 
-			let fileBlob = zip.getFileBlob("." + url.pathname, mimeType);
+			let mimeType = "application/octet-stream"
+			if (path.endsWith(".txt")) mimeType = "text/plain";
+			else if (path.endsWith(".js")) mimeType = "text/javascript";
+			else if (path.endsWith(".css")) mimeType = "text/css";
+			else if (path.endsWith(".json")) mimeType = "application/json";
+			else if (path.endsWith(".html")) mimeType = "text/html";
+			console.log(path, mimeType);
+
+			let fileBlob = zip.getFileBlob("." + path, mimeType);
 			return new Response(fileBlob);
 			// let cache = await caches.open(commit);
 			// return cache.match(url.pathname);
