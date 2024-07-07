@@ -88,7 +88,7 @@ self.addEventListener('fetch', event => {
 			else if (url.pathname.endsWith(".html")) mimeType = "text/html";
 			console.log(url.pathname, mimeType);
 
-			let fileBlob = zip.getFileBlob("./" + url.pathname, mimeType);
+			let fileBlob = zip.getFileBlob("." + url.pathname, mimeType);
 			return new Response(fileBlob);
 			// let cache = await caches.open(commit);
 			// return cache.match(url.pathname);
