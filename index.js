@@ -15,6 +15,5 @@ elm.innerHTML = html`
 	<link rel="stylesheet" href="./global.css">
 	<link rel="stylesheet"
 		  href="./itemtextures/inventory.css" />
-	<link rel="icon" href="https://avatars.githubusercontent.com/u/49228220?v=4">
 `
 document.body.appendChild(elm);
