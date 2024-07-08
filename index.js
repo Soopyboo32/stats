@@ -13,7 +13,6 @@ document.getElementById("app").outerHTML = App();
 let elm = document.createElement("div");
 elm.innerHTML = html`
 	<link rel="stylesheet" href="./global.css">
-	<link rel="stylesheet"
-		  href="./itemtextures/inventory.css" />
+	<link rel="stylesheet" href="./itemtextures/inventory.css" />
 `
 document.body.appendChild(elm);

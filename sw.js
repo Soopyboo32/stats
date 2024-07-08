@@ -1,4 +1,4 @@
-//<editor-fold desc="tarball">
+//<editor-fold desc="tarball" defaultstate="collapsed">
 class TarReader {
 	constructor() {
 		this.fileInfo = [];

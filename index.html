@@ -2,31 +2,36 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title id="title">Soopy Stats Viewer</title>
-    <style id="css"></style>
-    <meta name="mobile-web-app-capable" content="yes">
-    <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link rel="icon" href="https://avatars.githubusercontent.com/u/49228220?v=4">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title id="title">Soopy Stats Viewer</title>
+	<style id="css"></style>
+	<meta name="mobile-web-app-capable" content="yes">
+	<link rel="manifest" href="manifest.json"/>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+	<link rel="stylesheet"
+		  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+	<link rel="icon" href="https://avatars.githubusercontent.com/u/49228220?v=4">
 </head>
 
 <body id="body">
-    <div id="app"></div>
+<div id="app"></div>
 </body>
 <script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register("/sw.js").then(()=>{
-            let elm = document.createElement("script");
-            elm.type = "module";
-            elm.src = "./index.js";
-            document.body.append(elm);
-        });
-    }
+	if ('serviceWorker' in navigator) {
+		navigator.serviceWorker.register("/sw.js").then(loadJs);
+	} else {
+		alert("WARNING! You are using an unsupported browser and the website may be horribly slow!");
+		loadJs();
+	}
+
+	function loadJs() {
+		let elm = document.createElement("script");
+		elm.type = "module";
+		elm.src = "./index.js";
+		document.body.append(elm);
+	}
 </script>
 
 </html>
