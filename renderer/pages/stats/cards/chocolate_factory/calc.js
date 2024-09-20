@@ -226,8 +226,6 @@ export class ChocolateFactoryState {
 			source: "Rabbit Employees"
 		});
 
-		let additive_total = additive.reduce((acc, cur) => acc + cur.amount, 0);
-
 		let multiplier = [];
 		multiplier.push({
 			amount: 1,
@@ -265,6 +263,7 @@ export class ChocolateFactoryState {
 			});
 		}
 
+		let additive_total = additive.reduce((acc, cur) => acc + cur.amount, 0);
 		let multiplier_total = multiplier.reduce((acc, cur) => acc + cur.amount, 0);
 
 		return {

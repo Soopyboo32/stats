@@ -173,7 +173,7 @@ export function UsernameSearch(callback) {
 				<div ${autoCompleteResults}>
 				</div>
 			</div>
-			<input ${input} type="text" placeholder="Username" autocomplete="off" ${headerUsernameInputCss}>
+			<input ${input} type="search" placeholder="Username" autocomplete="off" ${headerUsernameInputCss}>
 			<button ${searchButton} ${headerSearchButtonCss}>
 				<div ${headerSearchIconContainerCss}>
 					${Icon("search")}
