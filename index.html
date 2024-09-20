@@ -22,7 +22,6 @@
 	if ('serviceWorker' in navigator) {
 		navigator.serviceWorker.register("/sw.js").then(loadJs);
 	} else {
-		alert("WARNING! You are using an unsupported browser and the website may be horribly slow!");
 		loadJs();
 	}
 

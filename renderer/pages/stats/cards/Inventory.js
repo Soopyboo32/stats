@@ -31,16 +31,16 @@ export function Inventory(playerData) {
 			<div ${inventoryCss}>
 				<table>
 					<tr>
-						${Join(inventory.splice(0, 9).map(item => html`<td>${Item(item)}</td>`))}
+						${inventory.splice(0, 9).map(item => html`<td>${Item(item)}</td>`)}
 					</tr>
 					<tr>
-						${Join(inventory.splice(0, 9).map(item => html`<td>${Item(item)}</td>`))}
+						${inventory.splice(0, 9).map(item => html`<td>${Item(item)}</td>`)}
 					</tr>
 					<tr>
-						${Join(inventory.splice(0, 9).map(item => html`<td>${Item(item)}</td>`))}
+						${inventory.splice(0, 9).map(item => html`<td>${Item(item)}</td>`)}
 					</tr>
 					<tr>
-						${Join(hotbar.map(item => html`<td>${Item(item)}</td>`))}
+						${hotbar.map(item => html`<td>${Item(item)}</td>`)}
 					</tr>
 				</table>
 			</div>

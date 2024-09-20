@@ -48,7 +48,7 @@ export function StatsPage(playerData, height = 0) {
 			${Card("Slayers", SlayerInfo(playerData), height + 1)}
 			${Card("One Time Achievements", AchievementsTable(playerData), height + 1)}
 			${Card("Inventory", Inventory(playerData), height + 1)}
-			${Card("Chocolate Factory", ChocolateFactory(playerData), height + 1)}
+			${Card("Chocolate Factory (WIP)", ChocolateFactory(playerData), height + 1)}
 		</div>
 	`;
 }

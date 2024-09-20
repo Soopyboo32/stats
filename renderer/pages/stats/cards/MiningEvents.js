@@ -24,13 +24,10 @@ export function MiningEvents() {
 
 		return html`
 			<b>Crystal Hollows:</b>
-			${Join(eventData.get().data.data.running_events.CRYSTAL_HOLLOWS.map(e => EventData(e, totalChLobbys)))}
+			${eventData.get().data.data.running_events.CRYSTAL_HOLLOWS.map(e => EventData(e, totalChLobbys))}
 			<hr>
 			<b>Dwarven Mines:</b>
-			${Join(eventData.get().data.data.running_events.DWARVEN_MINES.map(e => EventData(e, totalMinesLobbys)))}
-			<hr>
-			<b>Mineshaft:</b>
-			${Join(eventData.get().data.data.running_events.MINESHAFT.map(e => EventData(e, totalMineshaftLobbys)))}
+			${eventData.get().data.data.running_events.DWARVEN_MINES.map(e => EventData(e, totalMinesLobbys))}
 		`;
 	}));
 }

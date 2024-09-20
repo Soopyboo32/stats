@@ -37,14 +37,14 @@ export function Leaderboard(appstate) {
 
 	return html`
 		<div ${contentCss}>
-			${Join(Object.keys(lbConstants).map(lbType => Card(
+			${Object.keys(lbConstants).map(lbType => Card(
 					`${lbConstants[lbType].display} Leaderboard`,
 					ActualLeaderboardPage(lbType, 0, 10),
 					1,
 					() => {
 						appstate.get().lbType = lbType;
 					}
-			)))}
+			))}
 		</div>
 	`;
 

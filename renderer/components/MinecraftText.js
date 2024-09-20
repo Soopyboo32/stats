@@ -9,6 +9,7 @@ let minecraftTextStyle = staticCss.named("minecraft-text").css`{
 
 	${thisClass} {
 		font-family: "Minecraft", serif;
+		white-space-collapse: preserve;
 	}
 }`;
 

@@ -30,6 +30,14 @@ export const RABBIT_DATA = {
 	"grandma": {
 		per_level: 5,
 		base_cost: 9000
+	},
+	"uncle": {
+		per_level: 6,
+		base_cost: 12960
+	},
+	"dog": {
+		per_level: 7,
+		base_cost: 17640
 	}
 };
 const PRESTIGE_DATA = [
@@ -44,7 +52,7 @@ const PRESTIGE_DATA = [
 	//prestige 2
 	{
 		multiplier: 0.1,
-		max_level: 120,
+		max_level: 140,
 		requirement: 150_000_000,
 		max_chocolate: 1_200_000_000,
 		max_rarity: "RARE"
@@ -52,7 +60,7 @@ const PRESTIGE_DATA = [
 	//prestige 3
 	{
 		multiplier: 0.25,
-		max_level: 120,
+		max_level: 160,
 		requirement: 1_000_000_000,
 		max_chocolate: 4_000_000_000,
 		max_rarity: "EPIC"
@@ -60,7 +68,7 @@ const PRESTIGE_DATA = [
 	//prestige 4
 	{
 		multiplier: 0.5,
-		max_level: 120,
+		max_level: 180,
 		requirement: 4_000_000_000,
 		max_chocolate: 10_000_000_000,
 		max_rarity: "LEGENDARY"
@@ -68,10 +76,18 @@ const PRESTIGE_DATA = [
 	//prestige 5
 	{
 		multiplier: 1,
-		max_level: 120,
+		max_level: 200,
 		requirement: 10_000_000_000,
 		max_chocolate: 25_000_000_000,
 		max_rarity: "MYTHIC"
+	},
+	//prestige 6
+	{
+		multiplier: 1.5,
+		max_level: 220,
+		requirement: 30_000_000_000,
+		max_chocolate: 60_000_000_000,
+		max_rarity: "DIVINE"
 	}
 ];
 
@@ -213,6 +229,10 @@ export class ChocolateFactoryState {
 		let additive_total = additive.reduce((acc, cur) => acc + cur.amount, 0);
 
 		let multiplier = [];
+		multiplier.push({
+			amount: 1,
+			source: "Base Multiplier"
+		});
 
 		//TODO: collection
 
@@ -245,7 +265,7 @@ export class ChocolateFactoryState {
 			});
 		}
 
-		let multiplier_total = multiplier.reduce((acc, cur) => acc + cur.amount, 1);
+		let multiplier_total = multiplier.reduce((acc, cur) => acc + cur.amount, 0);
 
 		return {
 			total: additive_total * multiplier_total,

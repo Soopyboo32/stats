@@ -109,8 +109,8 @@ export function Header(search, refreshData, appState) {
 		spacer.css(data.largeHeader ? spacerTallCss : spacerCss);
 	}));
 
-	//language=html
 	return html`
+		${'serviceWorker' in navigator ? "" : oldBrowserWarning()}
 		<header ${header} ${appState.get().largeHeader ? headerTallCss : headerCss}>
 			${HeaderLeftElement(search, appState)}
 
@@ -179,4 +179,38 @@ function HeaderRightElement(refreshData) {
 			</button>
 			<button ${settingsButton} ${headerRightButtonCss}>${Icon("settings")}</button>
 		</div>`;
+}
+
+let oldBrowserWarningCss = staticCss.named("old-browser-warning").css`${thisClass} {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 30px;
+	background-color: ${colors.error};
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	font-size: 15px;
+	font-weight: bold;
+	z-index: 100;
+}`;
+
+function oldBrowserWarning() {
+	let oldBrowserWarningRef = useRef();
+	let closeButton = useRef().onClick(() => {
+		oldBrowserWarningRef.remove();
+	});
+
+	return html`
+		<div ${oldBrowserWarningCss} ${oldBrowserWarningRef}>
+			<div ${css`flex-grow: 1;text-align: center;`}>
+				Your browser issnt supported and may cause the website to be slower than normal.
+			</div>
+			<div ${css`cursor: pointer;`} ${closeButton}>
+				${Icon("close")}
+			</div>
+		</div>
+	`;
 }
