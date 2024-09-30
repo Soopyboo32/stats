@@ -18,7 +18,7 @@ export function Networth(playerData) {
  */
 export function NetworthNoCosmetics(playerData) {
 	return playerData.data.observe(()=>{
-		let nw = playerData.getSbPlayerData()?.networthNoCosmetics;
+		let nw = playerData.getSbPlayerData()?.networth_no_cosmetics;
 		if (!nw) return "???";
 
 		return "$" + numberWithCommas(Math.floor(nw));
