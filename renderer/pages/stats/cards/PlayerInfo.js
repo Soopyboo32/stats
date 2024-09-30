@@ -2,7 +2,7 @@ import { Username } from "../generic/Username.js";
 import { SbLevel } from "../skyblock/SbLevel.js";
 import { OnlineState } from "../hypixel/OnlineState.js";
 import { html } from "../../../../soopyframework/helpers.js";
-import { Networth } from "../skyblock/Networth.js";
+import { Networth, NetworthNoCosmetics } from "../skyblock/Networth.js";
 import { PlayerHead } from "../../../components/PlayerHead.js";
 
 export function PlayerInfo(playerData) {
@@ -13,6 +13,8 @@ export function PlayerInfo(playerData) {
 		Currently: ${OnlineState(playerData)}
 		<br>
 		Networth: ${Networth(playerData)}
+		<br>
+		Networth (No Cosmetics): ${NetworthNoCosmetics(playerData)}
 		${settings.observe(() => settings.get().showUUID && settings.get().debug ? html`
 			<br>
 			UUID: ${playerData.data.observe(() => playerData.getData().uuid)}

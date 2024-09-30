@@ -12,3 +12,15 @@ export function Networth(playerData) {
 		return "$" + numberWithCommas(Math.floor(nw));
 	})
 }
+
+/**
+ * @param {PlayerData} playerData
+ */
+export function NetworthNoCosmetics(playerData) {
+	return playerData.data.observe(()=>{
+		let nw = playerData.getSbPlayerData()?.networthNoCosmetics;
+		if (!nw) return "???";
+
+		return "$" + numberWithCommas(Math.floor(nw));
+	})
+}

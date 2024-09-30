@@ -91,6 +91,10 @@ let lbConstants = {
 		display: "Networth",
 		decimals: 0
 	},
+	"networthNoCosmetics": {
+		display: "Networth (No Cosmetics)",
+		decimals: 0
+	},
 	"catacombsLevel": {
 		display: "Catacombs",
 		decimals: 2
