@@ -1,5 +1,6 @@
 import { css, html, Join, staticCss, thisClass, useRef } from "../../soopyframework/helpers.js";
 import { getTextWidth } from "../../soopyframework/util/textWidth.js";
+import { Observable } from "../../soopyframework/Observable.js";
 
 let minecraftTextStyle = staticCss.named("minecraft-text").css`{
 	@font-face {
@@ -13,7 +14,11 @@ let minecraftTextStyle = staticCss.named("minecraft-text").css`{
 	}
 }`;
 
-//TODO: make shadow: false work
+/**
+ * @param {string} str
+ * @param shadow
+ * @returns {HTML}
+ */
 export function MinecraftText(str, {shadow = true} = {}) {
 	return html`<span ${minecraftTextStyle}>${html.unsafe(addColors(str, shadow))}</span>`;
 }

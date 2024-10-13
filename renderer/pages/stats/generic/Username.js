@@ -9,6 +9,9 @@ export function Username(playerData) {
 	return html`${playerData.data.observe(() => MinecraftText(getName(playerData)))}`;
 }
 
+/**
+ * @returns {string}
+ */
 function getName(playerData) {
 	if (!playerData.getData().username) {
 		return "...";

@@ -3,7 +3,7 @@ import { css, html, staticCss, thisClass, useRef } from "../../soopyframework/he
 import { Icon } from "../../soopyframework/components/generic/Icon.js";
 import { UsernameSearch } from "../components/UsernameSearch.js";
 import { buttonCss, colors, getBg } from "../../soopyframework/css.js";
-import { Popup } from "../../soopyframework/components/generic/Popup.js";
+import { Popup } from "../../soopyframework/components/generic/popup/Popup.js";
 import { SettingsPage } from "../settings/SettingsPage.js";
 
 let headerCss = staticCss.named("header").css`{

@@ -4,7 +4,7 @@ import { getSoopyApiCache } from "../../../api/soopy.js";
 import { Table } from "../../../soopyframework/components/generic/Table.js";
 import { Font } from "../../../soopyframework/components/generic/Font.js";
 import { invisibleCss } from "../../../soopyframework/css.js";
-import { Popup } from "../../../soopyframework/components/generic/Popup.js";
+import { Popup } from "../../../soopyframework/components/generic/popup/Popup.js";
 import { StatsPage } from "../stats/StatsPage.js";
 import { PlayerData } from "../../../api/PlayerData.js";
 import { PlayerHead } from "../../components/PlayerHead.js";
