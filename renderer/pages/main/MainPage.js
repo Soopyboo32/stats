@@ -1,6 +1,8 @@
-import { html, staticCss, thisClass } from "../../../soopyframework/helpers.js";
+import {html, Join, staticCss, thisClass, useRef} from "../../../soopyframework/helpers.js";
 import { Card } from "../../../soopyframework/components/generic/Card.js";
 import { MiningEvents } from "../stats/cards/MiningEvents.js";
+import {MinecraftText} from "../../components/MinecraftText.js";
+import {settings} from "../../settings/settings.js";
 
 let title = document.getElementById("title");
 
@@ -27,6 +29,24 @@ export function MainPage(updateHash) {
 				updateHash();
 			})}
 			${MiningEvents()}
+            ${settings.observe(() => {
+                if (settings.get().debug) {
+					let outRef = useRef();
+                    let textRef = useRef().onChange(e=>{
+						let lines = textRef.getElm().value.split("\n");
+						outRef.renderInner(Join(lines.map(line => MinecraftText("§k" + line)), html`<br>`));
+					}).onKeyUp(() => {
+						let lines = textRef.getElm().value.split("\n");
+						outRef.renderInner(Join(lines.map(line => MinecraftText("§k" + line)), html`<br>`));
+					})
+                    return Card("Formatted text playground", html`
+                        <textarea ${textRef}></textarea><br>
+                        <div ${outRef}></div>
+                    `, 1, () => {
+                    })
+				}
+                return "";
+			})}
 		</div>
 	`;
 }
